@@ -7,6 +7,7 @@ import com.google.maps.android.compose.GoogleMap
 @Composable
 fun MapScreen(viewModel: MapViewModel) {
 	Box {
+		//Displayer google mappet
 		GoogleMap()
 	}
 }
