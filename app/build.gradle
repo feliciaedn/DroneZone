@@ -37,7 +37,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion '1.4.0'
     }
     packagingOptions {
         resources {
@@ -60,4 +60,11 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    // for viewmodel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+    //for google maps
+    implementation 'com.google.maps.android:maps-compose:2.11.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }

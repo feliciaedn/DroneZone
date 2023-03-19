@@ -10,34 +10,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.prosjekt_team18.ui.presentation.MapScreen
+import com.example.prosjekt_team18.ui.presentation.MapViewModel
 import com.example.prosjekt_team18.ui.theme.Prosjekt_team18Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Prosjekt_team18Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Tullball")
-                }
-            }
+            MapScreen(viewModel = MapViewModel())
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Halla $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Prosjekt_team18Theme {
-        Greeting("Heihei")
     }
 }
