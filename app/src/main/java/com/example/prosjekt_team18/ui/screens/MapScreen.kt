@@ -48,25 +48,35 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  tonalElevation: Dp = NavigationBarDefaults.Elevation, 
 				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets) {    
 	var selectedItem by remember { mutableStateOf(0) }    
-	val items = listOf("Songs", "Artists", "Favourite")    
+	val items = listOf("Search", "Map", "Weather", "Rules")
 	BottomAppBar {        
-		Row {            
-			NavigationBarItem(                
-				icon = { 
+		Row {
+			NavigationBarItem(
+				icon = {
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_24), contentDescription = "Search") },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_24), contentDescription = items[0]) },
 				//label = { Text("Search") },
-				selected = selectedItem == 1,                
-				onClick = { /* TO DO */ }            )
+				selected = selectedItem == 1,
+				onClick = { /* TO DO */ }
+			)
+			NavigationBarItem(
+				icon = {
+					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_24), contentDescription = items[1]) },
+				//label = { Text("Search") },
+				selected = selectedItem == 1,
+				onClick = { /* TO DO */ }
+			)
 			NavigationBarItem(                
 				icon = { 
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_weather_58), contentDescription = "Weather") },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_weather_33), contentDescription = items[2]) },
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,                
-				onClick = { /* TO DO */ }            )
+				onClick = { /* TO DO */ }
+			)
 			NavigationBarItem(                
 				icon = {
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_rules_32), contentDescription = "Rules") },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_rules_32), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == 3,                
 				onClick = { /* TO DO */ }
