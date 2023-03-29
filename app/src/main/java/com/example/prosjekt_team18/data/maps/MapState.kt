@@ -1,7 +1,5 @@
-package com.example.prosjekt_team18.ui.presentation
+package com.example.prosjekt_team18.data.maps
 
-import android.location.Location
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 

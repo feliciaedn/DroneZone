@@ -1,8 +1,7 @@
-package com.example.prosjekt_team18.ui.presentation
+package com.example.prosjekt_team18.ui.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.prosjekt_team18.data.maps.MapState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
