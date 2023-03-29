@@ -6,10 +6,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-
 import org.junit.Test
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
 
 class SunDataSourceTest {

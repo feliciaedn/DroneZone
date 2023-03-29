@@ -1,6 +1,5 @@
 package com.example.prosjekt_team18.data.sunrise
 
-import java.time.ZonedDateTime
 import java.util.*
 
 data class SunDataWrapper (
