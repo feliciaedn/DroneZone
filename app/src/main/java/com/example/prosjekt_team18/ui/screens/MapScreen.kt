@@ -44,23 +44,31 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 				properties = positionUiState.properties,
 				cameraPositionState = cameraPositionState
 			)
-
-			IconButton(modifier = Modifier
-				.fillMaxHeight()
-				.wrapContentHeight(Alignment.Bottom)
-				.padding(bottom = 30.dp, start = 10.dp).shadow(18.dp),
-				enabled = permissionGranted,
-				content = {
-					Icon(modifier = Modifier.size(23.dp) ,tint = Color.Black.copy(0.6f) ,painter = painterResource(id = R.drawable.icons8_no_gps_96),
-						contentDescription = "GPS disabled")
-				},
-				onClick = {
-					Toast.makeText(
-						context,
-					"GPS not enabled",
-					Toast.LENGTH_SHORT
-				).show() },
-				colors = IconButtonDefaults.filledIconButtonColors(Color.White.copy(alpha = 0.7f)))
+			if (userLocation == LatLng(0.0, 0.0)) {
+				IconButton(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 7.dp, end = 7.dp).shadow(20.dp),
+					enabled = !permissionGranted,
+					content = {
+						Icon(
+							modifier = Modifier.size(23.dp),
+							tint = Color.Black.copy(0.6f),
+							painter = painterResource(id = R.drawable.icons8_no_gps_96),
+							contentDescription = "GPS disabled"
+						)
+					},
+					onClick = {
+						Toast.makeText(
+							context,
+							"GPS not enabled",
+							Toast.LENGTH_SHORT
+						).show()
+					},
+					colors = IconButtonDefaults.filledIconButtonColors(Color.White.copy(alpha = 0.7f))
+				)
+			}
 		}
 
 		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets)
