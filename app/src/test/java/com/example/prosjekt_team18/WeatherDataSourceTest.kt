@@ -1,7 +1,7 @@
 package com.example.prosjekt_team18
 
-import com.example.prosjekt_team18.data.sunrise.WeatherDataSource
-import com.example.prosjekt_team18.data.sunrise.WeatherModel
+import com.example.prosjekt_team18.data.weather.WeatherDataSource
+import com.example.prosjekt_team18.data.weather.WeatherModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

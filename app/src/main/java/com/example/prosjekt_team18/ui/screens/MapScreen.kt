@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
@@ -25,15 +26,18 @@ import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.MainActivity
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
+import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng ,permissionGranted: Boolean, context: Context) {
+fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
+	val weatherUiState by mapViewModel.weatherUiState.collectAsState()
+
 
 	Column(modifier = Modifier.fillMaxSize()) {
 
@@ -48,7 +52,8 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 			IconButton(modifier = Modifier
 				.fillMaxHeight()
 				.wrapContentHeight(Alignment.Bottom)
-				.padding(bottom = 30.dp, start = 10.dp).shadow(18.dp),
+				.padding(bottom = 30.dp, start = 10.dp)
+				.shadow(18.dp),
 				enabled = permissionGranted,
 				content = {
 					Icon(modifier = Modifier.size(23.dp) ,tint = Color.Black.copy(0.6f) ,painter = painterResource(id = R.drawable.icons8_no_gps_96),
@@ -63,15 +68,18 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 				colors = IconButtonDefaults.filledIconButtonColors(Color.White.copy(alpha = 0.7f)))
 		}
 
-		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets)
+		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, userLocation, )
 		}
+
 	}
 
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier, 
 				  containerColor: Color = NavigationBarDefaults.containerColor, 
 				  tonalElevation: Dp = NavigationBarDefaults.Elevation, 
-				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets) {    
+				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
+				  mapViewModel: MapViewModel,
+				  userLocation: LatLng) {
 	var selectedItem by remember { mutableStateOf(0) }    
 	val items = listOf("Search", "Map", "Weather", "Rules")
 	BottomAppBar {        
@@ -81,7 +89,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_96), contentDescription = items[0]) },
 				//label = { Text("Search") },
-				selected = selectedItem == 1,
+				selected = selectedItem == 0,
 				onClick = { /* TO DO */ }
 			)
 			NavigationBarItem(
@@ -90,14 +98,14 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 1,
-				onClick = { /* TO DO */ }
+				onClick = {}
 			)
 			NavigationBarItem(                
 				icon = { 
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_sun_96), contentDescription = items[2]) },
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,                
-				onClick = { /* TO DO */ }
+				onClick = { mapViewModel.updateWeatherData(userLocation) }
 			)
 			NavigationBarItem(                
 				icon = {
@@ -108,4 +116,24 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)        
 		}    
 	}
+}
+@Composable
+fun WeatherMessage(weatherUiState: WeatherUiState) {
+	val weatherModel = weatherUiState.currentWeather
+	val contextForToast = LocalContext.current.applicationContext
+
+	if (weatherModel != null) {
+		Toast.makeText(
+			contextForToast,
+			"Temp: ${weatherModel.temperature}, Vind: ${weatherModel.windSpeed}, VindVei: ${weatherModel.windSpeed}, Rain: ${weatherModel.rainNext6h}",
+			Toast.LENGTH_LONG
+		).show()
+	} else {
+		Toast.makeText(
+			contextForToast,
+			"ERROR: Kunne ikke laste værdata",
+			Toast.LENGTH_SHORT
+		).show()
+	}
+
 }

@@ -1,4 +1,4 @@
-package com.example.prosjekt_team18.data.sunrise
+package com.example.prosjekt_team18.data.weather
 
 import com.example.prosjekt_team18.BuildConfig
 import io.ktor.client.*

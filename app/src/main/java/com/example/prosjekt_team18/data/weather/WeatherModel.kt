@@ -1,4 +1,4 @@
-package com.example.prosjekt_team18.data.sunrise
+package com.example.prosjekt_team18.data.weather
 
 import java.util.*
 
