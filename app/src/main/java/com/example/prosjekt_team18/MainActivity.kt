@@ -39,8 +39,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+
+
         super.onCreate(savedInstanceState)
         setContent {
+			//lokasjonsknappen er trykket ned
+			var buttonClicked by remember {
+				mutableStateOf(isPermissionGranted())
+			}
 
 			var permissionGranted by remember {
 				mutableStateOf(isPermissionGranted())
@@ -57,15 +63,20 @@ class MainActivity : ComponentActivity() {
 					permissionGranted = permissionGranted_
 				}
 
-			Button(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center),
-				enabled = !permissionGranted, // if the permission is NOT granted, enable the button
-				onClick = {
-					if (!permissionGranted) {
-						// ask for permission
-						permissionLauncher.launch(ACCESS_FINE_LOCATION)
-					}
-				}) {
-				Text(text = if (permissionGranted) "Permission Granted" else "Enable Permission")
+			if (!permissionGranted) {
+				Button(modifier = Modifier
+					.fillMaxSize()
+					.wrapContentSize(Alignment.Center),
+					enabled = !permissionGranted, // if the permission is NOT granted, enable the button
+					onClick = {
+						if (!permissionGranted) {
+							// ask for permission
+							permissionLauncher.launch(ACCESS_FINE_LOCATION)
+							buttonClicked = true
+						}
+					}) {
+					Text(text = if (permissionGranted) "Permission Granted" else "Enable Permission")
+				}
 			}
 
 			if (permissionGranted) {
@@ -107,6 +118,7 @@ class MainActivity : ComponentActivity() {
 							LocationDetails(_location.latitude, _location.longitude)
 						mapViewModel.mapUiState.value.properties =
 							MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
+
 						println("inni if")
 						println(userLocation.toString())
 					}
@@ -116,8 +128,8 @@ class MainActivity : ComponentActivity() {
 			var cameraPositionState: CameraPositionState = CameraPositionState(position = CameraPosition.fromLatLngZoom(userLocation, 14f))
 
 
-			if(permissionGranted) {
-				MapScreen(mapViewModel = mapViewModel, cameraPositionState, userLocation ,permissionGranted, this)
+			if(buttonClicked) {
+				MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
 			}
         }
     }

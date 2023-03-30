@@ -18,9 +18,19 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 	private val _mapUiState = MutableStateFlow(MapState())
 	val mapUiState: StateFlow<MapState> = _mapUiState.asStateFlow()
 
+	private val _screenUiState = MutableStateFlow(ScreenUiState())
+	val screenUiState: StateFlow<ScreenUiState> = _screenUiState.asStateFlow()
+
 	private val _weatherUiState = MutableStateFlow(WeatherUiState())
 	val weatherUiState: StateFlow<WeatherUiState> = _weatherUiState.asStateFlow()
 
+
+	fun toggleShowSearchBar() {
+		val showing = _screenUiState.value.showSearchBar
+		_screenUiState.update { currentState ->
+			currentState.copy(showSearchBar = !showing)
+		}
+	}
 
 	fun updateWeatherData(userLocation: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
