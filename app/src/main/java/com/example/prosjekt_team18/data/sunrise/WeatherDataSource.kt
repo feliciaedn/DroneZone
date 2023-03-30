@@ -31,13 +31,20 @@ class WeatherDataSource {
         val data: WeatherDataWrapper = client.get(url).body()
 
         val forecastAtTime = data.properties.timeseries[0]
+
         val date = forecastAtTime.time
         val temperature = forecastAtTime.data.instant.details.air_temperature
         val rain = forecastAtTime.data.next_6_hours.details.precipitation_amount
         val windDirection = forecastAtTime.data.instant.details.wind_from_direction
         val windSpeed = forecastAtTime.data.instant.details.wind_speed
 
+        val metaData = data.properties.meta
+        val tempUnit = metaData.units.air_temperature
+        val rainUnit = metaData.units.precipitation_amount
+        val windDirUnit = metaData.units.wind_from_direction
+        val windSpeedUnit = metaData.units.wind_speed
 
-        return WeatherModel(date, temperature, rain, windDirection, windSpeed)
+        return WeatherModel(date, temperature, rain, windDirection, windSpeed, tempUnit, rainUnit,
+            windDirUnit, windSpeedUnit)
     }
 }

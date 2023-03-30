@@ -17,6 +17,20 @@ class WeatherDataSourceTest {
         weatherDataSource = WeatherDataSource()
     }
 
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    @Test
+//    // runTest is a coroutine builder designed for testing
+//    fun testGetWeatherDataReturnsCorrectDate() = runTest {
+//        // Arrange
+//        // ?lat=60.10&lon=9.58
+//        val lat = 60.10
+//        val lon = 9.58
+//
+//        // Act
+//        val result: WeatherModel = weatherDataSource.getWeatherData(lat, lon)
+//        // Assert
+//        assertEquals(Date(), result.date)
+//    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -44,7 +58,7 @@ class WeatherDataSourceTest {
         // Act
         val result: WeatherModel = weatherDataSource.getWeatherData(lat, lon)
         // Assert
-        assertEquals(0.0, result.rain)
+        assertEquals(0.0, result.rainNext6h)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
