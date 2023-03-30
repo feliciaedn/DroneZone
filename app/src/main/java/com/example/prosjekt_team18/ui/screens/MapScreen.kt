@@ -50,6 +50,7 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 	val weatherUiState by mapViewModel.weatherUiState.collectAsState()
 
 
+
 	Column(modifier = Modifier.fillMaxSize()) {
 
 
@@ -62,6 +63,10 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 			if (screenUiState.showSearchBar) {
 				SearchBar()
 			}
+//			if (screenUiState.showWeather) {
+//				WeatherMessage(weatherUiState)
+//				weatherModel.
+//			}
 
 			if (userLocation == LatLng(0.0, 0.0)) {
 				IconButton(
@@ -90,7 +95,8 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 			}
 		}
 
-		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, userLocation)
+
+		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, weatherUiState, context, userLocation)
 		}
 
 	}
@@ -151,6 +157,8 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  tonalElevation: Dp = NavigationBarDefaults.Elevation, 
 				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 				  mapViewModel: MapViewModel,
+				  weatherUiState: WeatherUiState,
+				  context: Context,
 				  userLocation: LatLng) {
 	var selectedItem by remember { mutableStateOf(0) }    
 	val items = listOf("Search", "Map", "Weather", "Rules")
@@ -179,7 +187,22 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_sun_96), contentDescription = items[2]) },
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,                
-				onClick = { mapViewModel.updateWeatherData(userLocation) }
+				onClick = {
+					mapViewModel.updateWeatherData(userLocation)
+					val weatherModel = weatherUiState.currentWeather
+//					val contextForToast = LocalContext.current.applicationContext
+
+					if (weatherModel != null) {
+						Toast.makeText(
+							context,
+							"Temp: ${weatherModel.temperature}, Vind: ${weatherModel.windSpeed}, VindVei: ${weatherModel.windSpeed}, Rain: ${weatherModel.rainNext6h}",
+							Toast.LENGTH_LONG
+						).show()
+					}
+
+//					mapViewModel.updateWeatherData(userLocation)
+//					mapViewModel.showWeather()
+				}
 			)
 			NavigationBarItem(                
 				icon = {
@@ -191,23 +214,15 @@ fun NavigationBar(modifier: Modifier = Modifier,
 		}    
 	}
 }
-@Composable
-fun WeatherMessage(weatherUiState: WeatherUiState) {
-	val weatherModel = weatherUiState.currentWeather
-	val contextForToast = LocalContext.current.applicationContext
+//@Composable
+//fun WeatherMessage(weatherUiState: WeatherUiState) {
 
-	if (weatherModel != null) {
-		Toast.makeText(
-			contextForToast,
-			"Temp: ${weatherModel.temperature}, Vind: ${weatherModel.windSpeed}, VindVei: ${weatherModel.windSpeed}, Rain: ${weatherModel.rainNext6h}",
-			Toast.LENGTH_LONG
-		).show()
-	} else {
-		Toast.makeText(
-			contextForToast,
-			"ERROR: Kunne ikke laste værdata",
-			Toast.LENGTH_SHORT
-		).show()
-	}
+//	} else {
+//		Toast.makeText(
+//			contextForToast,
+//			"ERROR: Kunne ikke laste værdata",
+//			Toast.LENGTH_SHORT
+//		).show()
+//	}
 
-}
+//}

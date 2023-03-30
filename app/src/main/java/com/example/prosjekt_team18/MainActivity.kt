@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.maps.LocationDetails
+import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MapScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.google.android.gms.location.*
@@ -32,7 +33,10 @@ import com.google.maps.android.compose.MapType
 
 class MainActivity : ComponentActivity() {
 
-	private val mapViewModel: MapViewModel by viewModels()
+	private val weatherDataSource = WeatherDataSource()
+//	private val mapViewModel: MapViewModel by viewModels()
+	private val mapViewModel: MapViewModel = MapViewModel(weatherDataSource)
+
 
 	private var fusedLocationClient: FusedLocationProviderClient? = null
 
