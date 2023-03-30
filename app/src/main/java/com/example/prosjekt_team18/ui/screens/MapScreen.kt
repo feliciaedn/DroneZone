@@ -44,7 +44,6 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 				properties = positionUiState.properties,
 				cameraPositionState = cameraPositionState
 			)
-
 			if (userLocation == LatLng(0.0, 0.0)) {
 				IconButton(
 					modifier = Modifier
