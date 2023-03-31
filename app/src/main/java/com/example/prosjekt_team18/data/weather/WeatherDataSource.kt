@@ -1,6 +1,8 @@
 package com.example.prosjekt_team18.data.weather
 
+import android.net.http.HttpResponseCache.install
 import com.example.prosjekt_team18.BuildConfig
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*

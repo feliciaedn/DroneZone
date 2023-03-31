@@ -168,7 +168,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 		Row {
 			NavigationBarItem(
 				icon = {
-					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_96), contentDescription = items[0]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 0,
@@ -176,7 +175,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 			NavigationBarItem(
 				icon = {
-					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 1,
