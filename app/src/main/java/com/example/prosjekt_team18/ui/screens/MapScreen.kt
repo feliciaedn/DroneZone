@@ -193,7 +193,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					if (weatherModel != null) {
 						Toast.makeText(
 							context,
-							"Temp: ${weatherModel.temperature}, Vind: ${weatherModel.windSpeed}, VindVei: ${weatherModel.windSpeed}, Rain: ${weatherModel.rainNext6h}",
+							"Temp: ${weatherModel.temperature} grader ${weatherModel.tempUnit}, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection} grader, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
 							Toast.LENGTH_LONG
 						).show()
 					}
