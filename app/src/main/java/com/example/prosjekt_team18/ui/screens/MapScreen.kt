@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
-	val screenUiState by mapViewModel.screenUiState.collectAsState()
+	val screenUiState = mapViewModel.screenUiState.collectAsState()
 	val coroutineScope = rememberCoroutineScope()
 
 	val modalSheetState = rememberModalBottomSheetState(
@@ -54,14 +54,15 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		skipHalfExpanded = true,
 	)
 
-	if(screenUiState.showRuleSheet){
+	if(screenUiState.value.showRuleSheet){
 		coroutineScope.launch {
-			if (modalSheetState.isVisible)
+			if (modalSheetState.isVisible){
 				modalSheetState.hide()
-			else
+			} else {
 				modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+			}
 		}
-	} else{
+	} else {
 		if (modalSheetState.isVisible){
 			coroutineScope.launch {
 				modalSheetState.hide()
@@ -131,7 +132,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			  userLocation: LatLng,
 			  permissionGranted: Boolean,
 			  context: Context,
-			  screenUiState: ScreenUiState
+			  screenUiState: State<ScreenUiState>
 ) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
@@ -148,7 +149,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 				properties = positionUiState.properties,
 				cameraPositionState = cameraPositionState
 			)
-			if (screenUiState.showSearchBar) {
+			if (screenUiState.value.showSearchBar) {
 				SearchBar()
 			}
 //			if (screenUiState.showWeather) {
