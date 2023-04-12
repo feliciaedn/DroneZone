@@ -28,15 +28,23 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 	fun toggleShowSearchBar() {
 		val showing: Boolean = _screenUiState.value.showSearchBar
 		_screenUiState.update { currentState ->
-			currentState.copy(showSearchBar = !showing, showRuleSheet = false)
+			currentState.copy(showSearchBar = !showing, showSheet = Sheet.None)
 		}
 	}
 
-	fun toggleShowRuleSheet() {
-		val showing: Boolean = _screenUiState.value.showRuleSheet
-		_screenUiState.update { currentState ->
-			currentState.copy(showRuleSheet = !showing)
+	fun toggleShowSheet(sheet: Sheet) {
+		val showing: Sheet = _screenUiState.value.showSheet
+
+		if (showing == Sheet.None) {
+			_screenUiState.update { currentState ->
+				currentState.copy(showSheet = sheet)
+			}
+		} else {
+			_screenUiState.update { currentState ->
+				currentState.copy(showSheet = Sheet.None)
+			}
 		}
+
 	}
 
 	fun showWeather() {

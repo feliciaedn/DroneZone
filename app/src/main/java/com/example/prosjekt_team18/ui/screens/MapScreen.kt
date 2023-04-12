@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
+import com.example.prosjekt_team18.ui.viewmodels.Sheet
 import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -54,7 +55,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		skipHalfExpanded = true,
 	)
 
-	if(screenUiState.value.showRuleSheet){
+	if(screenUiState.value.showSheet != Sheet.None){
 		coroutineScope.launch {
 			if (modalSheetState.isVisible){
 				modalSheetState.hide()
@@ -94,11 +95,18 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					.padding(16.dp)
 
 			) {
+				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {
+					Spacer(modifier = Modifier.height(16.dp))
+					//Tekst regler her:
+					Text(text = "regler")
+					Text(text = "!!")
+				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
+					Spacer(modifier = Modifier.height(16.dp))
+					//Tekst regler her:
+					Text(text = "vaer")
+					Text(text = "!!")
+				}
 
-				Spacer(modifier = Modifier.height(16.dp))
-				//Tekst regler her:
-				Text(text = "regler")
-				Text(text = "!!")
 			}
 		}
 	) {
@@ -275,17 +283,18 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,
 				onClick = {
-					mapViewModel.updateWeatherData(userLocation)
-					val weatherModel = weatherUiState.currentWeather
-//					val contextForToast = LocalContext.current.applicationContext
-
-					if (weatherModel != null) {
-						Toast.makeText(
-							context,
-							"Temp: ${weatherModel.temperature} grader ${weatherModel.tempUnit}, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection} grader, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
-							Toast.LENGTH_LONG
-						).show()
-					}
+//					mapViewModel.updateWeatherData(userLocation)
+//					val weatherModel = weatherUiState.currentWeather
+////					val contextForToast = LocalContext.current.applicationContext
+//
+//					if (weatherModel != null) {
+//						Toast.makeText(
+//							context,
+//							"Temp: ${weatherModel.temperature} grader ${weatherModel.tempUnit}, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection} grader, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
+//							Toast.LENGTH_LONG
+//						).show()
+//					}
+					mapViewModel.toggleShowSheet(Sheet.Weather)
 
 //					mapViewModel.updateWeatherData(userLocation)
 //					mapViewModel.showWeather()
@@ -296,7 +305,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == 3,
-				onClick = {mapViewModel.toggleShowRuleSheet()}
+				onClick = {mapViewModel.toggleShowSheet(Sheet.Rules)}
 			)
 		}
 	}
