@@ -22,6 +22,8 @@ android {
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
         buildConfigField "String", 'API_KEY', "\"${properties.getProperty("API_KEY")}\""
+
+        manifestPlaceholders = ['appAuthRedirectScheme': applicationId]
     }
 
     buildTypes {
@@ -120,4 +122,5 @@ dependencies {
     implementation 'com.google.maps.android:maps-ktx:3.2.1'
     // KTX for the Maps SDK for Android Utility Library
     implementation 'com.google.maps.android:maps-utils-ktx:3.2.1'
+
 }

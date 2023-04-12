@@ -34,19 +34,19 @@ import com.google.maps.android.compose.MapType
 class MainActivity : ComponentActivity() {
 
 	private val weatherDataSource = WeatherDataSource()
-//	private val mapViewModel: MapViewModel by viewModels()
+	//	private val mapViewModel: MapViewModel by viewModels()
 	private val mapViewModel: MapViewModel = MapViewModel(weatherDataSource)
 
 
 	private var fusedLocationClient: FusedLocationProviderClient? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+	override fun onCreate(savedInstanceState: Bundle?) {
 
 
 
-        super.onCreate(savedInstanceState)
-        setContent {
+		super.onCreate(savedInstanceState)
+		setContent {
 			//lokasjonsknappen er trykket ned
 			var buttonClicked by remember {
 				mutableStateOf(isPermissionGranted())
@@ -135,8 +135,8 @@ class MainActivity : ComponentActivity() {
 			if(buttonClicked) {
 				MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
 			}
-        }
-    }
+		}
+	}
 
 	// check initially if the permission is granted
 	private fun isPermissionGranted(): Boolean {
