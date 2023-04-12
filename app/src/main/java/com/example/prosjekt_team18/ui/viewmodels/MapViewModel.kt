@@ -32,6 +32,13 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 		}
 	}
 
+	fun toggleShowRuleSheet() {
+		val showing = _screenUiState.value.showRuleSheet
+		_screenUiState.update { currentState ->
+			currentState.copy(showRuleSheet = !showing)
+		}
+	}
+
 	fun showWeather() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showWeather = true)

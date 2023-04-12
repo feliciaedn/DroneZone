@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.maps.LocationDetails
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
+import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.screens.MapScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.google.android.gms.location.*
@@ -133,7 +134,7 @@ class MainActivity : ComponentActivity() {
 
 
 			if(buttonClicked) {
-				MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
+				MainScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
 			}
 		}
 	}
