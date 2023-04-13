@@ -19,17 +19,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.maps.LocationDetails
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MapScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
+import com.google.android.libraries.places.api.Places
+import com.google.maps.android.compose.*
 
 class MainActivity : ComponentActivity() {
 
@@ -47,6 +48,10 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
+
+			Places.initialize(this.applicationContext, BuildConfig.GOOGLE_API_KEY)
+			mapViewModel.placesClient = Places.createClient(this)
+
 			//lokasjonsknappen er trykket ned
 			var buttonClicked by remember {
 				mutableStateOf(isPermissionGranted())
@@ -129,11 +134,17 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
-			var cameraPositionState: CameraPositionState = CameraPositionState(position = CameraPosition.fromLatLngZoom(userLocation, 14f))
-
+			//var cameraPositionState: CameraPositionState = CameraPositionState(position = CameraPosition.fromLatLngZoom(userLocation, 14f))
+			val cameraPositionState = rememberCameraPositionState {
+				position = CameraPosition.fromLatLngZoom(userLocation, 15f)
+			}
 
 			if(buttonClicked) {
 				MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
+			}
+
+			LaunchedEffect(mapViewModel.currentLatLong) {
+				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.currentLatLong))
 			}
         }
     }

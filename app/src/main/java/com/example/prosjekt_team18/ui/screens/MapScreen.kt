@@ -3,8 +3,12 @@ package com.example.prosjekt_team18.ui.screens
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -36,6 +40,8 @@ import com.example.prosjekt_team18.MainActivity
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
@@ -61,7 +67,16 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 				cameraPositionState = cameraPositionState
 			)
 			if (screenUiState.showSearchBar) {
-				SearchBar()
+				Surface(
+					modifier = Modifier
+						.align(Alignment.TopCenter)
+						.padding(8.dp)
+						.fillMaxWidth(),
+					color = Color.White,
+					shape = RoundedCornerShape(8.dp)
+				) {
+					SearchBar(mapViewModel)
+				}
 			}
 //			if (screenUiState.showWeather) {
 //				WeatherMessage(weatherUiState)
@@ -73,7 +88,8 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 					modifier = Modifier
 						.fillMaxWidth()
 						.wrapContentWidth(Alignment.End)
-						.padding(top = 7.dp, end = 7.dp).shadow(20.dp),
+						.padding(top = 7.dp, end = 7.dp)
+						.shadow(20.dp),
 					enabled = !permissionGranted,
 					content = {
 						Icon(
@@ -101,8 +117,13 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 
 	}
 
+data class AutocompleteResult(
+	val address: String,
+	val placeId: String,
+)
+
 @Composable
-fun SearchBar(){
+fun SearchBar(mapViewModel: MapViewModel){
 
 	val focusManager = LocalFocusManager.current
 
@@ -110,44 +131,81 @@ fun SearchBar(){
 	var input by remember {
 		mutableStateOf("")
 	}
-	androidx.compose.material.OutlinedTextField(
-		value = input,
-		onValueChange = { input = it },
-		placeholder = { androidx.compose.material.Text("Search") },
-		shape = RoundedCornerShape(16.dp),
-		leadingIcon = {
-			androidx.compose.material.Icon(
-				Icons.Filled.Search,
-				contentDescription = null
-			)
-		},
-		keyboardOptions = KeyboardOptions(
-			keyboardType = KeyboardType.Text,
-			imeAction = ImeAction.Search
-		),
-		keyboardActions = KeyboardActions(
-			onSearch = {
-				if (input.isNotEmpty()) {
-					println("hfbejhf 6666")
-					//onSearch(input)
-				}
-				focusManager.clearFocus()
-				input = ""
 
+	Column(
+		modifier = Modifier.padding(16.dp),
+		horizontalAlignment = Alignment.CenterHorizontally) {
+
+		androidx.compose.material.OutlinedTextField(
+			value = mapViewModel.text,
+			onValueChange = {
+				mapViewModel.text = it
+				mapViewModel.searchPlaces(it)
+							println(mapViewModel.locationAutofill.toString())
+			},
+			placeholder = { androidx.compose.material.Text("Search") },
+			shape = RoundedCornerShape(16.dp),
+			leadingIcon = {
+				androidx.compose.material.Icon(
+					Icons.Filled.Search,
+					contentDescription = null
+				)
+			},
+			keyboardOptions = KeyboardOptions(
+				keyboardType = KeyboardType.Text,
+				imeAction = ImeAction.Search
+			),
+			keyboardActions = KeyboardActions(
+				onSearch = {
+					if (input.isNotEmpty()) {
+						println("hfbejhf 6666")
+						//onSearch(input)
+					}
+					focusManager.clearFocus()
+					input = ""
+
+				}
+			),
+			singleLine = true,
+			textStyle = MaterialTheme.typography.body1.copy(color = Color.Black),
+			colors = TextFieldDefaults.outlinedTextFieldColors(
+				backgroundColor = Color.White,
+				cursorColor = Color.Black,
+				focusedBorderColor = Color.Transparent,
+				unfocusedBorderColor = Color.Transparent
+			),
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(horizontal = 16.dp, vertical = 8.dp)
+		)
+
+		AnimatedVisibility(
+			mapViewModel.locationAutofill.isNotEmpty(),
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(8.dp)
+		) {
+			LazyColumn(
+				verticalArrangement = Arrangement.spacedBy(8.dp)
+			) {
+				items(mapViewModel.locationAutofill) {
+					Row(modifier = Modifier
+						.fillMaxWidth()
+						.padding(16.dp)
+						.clickable {
+							mapViewModel.text = it.address
+							mapViewModel.locationAutofill.clear()
+							mapViewModel.getCoordinates(it)
+							
+							//currentCameraPositionState.position = CameraPosition(mapViewModel.currentLatLong)
+						}) {
+						Text(it.address)
+					}
+				}
 			}
-		),
-		singleLine = true,
-		textStyle = MaterialTheme.typography.body1.copy(color = Color.Black),
-		colors = TextFieldDefaults.outlinedTextFieldColors(
-			backgroundColor = Color.White,
-			cursorColor = Color.Black,
-			focusedBorderColor = Color.Transparent,
-			unfocusedBorderColor = Color.Transparent
-		),
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(horizontal = 16.dp, vertical = 8.dp)
-	)
+			Spacer(Modifier.height(16.dp))
+		}
+	}
 
 
 }
@@ -160,7 +218,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  weatherUiState: WeatherUiState,
 				  context: Context,
 				  userLocation: LatLng) {
-	var selectedItem by remember { mutableStateOf(0) }    
+	var selectedItem by remember { mutableStateOf("") }
 	val items = listOf("Search", "Map", "Weather", "Rules")
 
 
@@ -170,22 +228,30 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				icon = {
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_96), contentDescription = items[0]) },
 				//label = { Text("Search") },
-				selected = selectedItem == 0,
-				onClick = { mapViewModel.toggleShowSearchBar() }
+				selected = selectedItem == items[0],
+				onClick = {
+					selectedItem = if(selectedItem != items[0]) {
+						items[0]
+					} else {
+						""
+					}
+					mapViewModel.toggleShowSearchBar() }
 			)
 			NavigationBarItem(
 				icon = {
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
 				//label = { Text("Search") },
-				selected = selectedItem == 1,
+				selected =
+				selectedItem == items[1],
 				onClick = { /* TO DO */ }
 			)
 			NavigationBarItem(                
 				icon = { 
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_sun_96), contentDescription = items[2]) },
 				//label = { Text("Weather") },
-				selected = selectedItem == 2,                
+				selected = selectedItem == items[2],
 				onClick = {
+
 					mapViewModel.updateWeatherData(userLocation)
 					val weatherModel = weatherUiState.currentWeather
 //					val contextForToast = LocalContext.current.applicationContext
@@ -193,7 +259,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					if (weatherModel != null) {
 						Toast.makeText(
 							context,
-							"Temp: ${weatherModel.temperature} grader ${weatherModel.tempUnit}, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection} grader, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
+							"Temp: ${weatherModel.temperature}°C, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection}°, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
 							Toast.LENGTH_LONG
 						).show()
 					}
@@ -206,7 +272,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				icon = {
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
-				selected = selectedItem == 3,                
+				selected = selectedItem == items[3],
 				onClick = { /* TO DO */ }
 			)        
 		}    
