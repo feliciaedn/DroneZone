@@ -105,16 +105,15 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 			) {
 				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {
-					Spacer(modifier = Modifier.height(16.dp))
+					//Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
 					var modifier = Modifier
 					RulePage(modifier)
 
 				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
-					Spacer(modifier = Modifier.height(16.dp))
-					//Tekst regler her:
-					Text(text = "vaer")
-					Text(text = "!!")
+
+					WeatherPage()
+
 				}
 
 			}
@@ -207,6 +206,126 @@ fun MapScreen(mapViewModel: MapViewModel,
 	}
 
 }
+@Composable
+fun WeatherPage(){
+	Column( modifier = Modifier.fillMaxSize(),
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.CenterHorizontally){
+		Text("Oslo, Norway", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 50.sp,color = Color(0xFF1B467C)))
+		Image (painter = painterResource(id = R.drawable._11721_cloud_icon), contentDescription = null, modifier = Modifier.size(160.dp))
+		Text("12°", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 60.sp,color = Color.Black))
+		Text("Overskyet", style = TextStyle( fontSize = 17.sp,color = Color(0xFF1B467C)))
+		Column( modifier = Modifier.fillMaxSize(),
+			verticalArrangement = Arrangement.Center,
+			horizontalAlignment = Alignment.CenterHorizontally){
+			WeatherCard()
+			SunCard()
+
+		}
+
+
+	}
+}
+
+@Composable
+fun WeatherCard(
+) {
+	Card (
+		shape = RoundedCornerShape(10.dp),
+		backgroundColor = Color.White,
+		modifier = Modifier
+			.padding(horizontal = 16.dp, vertical=0.dp)
+			.fillMaxWidth()
+			.width(120.dp)
+			.height(88.dp)
+			// Merger alle elementer i carden for bedre tilgjenglighet
+			.semantics(mergeDescendants = true) {},
+
+		elevation = 1.dp
+	) {
+
+		Column(
+			horizontalAlignment = Alignment.Start,
+			modifier = Modifier
+				.padding(10.dp)
+				.fillMaxSize()
+		) {
+			Column() {
+				Image (painter = painterResource(id = R.drawable._72922), contentDescription = null, modifier = Modifier.size(40.dp))
+				Text("10 m/s", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+				Text("Vind", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+
+			}
+
+		}
+		Column(
+			horizontalAlignment = Alignment.End,
+			modifier = Modifier
+				.padding(10.dp)
+				.fillMaxSize()
+		) {
+			Column(){
+				Image (painter = painterResource(id = R.drawable._038403), contentDescription = null, modifier = Modifier.size(40.dp))
+				Text("0.6", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+				Text("Regn", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+			}
+
+		}
+
+
+
+
+	}
+}
+
+@Composable
+fun SunCard(
+
+) {
+	Card (
+		shape = RoundedCornerShape(10.dp),
+		backgroundColor = Color.White,
+		modifier = Modifier
+			.padding(16.dp)
+			.fillMaxWidth()
+			.width(120.dp)
+			.height(88.dp)
+			// Merger alle elementer i carden for bedre tilgjenglighet
+			.semantics(mergeDescendants = true) {},
+
+		elevation = 1.dp
+	) {
+
+		Column(
+			horizontalAlignment = Alignment.Start,
+			modifier = Modifier
+				.padding(16.dp)
+				.fillMaxSize()
+		) {
+			Image (painter = painterResource(id = R.drawable.long_arrow_up), contentDescription = null, modifier = Modifier.size(25.dp))
+			Text("06:08", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+			Text("Soloppgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+		}
+		Column(
+			horizontalAlignment = Alignment.End,
+			modifier = Modifier
+				.padding(16.dp)
+				.fillMaxSize()
+		) {
+			Column( ){
+				Image (painter = painterResource(id = R.drawable._247262), contentDescription = null, modifier = Modifier.size(25.dp))
+				Text("20:27", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+				Text("Solnedgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+
+			}
+
+		}
+
+
+
+
+	}
+}
 
 @Composable
 fun SearchBar(){
@@ -275,7 +394,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			NavigationBarItem(
 				icon = {
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_96), contentDescription = items[0]) },
+					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._11818_search_icon_2), contentDescription = items[0]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 0,
 				onClick = { mapViewModel.toggleShowSearchBar() }
@@ -283,17 +402,18 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			NavigationBarItem(
 				icon = {
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
+					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._151139_jurisprudence_law_legal_judge_cap_icon_2), contentDescription = items[1]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 1,
 				onClick = { /* TO DO */ }
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_sun_96), contentDescription = items[2]) },
+					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._11721_cloud_icon), contentDescription = items[2]) },
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,
 				onClick = {
+
 //					mapViewModel.updateWeatherData(userLocation)
 //					val weatherModel = weatherUiState.currentWeather
 ////					val contextForToast = LocalContext.current.applicationContext
@@ -313,7 +433,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
+					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._151147_document_paper_paperwork_confidential_security_icon_2), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == 3,
 				onClick = {mapViewModel.toggleShowSheet(Sheet.Rules)}
