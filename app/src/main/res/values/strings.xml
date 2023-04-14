@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Prosjekt_team18</string>
+
+    <string-array name="rule_descriptions">
+        <item>Registrer deg på flydrone.no og ta nettkurs og eksamen, unntak for CE-merkede leketøy og droner under 250 g uten kamera.</item>
+        <item>Sørg for gyldig forsikring. Droner er luftfartøy og må ansvarsforsikres, unntak for CE-merkede leketøy.</item>
+        <item>Gjør deg kjent med droneforbudssoner. Hold avstand fra lufthavner. Ikke fly nærmere enn 5 km.</item>
+        <item>Du skal alltid kunne se dronen. Maksimal flyhøyde er 120 meter avstand fra bakken.</item>
+        <item>Unngå å fly over andre personer. Ikke fly over folkemengder, festivaler, sportsarrangementer o.l.</item>
+        <item>Hvis dronen veier 500 g - 25 kg (eller er merket C2-C4): Hold minst 150 meter avstand fra bebygde områder og uteområder hvor mange ferdes og minst 30 meter fra andre personer.</item>
+    </string-array>
+
+
 </resources>

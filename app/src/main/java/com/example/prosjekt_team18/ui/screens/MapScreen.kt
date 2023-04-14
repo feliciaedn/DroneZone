@@ -6,6 +6,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,8 +29,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.R
@@ -170,7 +176,8 @@ fun MapScreen(mapViewModel: MapViewModel,
 					modifier = Modifier
 						.fillMaxWidth()
 						.wrapContentWidth(Alignment.End)
-						.padding(top = 7.dp, end = 7.dp).shadow(20.dp),
+						.padding(top = 7.dp, end = 7.dp)
+						.shadow(20.dp),
 					enabled = !permissionGranted,
 					content = {
 						Icon(
@@ -309,4 +316,82 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 		}
 	}
+}
+@Composable
+fun RulePage(modifier: Modifier = Modifier) {
+	Column(
+		modifier = modifier,
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.CenterHorizontally
+	) {
+		Text("Regler for å fly drone")
+		RuleImageColumn(modifier)
+	}
+}
+@Composable
+fun RuleImageColumn(modifier: Modifier = Modifier) {
+	val ruleImageIds = listOf(
+		R.drawable.regel1_registrering,
+		R.drawable.regel2_forsikring,
+		R.drawable.regel3_droneforbudssoner,
+		R.drawable.regel4_sedronen,
+		R.drawable.regel5_ikkeflyover,
+		R.drawable.regel6_avstand
+	)
+
+	val ruleDescriptionIds = stringArrayResource(R.array.rule_descriptions)
+
+	LazyColumn(
+		modifier = modifier,
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.CenterHorizontally
+	) {
+		var ruleNr = 1
+		items(ruleImageIds) { ruleImageId ->
+			RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++], modifier)
+		}
+	}
+}
+
+@Composable
+fun RuleCard(
+	imageId: Int,
+	ruleDescription: String,
+	modifier: Modifier = Modifier,
+) {
+	Card (
+		shape = RoundedCornerShape(10.dp),
+		colors =  CardDefaults.cardColors(
+			containerColor =  Color.White,
+		),
+		modifier = modifier
+			.padding(16.dp)
+			.fillMaxWidth()
+			// Merger alle elementer i carden for bedre tilgjenglighet
+			.semantics(mergeDescendants = true) {},
+
+		elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+	) {
+		Column(
+			horizontalAlignment = Alignment.CenterHorizontally,
+			modifier = Modifier
+				.padding(16.dp)
+				.fillMaxSize()
+
+		) {
+
+			Image (
+				painter = painterResource(id = imageId),
+				contentDescription = ruleDescription
+			)
+
+		}
+
+	}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RuleColumnPreview() {
+	RulePage()
 }
