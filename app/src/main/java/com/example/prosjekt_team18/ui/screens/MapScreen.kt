@@ -105,7 +105,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 			) {
 				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {
-					Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
 					var modifier = Modifier
 					RulePage(modifier)
@@ -328,7 +327,10 @@ fun RulePage(modifier: Modifier = Modifier) {
 		verticalArrangement = Arrangement.Center,
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Text("Regler for å fly drone", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp,color = Color(0xFF1B467C)))
+		Text(
+			text = "Regler for å fly drone",
+			modifier = modifier.padding(16.dp),
+			style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp,color = Color(0xFF1B467C)))
 		RuleImageColumn(modifier)
 	}
 }
