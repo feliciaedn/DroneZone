@@ -394,7 +394,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			NavigationBarItem(
 				icon = {
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
-					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._11818_search_icon_2), contentDescription = items[0]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_search_96), contentDescription = items[0]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 0,
 				onClick = { mapViewModel.toggleShowSearchBar() }
@@ -402,18 +402,17 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			NavigationBarItem(
 				icon = {
 					//Image(imageVector = ImageVector.vectorResource(id = R.drawable.icons8_search_24), contentDescription = "Song") },
-					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._151139_jurisprudence_law_legal_judge_cap_icon_2), contentDescription = items[1]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
 				//label = { Text("Search") },
 				selected = selectedItem == 1,
 				onClick = { /* TO DO */ }
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._11721_cloud_icon), contentDescription = items[2]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_sun_96), contentDescription = items[2]) },
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,
 				onClick = {
-
 //					mapViewModel.updateWeatherData(userLocation)
 //					val weatherModel = weatherUiState.currentWeather
 ////					val contextForToast = LocalContext.current.applicationContext
@@ -433,7 +432,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(40.dp) ,painter = painterResource(id = R.drawable._151147_document_paper_paperwork_confidential_security_icon_2), contentDescription = items[3]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == 3,
 				onClick = {mapViewModel.toggleShowSheet(Sheet.Rules)}
@@ -448,7 +447,10 @@ fun RulePage(modifier: Modifier = Modifier) {
 		verticalArrangement = Arrangement.Center,
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Text("Regler for å fly drone", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp,color = Color(0xFF1B467C)))
+		Text(
+			text = "Regler for å fly drone",
+			modifier = modifier.padding(16.dp),
+			style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp,color = Color(0xFF1B467C)))
 		RuleImageColumn(modifier)
 	}
 }
