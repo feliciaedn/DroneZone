@@ -32,11 +32,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
@@ -104,8 +107,9 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {
 					Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
-					Text(text = "regler")
-					Text(text = "!!")
+					var modifier = Modifier
+					RulePage(modifier)
+
 				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
 					Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
@@ -324,7 +328,7 @@ fun RulePage(modifier: Modifier = Modifier) {
 		verticalArrangement = Arrangement.Center,
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Text("Regler for å fly drone")
+		Text("Regler for å fly drone", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp,color = Color(0xFF1B467C)))
 		RuleImageColumn(modifier)
 	}
 }
@@ -348,7 +352,8 @@ fun RuleImageColumn(modifier: Modifier = Modifier) {
 	) {
 		var ruleNr = 1
 		items(ruleImageIds) { ruleImageId ->
-			RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++], modifier)
+			RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++ % ruleDescriptionIds.size], modifier)
+			//RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++], modifier)
 		}
 	}
 }
