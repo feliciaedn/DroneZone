@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 	private val mapViewModel: MapViewModel = MapViewModel(weatherDataSource)
 
 
-	private var fusedLocationClient: FusedLocationProviderClient? = null
+	//private var fusedLocationClient: FusedLocationProviderClient? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +48,8 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-
+			mapViewModel.fusedLocationClient =
+				LocationServices.getFusedLocationProviderClient(this)
 			Places.initialize(this.applicationContext, BuildConfig.GOOGLE_API_KEY)
 			mapViewModel.placesClient = Places.createClient(this)
 
@@ -97,7 +98,7 @@ class MainActivity : ComponentActivity() {
 				).show()
 			}
 
-			fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+			//fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 			//var default by remember { mutableStateOf(LatLng(59.9, 10.75)) } // oslo-koordinater
 			var userLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
@@ -120,32 +121,41 @@ class MainActivity : ComponentActivity() {
 				println("går inn2")
 			} else {
 				println("går inn3")
-				fusedLocationClient!!.lastLocation.addOnSuccessListener { _location: Location? ->
+				mapViewModel.fusedLocationClient.lastLocation.addOnSuccessListener { _location: Location? ->
 					if (_location != null) {
-						userLocation = LatLng(_location.latitude, _location.longitude)
+						mapViewModel.userLocation = LatLng(_location.latitude, _location.longitude)
 						mapViewModel.mapUiState.value.currentLocation =
 							LocationDetails(_location.latitude, _location.longitude)
 						mapViewModel.mapUiState.value.properties =
 							MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
-
+						mapViewModel.hasLocation = true
 						println("inni if")
-						println(userLocation.toString())
+						println(mapViewModel.userLocation.toString())
 					}
 				}
 			}
 
 			//var cameraPositionState: CameraPositionState = CameraPositionState(position = CameraPosition.fromLatLngZoom(userLocation, 14f))
 			val cameraPositionState = rememberCameraPositionState {
-				position = CameraPosition.fromLatLngZoom(userLocation, 15f)
+				position = CameraPosition.fromLatLngZoom(mapViewModel.userLocation, 15f)
 			}
 
 			if(buttonClicked) {
-				MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
+				MapScreen(mapViewModel, cameraPositionState, mapViewModel.userLocation, permissionGranted, this)
 			}
 
-			LaunchedEffect(mapViewModel.currentLatLong) {
-				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.currentLatLong))
+			LaunchedEffect(mapViewModel.hasLocation) {
+				if(!mapViewModel.hasLaunched && mapViewModel.userLocation != LatLng(0.0, 0.0)) {
+					println("inni launchedeffect..")
+					cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.userLocation))
+					mapViewModel.hasLaunched = true
+				}
 			}
+
+			LaunchedEffect(mapViewModel.searchLatLong) {
+				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
+			}
+
         }
     }
 

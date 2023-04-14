@@ -1,15 +1,15 @@
 package com.example.prosjekt_team18.ui.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.annotation.SuppressLint
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.screens.AutocompleteResult
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
@@ -35,11 +35,17 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 	val weatherUiState: StateFlow<WeatherUiState> = _weatherUiState.asStateFlow()
 
 	lateinit var placesClient: PlacesClient
+	lateinit var fusedLocationClient: FusedLocationProviderClient
+
 	val locationAutofill = mutableStateListOf<AutocompleteResult>()
 
 	var text by mutableStateOf("")
 
-	var currentLatLong by mutableStateOf(LatLng(0.0, 0.0))
+	var userLocation by mutableStateOf(LatLng(0.0, 0.0))
+	var searchLatLong by mutableStateOf(LatLng(0.0, 0.0))
+
+	var hasLaunched: Boolean = false
+	var hasLocation: Boolean = false
 
 	private var job: Job? = null
 
@@ -67,8 +73,8 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 		val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
 		placesClient.fetchPlace(request).addOnSuccessListener {
 			if (it != null) {
-				currentLatLong = it.place.latLng!!
-				println("inni getCoordinates: " + currentLatLong.latitude + ", " + currentLatLong.longitude)
+				searchLatLong = it.place.latLng!!
+				println("inni getCoordinates: " + searchLatLong.latitude + ", " + searchLatLong.longitude)
 			}
 		}.addOnFailureListener {
 			it.printStackTrace()
@@ -99,7 +105,10 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 		viewModelScope.launch(Dispatchers.IO) {
 			_weatherUiState.update { currentState ->
 				try {
-					val currentWeather: WeatherModel = weatherDataSource.getWeatherData(userLocation.latitude, userLocation.longitude)
+					val currentWeather: WeatherModel = weatherDataSource.getWeatherData(
+						userLocation.latitude,
+						userLocation.longitude
+					)
 					currentState.copy(status = Status.Success, currentWeather = currentWeather)
 				} catch (e: IOException) {
 					currentState.copy(status = Status.Error)
