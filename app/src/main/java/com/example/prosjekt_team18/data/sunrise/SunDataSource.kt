@@ -14,7 +14,7 @@ import kotlin.math.abs
 private const val API_KEY = BuildConfig.API_KEY
 private const val BASE_URL =
     "https://gw-uio.intark.uh-it.no/in2000/weatherapi/sunrise/3.0/sun"
-
+//test
 class SunDataSource {
     private var currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
