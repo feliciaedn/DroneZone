@@ -56,6 +56,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
 	val screenUiState = mapViewModel.screenUiState.collectAsState()
+	val weatherUiState = mapViewModel.weatherUiState.collectAsState()
+	mapViewModel.updateWeatherData(userLocation)
+
 	val coroutineScope = rememberCoroutineScope()
 
 	val modalSheetState = rememberModalBottomSheetState(
@@ -112,7 +115,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
 
-					WeatherPage()
+					WeatherPage(weatherUiState)
 
 				}
 
@@ -129,13 +132,11 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
                 //contentAlignment = Alignment.Center,
             ) {
                 Column() {
-					MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, context, screenUiState)
+					MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, context, screenUiState, weatherUiState)
 
 				}
             }
         }
-
-
 
 	}
 
@@ -149,12 +150,11 @@ fun MapScreen(mapViewModel: MapViewModel,
 			  userLocation: LatLng,
 			  permissionGranted: Boolean,
 			  context: Context,
-			  screenUiState: State<ScreenUiState>
+			  screenUiState: State<ScreenUiState>,
+			  weatherUiState: State<WeatherUiState>
 ) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
-	val weatherUiState by mapViewModel.weatherUiState.collectAsState()
-
 
 
 	Column(modifier = Modifier.fillMaxSize()) {
@@ -169,10 +169,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 			if (screenUiState.value.showSearchBar) {
 				SearchBar()
 			}
-//			if (screenUiState.showWeather) {
-//				WeatherMessage(weatherUiState)
-//				weatherModel.
-//			}
 
 			if (userLocation == LatLng(0.0, 0.0)) {
 				IconButton(
@@ -205,127 +201,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, weatherUiState, context, userLocation)
 	}
 
-}
-@Composable
-fun WeatherPage(){
-	Column( modifier = Modifier.fillMaxSize(),
-		verticalArrangement = Arrangement.Center,
-		horizontalAlignment = Alignment.CenterHorizontally){
-		Text("Oslo, Norway", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 50.sp,color = Color(0xFF1B467C)))
-		Image (painter = painterResource(id = R.drawable._11721_cloud_icon), contentDescription = null, modifier = Modifier.size(160.dp))
-		Text("12°", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 60.sp,color = Color.Black))
-		Text("Overskyet", style = TextStyle( fontSize = 17.sp,color = Color(0xFF1B467C)))
-		Column( modifier = Modifier.fillMaxSize(),
-			verticalArrangement = Arrangement.Center,
-			horizontalAlignment = Alignment.CenterHorizontally){
-			WeatherCard()
-			SunCard()
-			//hei!!!!
-
-		}
-
-
-	}
-}
-
-@Composable
-fun WeatherCard(
-) {
-	Card (
-		shape = RoundedCornerShape(10.dp),
-		backgroundColor = Color.White,
-		modifier = Modifier
-			.padding(horizontal = 16.dp, vertical=0.dp)
-			.fillMaxWidth()
-			.width(120.dp)
-			.height(88.dp)
-			// Merger alle elementer i carden for bedre tilgjenglighet
-			.semantics(mergeDescendants = true) {},
-
-		elevation = 1.dp
-	) {
-
-		Column(
-			horizontalAlignment = Alignment.Start,
-			modifier = Modifier
-				.padding(10.dp)
-				.fillMaxSize()
-		) {
-			Column() {
-				Image (painter = painterResource(id = R.drawable._72922), contentDescription = null, modifier = Modifier.size(40.dp))
-				Text("10 m/s", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-				Text("Vind", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
-
-			}
-
-		}
-		Column(
-			horizontalAlignment = Alignment.End,
-			modifier = Modifier
-				.padding(10.dp)
-				.fillMaxSize()
-		) {
-			Column(){
-				Image (painter = painterResource(id = R.drawable._038403), contentDescription = null, modifier = Modifier.size(40.dp))
-				Text("0.6", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-				Text("Regn", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
-			}
-
-		}
-
-
-
-
-	}
-}
-
-@Composable
-fun SunCard(
-
-) {
-	Card (
-		shape = RoundedCornerShape(10.dp),
-		backgroundColor = Color.White,
-		modifier = Modifier
-			.padding(16.dp)
-			.fillMaxWidth()
-			.width(120.dp)
-			.height(88.dp)
-			// Merger alle elementer i carden for bedre tilgjenglighet
-			.semantics(mergeDescendants = true) {},
-
-		elevation = 1.dp
-	) {
-
-		Column(
-			horizontalAlignment = Alignment.Start,
-			modifier = Modifier
-				.padding(16.dp)
-				.fillMaxSize()
-		) {
-			Image (painter = painterResource(id = R.drawable.long_arrow_up), contentDescription = null, modifier = Modifier.size(25.dp))
-			Text("06:08", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-			Text("Soloppgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
-		}
-		Column(
-			horizontalAlignment = Alignment.End,
-			modifier = Modifier
-				.padding(16.dp)
-				.fillMaxSize()
-		) {
-			Column( ){
-				Image (painter = painterResource(id = R.drawable._247262), contentDescription = null, modifier = Modifier.size(25.dp))
-				Text("20:27", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-				Text("Solnedgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
-
-			}
-
-		}
-
-
-
-
-	}
 }
 
 @Composable
@@ -384,9 +259,10 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  tonalElevation: Dp = NavigationBarDefaults.Elevation,
 				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 				  mapViewModel: MapViewModel,
-				  weatherUiState: WeatherUiState,
+				  weatherUiState: State<WeatherUiState>,
 				  context: Context,
-				  userLocation: LatLng) {
+				  userLocation: LatLng,
+) {
 	var selectedItem by remember { mutableStateOf(0) }
 	val items = listOf("Search", "Map", "Weather", "Rules")
 
@@ -414,21 +290,8 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				//label = { Text("Weather") },
 				selected = selectedItem == 2,
 				onClick = {
-//					mapViewModel.updateWeatherData(userLocation)
-//					val weatherModel = weatherUiState.currentWeather
-////					val contextForToast = LocalContext.current.applicationContext
-//
-//					if (weatherModel != null) {
-//						Toast.makeText(
-//							context,
-//							"Temp: ${weatherModel.temperature} grader ${weatherModel.tempUnit}, Vind: ${weatherModel.windSpeed} ${weatherModel.windSpeedUnit}, VindVei: ${weatherModel.windDirection} grader, Rain: ${weatherModel.rainNext6h} ${weatherModel.rainUnit}",
-//							Toast.LENGTH_LONG
-//						).show()
-//					}
+					mapViewModel.updateWeatherData(userLocation)
 					mapViewModel.toggleShowSheet(Sheet.Weather)
-
-//					mapViewModel.updateWeatherData(userLocation)
-//					mapViewModel.showWeather()
 				}
 			)
 			NavigationBarItem(

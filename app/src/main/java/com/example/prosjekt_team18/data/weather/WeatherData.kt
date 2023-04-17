@@ -42,8 +42,14 @@ data class ForecastInstantDetails (
 )
 
 data class Forecast6Hours (
+    val summary: ForecastSummary,
     val details: Forecast6HoursDetails,
 )
+
 data class Forecast6HoursDetails (
     val precipitation_amount: Double
+)
+
+data class ForecastSummary (
+    val symbol_code: String
 )

@@ -34,6 +34,8 @@ class WeatherDataSource {
 
         val date = forecastAtTime.time
         val temperature = forecastAtTime.data.instant.details.air_temperature
+        val summary = forecastAtTime.data.next_6_hours.summary.symbol_code.replace("_", " ")
+
         val rain = forecastAtTime.data.next_6_hours.details.precipitation_amount
         val windDirection = forecastAtTime.data.instant.details.wind_from_direction
         val windSpeed = forecastAtTime.data.instant.details.wind_speed
@@ -44,7 +46,7 @@ class WeatherDataSource {
         val windDirUnit = metaData.units.wind_from_direction
         val windSpeedUnit = metaData.units.wind_speed
 
-        return WeatherModel(date, temperature, rain, windDirection, windSpeed, tempUnit, rainUnit,
+        return WeatherModel(date, temperature, summary, rain, windDirection, windSpeed, tempUnit, rainUnit,
             windDirUnit, windSpeedUnit)
     }
 }
