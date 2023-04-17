@@ -16,9 +16,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -41,6 +39,7 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
 import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -64,8 +63,23 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 			//Displayer google mappet
 			GoogleMap(
 				properties = positionUiState.properties,
-				cameraPositionState = cameraPositionState
-			)
+				cameraPositionState = cameraPositionState,
+				onMapClick = {
+					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
+					mapViewModel.markerLocation = it
+					println("Marker lokasjon: " + mapViewModel.markerLocation.toString())
+					println("showMarker: " + mapViewModel.showMarker)
+				}
+			) {
+				if(mapViewModel.showMarker.value) {
+					Marker(
+						state = rememberMarkerState(position = mapViewModel.markerLocation),
+						title = "Lokasjon",
+						snippet = "Trykk for å sjekke værmelding",
+						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
+					)
+				}
+			}
 			if (screenUiState.showSearchBar) {
 				Surface(
 					modifier = Modifier
@@ -128,56 +142,63 @@ fun SearchBar(mapViewModel: MapViewModel){
 	val focusManager = LocalFocusManager.current
 
 //svaret er lagret her
-	var input by remember {
-		mutableStateOf("")
-	}
 
 	Column(
-		modifier = Modifier.padding(16.dp),
+		modifier = Modifier.padding(5.dp),
 		horizontalAlignment = Alignment.CenterHorizontally) {
-
-		androidx.compose.material.OutlinedTextField(
-			value = mapViewModel.text,
-			onValueChange = {
-				mapViewModel.text = it
-				mapViewModel.searchPlaces(it)
-							println(mapViewModel.locationAutofill.toString())
-			},
-			placeholder = { androidx.compose.material.Text("Search") },
-			shape = RoundedCornerShape(16.dp),
-			leadingIcon = {
-				androidx.compose.material.Icon(
-					Icons.Filled.Search,
-					contentDescription = null
-				)
-			},
-			keyboardOptions = KeyboardOptions(
-				keyboardType = KeyboardType.Text,
-				imeAction = ImeAction.Search
-			),
-			keyboardActions = KeyboardActions(
-				onSearch = {
-					if (input.isNotEmpty()) {
-						println("hfbejhf 6666")
-						//onSearch(input)
-					}
-					focusManager.clearFocus()
-					input = ""
-
-				}
-			),
-			singleLine = true,
-			textStyle = MaterialTheme.typography.body1.copy(color = Color.Black),
-			colors = TextFieldDefaults.outlinedTextFieldColors(
-				backgroundColor = Color.White,
-				cursorColor = Color.Black,
-				focusedBorderColor = Color.Transparent,
-				unfocusedBorderColor = Color.Transparent
-			),
-			modifier = Modifier
-				.fillMaxWidth()
-				.padding(horizontal = 16.dp, vertical = 8.dp)
-		)
+		
+		Row(modifier = Modifier.fillMaxWidth()) {
+			androidx.compose.material.OutlinedTextField(
+				value = mapViewModel.text,
+				onValueChange = {
+					mapViewModel.text = it
+					mapViewModel.searchPlaces(it)
+					println(mapViewModel.locationAutofill.toString())
+				},
+				placeholder = { androidx.compose.material.Text("Search") },
+				shape = RoundedCornerShape(16.dp),
+				leadingIcon = {
+					androidx.compose.material.Icon(
+						Icons.Filled.Search,
+						contentDescription = null
+					)
+				},
+				trailingIcon = {
+					androidx.compose.material.Icon(
+						imageVector = Icons.Filled.Close,
+						contentDescription = null,
+						modifier = Modifier.clickable {
+							if(mapViewModel.text.isEmpty()) {
+								focusManager.clearFocus()
+							}
+							else {
+								mapViewModel.text = ""
+								mapViewModel.locationAutofill.clear()
+							}
+						}
+					)
+				} ,
+				keyboardOptions = KeyboardOptions(
+					keyboardType = KeyboardType.Text,
+					imeAction = ImeAction.Search
+				),
+				keyboardActions = KeyboardActions(
+					onDone = { focusManager.clearFocus() }
+				),
+				singleLine = true,
+				textStyle = MaterialTheme.typography.body1.copy(color = Color.Black),
+				colors = TextFieldDefaults.outlinedTextFieldColors(
+					backgroundColor = Color.White,
+					cursorColor = Color.Black,
+					focusedBorderColor = Color.Transparent,
+					unfocusedBorderColor = Color.Transparent
+				),
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 16.dp, vertical = 8.dp)
+			)
+		}
+		
 
 		AnimatedVisibility(
 			mapViewModel.locationAutofill.isNotEmpty(),
@@ -196,8 +217,7 @@ fun SearchBar(mapViewModel: MapViewModel){
 							mapViewModel.text = it.address
 							mapViewModel.locationAutofill.clear()
 							mapViewModel.getCoordinates(it)
-							
-							//currentCameraPositionState.position = CameraPosition(mapViewModel.currentLatLong)
+							//println("showMarker får ny verdi: " + mapViewModel.showMarker.value)
 						}) {
 						Text(it.address)
 					}
@@ -206,8 +226,6 @@ fun SearchBar(mapViewModel: MapViewModel){
 			Spacer(Modifier.height(16.dp))
 		}
 	}
-
-
 }
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier, 

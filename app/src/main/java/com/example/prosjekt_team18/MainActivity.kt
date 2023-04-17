@@ -155,7 +155,6 @@ class MainActivity : ComponentActivity() {
 			LaunchedEffect(mapViewModel.searchLatLong) {
 				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
 			}
-
         }
     }
 

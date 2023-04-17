@@ -47,6 +47,9 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 	var hasLaunched: Boolean = false
 	var hasLocation: Boolean = false
 
+	var showMarker = mutableStateOf(false)
+	var markerLocation: LatLng = LatLng(0.0, 0.0)
+
 	private var job: Job? = null
 
 	fun searchPlaces(query: String) {
