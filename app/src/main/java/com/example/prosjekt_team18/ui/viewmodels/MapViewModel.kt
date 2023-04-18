@@ -47,17 +47,6 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 
 	}
 
-	fun showWeather() {
-		_screenUiState.update { currentState ->
-			currentState.copy(showWeather = true)
-		}
-	}
-
-	fun hideWeather() {
-		_screenUiState.update { currentState ->
-			currentState.copy(showWeather = false)
-		}
-	}
 
 	fun updateWeatherData(userLocation: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
