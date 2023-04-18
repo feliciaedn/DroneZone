@@ -16,41 +16,43 @@ private const val BASE_URL =
     "https://gw-uio.intark.uh-it.no/in2000/weatherapi/sunrise/3.0/sun"
 
 class SunDataSource {
-    private var currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-    private var timeZone = TimeZone.getDefault()
-    private var timezoneOffset = formatOffset(timeZone.getOffset(Date().time) / 60000)
+        private var currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        private var timeZone = TimeZone.getDefault()
+        private var timezoneOffset = formatOffset(timeZone.getOffset(Date().time) / 60000)
 
-    // Konfigurerer client
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            gson()
-        }
-        install(DefaultRequest) {
-            header("X-Gravitee-API-Key", API_KEY)
-        }
+        // Konfigurerer client
+        private val client = HttpClient {
+            install(ContentNegotiation) {
+                gson()
+            }
+            install(DefaultRequest) {
+                header("X-Gravitee-API-Key", API_KEY)
+            }
 
-    }
-
-    suspend fun getSunData(dateString: String = currentDate, latitude: Double, longitude: Double): SunData {
-        val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=+02:00"
-
-        println(url)
-        val data: SunDataWrapper = client.get(url).body()
-
-        return data.properties
-    }
-
-    // Returnerer timezone offset paa riktig format, f.eks. +02:00
-    private fun formatOffset(offsetInMinutes: Int): String {
-        val hours = abs(offsetInMinutes / 60)
-        val mins = abs(offsetInMinutes % 60)
-
-        return if (offsetInMinutes >= 0) {
-            String.format("+%02d:%02d", hours, mins)
-        } else {
-            String.format("-%02d:%02d", hours, mins)
         }
 
-    }
+        suspend fun getSunData(dateString: String = currentDate, latitude: Double, longitude: Double): SunData {
+            val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=+02:00"
+
+//            println("LOCALE: ${Locale.getDefault()}")
+//            println(url)
+//            println("DATE: ${Date()}")
+            val data: SunDataWrapper = client.get(url).body()
+
+            return data.properties
+        }
+
+        // Returnerer timezone offset paa riktig format, f.eks. +02:00
+        private fun formatOffset(offsetInMinutes: Int): String {
+            val hours = abs(offsetInMinutes / 60)
+            val mins = abs(offsetInMinutes % 60)
+
+            return if (offsetInMinutes >= 0) {
+                String.format("+%02d:%02d", hours, mins)
+            } else {
+                String.format("-%02d:%02d", hours, mins)
+            }
+
+        }
 }
