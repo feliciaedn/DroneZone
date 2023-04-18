@@ -1,5 +1,6 @@
 package com.example.prosjekt_team18.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,20 +20,22 @@ import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 @Composable
-fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>){
+fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context){
 
     val weatherModel = sunWeatherUiState.value.currentWeather
     val sunData = sunWeatherUiState.value.sunData
 
-
     if (weatherModel != null && sunData != null) {
         val sunriseTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunrise.time)
         val sunsetTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunset.time)
+        println("HER ER DEN ------- " + weatherModel.summaryCode)
+       // println("HER ER DEN HALLOOOOOOO " + getResources().getIdentifier(weatherModel.summaryCode, "drawable", getPackageName()))
 
 
         Column(
@@ -48,11 +51,16 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>){
                     color = Color(0xFF1B467C)
                 )
             )
+            /*
             Image(
-                painter = painterResource(id = R.drawable._11721_cloud_icon),
+                //her
+
+                painter = painterResource(id = context.resources.getIdentifier(weatherModel.summaryCode, "drawable", context.packageName)),
                 contentDescription = null,
                 modifier = Modifier.size(160.dp)
             )
+
+             */
             Text(
                 "${weatherModel.temperature}°",
                 style = TextStyle(
@@ -70,7 +78,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>){
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WeatherCard(weatherModel)
+                WeatherCard(weatherModel, context)
                 SunCard(sunriseTimeString, sunsetTimeString)
 
             }
@@ -79,7 +87,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>){
 }
 
 @Composable
-fun WeatherCard(weatherModel: WeatherModel) {
+fun WeatherCard(weatherModel: WeatherModel,context: Context) {
     Card (
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color.White,
@@ -100,6 +108,7 @@ fun WeatherCard(weatherModel: WeatherModel) {
                 .padding(10.dp)
                 .fillMaxSize()
         ) {
+            //id = R.drawable._72922)
             Column() {
                 Image (painter = painterResource(id = R.drawable._72922), contentDescription = null, modifier = Modifier.size(40.dp))
                 Text("${weatherModel.windSpeed} m/s", style = TextStyle( fontSize = 10.sp,color = Color.Black))
@@ -107,6 +116,7 @@ fun WeatherCard(weatherModel: WeatherModel) {
 
             }
         }
+
         Column(
             horizontalAlignment = Alignment.End,
             modifier = Modifier
@@ -121,6 +131,11 @@ fun WeatherCard(weatherModel: WeatherModel) {
 
         }
     }
+}
+fun getStringToDrawableId(stringValue: String, context: Context): Int {
+    val resources = context.resources // Erstatt 'context' med din aktuelle kontekst
+    val packageName = context.packageName // Erstatt 'context' med din aktuelle kontekst
+    return resources.getIdentifier(stringValue, "drawable", packageName)
 }
 
 @Composable
