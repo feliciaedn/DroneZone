@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,16 +50,17 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context){
                     color = Color(0xFF1B467C)
                 )
             )
+            println("her er ideeeennnenenen: " + getBilde(weatherModel.summaryCode))
             /*
             Image(
-                //her
-
-                painter = painterResource(id = context.resources.getIdentifier(weatherModel.summaryCode, "drawable", context.packageName)),
+                painter = painterResource(id = getBilde(weatherModel.summaryCode)),
                 contentDescription = null,
                 modifier = Modifier.size(160.dp)
             )
 
              */
+
+
             Text(
                 "${weatherModel.temperature}°",
                 style = TextStyle(
@@ -124,7 +124,15 @@ fun WeatherCard(weatherModel: WeatherModel,context: Context) {
                 .fillMaxSize()
         ) {
             Column(){
-                Image (painter = painterResource(id = R.drawable._038403), contentDescription = null, modifier = Modifier.size(40.dp))
+                //(painter = painterResource(id = R.drawable._038403),
+                val imageName = weatherModel.summaryCode // Dette er navnet på bildet du vil vise
+                val resourceId = getStringToDrawableId( imageName,context)
+                if (resourceId != 0) {
+                    // Riktig drawable-ressurs-ID ble funnet
+                    val painter = painterResource(id = resourceId)
+                    Image (painter = painter, contentDescription = null, modifier = Modifier.size(40.dp))
+                } else { println ("fungerer ikke")}
+
                 Text("${weatherModel.rainNext6h} mm", style = TextStyle( fontSize = 10.sp,color = Color.Black))
                 Text("Regn", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
             }
@@ -137,6 +145,58 @@ fun getStringToDrawableId(stringValue: String, context: Context): Int {
     val packageName = context.packageName // Erstatt 'context' med din aktuelle kontekst
     return resources.getIdentifier(stringValue, "drawable", packageName)
 }
+
+fun getBilde(summaryCode: String) : Int{
+
+    val id: Int = when (summaryCode) {
+            "lightrain" -> R.drawable.lightrain
+            "heavysnowshowers_polartwilight" -> R.drawable.heavysnowshowers_polartwilight
+            "heavysnowshowers_day" -> R.drawable.heavysnowshowers_day
+            "lightsnowshowers_night" -> R.drawable.lightsnowshowers_night
+            "lightsnowshowers_polartwilight" -> R.drawable.lightsnowshowers_polartwilight
+            "lightsnowshowers_day" -> R.drawable.lightsnowshowers_day
+            "heavysleetshowers_night" -> R.drawable.heavysleetshowers_night
+            "heavysleetshowers_polartwilight" -> R.drawable.heavysleetshowers_polartwilight
+            "heavysleetshowers_day" -> R.drawable.heavysleetshowers_day
+            "lightsleetshowers_night" -> R.drawable.lightsleetshowers_night
+            "lightsleetshowers_polartwilight" -> R.drawable.lightsleetshowers_polartwilight
+            "heavyrainshowers_polartwilight" -> R.drawable.heavyrainshowers_polartwilight
+            "lightrainshowers_day" -> R.drawable.lightrainshowers_day
+            "lightrainandthunder" -> R.drawable.lightrainandthunder
+            "heavysnowshowersandthunder_day" -> R.drawable.heavysnowshowersandthunder_day
+            "lightssnowshowersandthunder_day" -> R.drawable.lightssnowshowersandthunder_day
+            "heavysleetshowersandthunder_day" -> R.drawable.heavysleetshowersandthunder_day
+            "heavyrainshowersandthunder_night" -> R.drawable.heavyrainshowersandthunder_night
+            "lightrainshowersandthunder_night" -> R.drawable.lightrainshowersandthunder_night
+            "snowshowersandthunder_night" -> R.drawable.snowshowersandthunder_night
+            "sleetshowersandthunder_polartwilight" -> R.drawable.sleetshowersandthunder_polartwilight
+            "rain" -> R.drawable.rain
+            "snowshowers_polartwilight" -> R.drawable.snowshowers_polartwilight
+            "snowshowers_day" -> R.drawable.snowshowers_day
+            "sleetshowers_night" -> R.drawable.sleetshowers_night
+            "sleetshowers_polartwilight" -> R.drawable.sleetshowers_polartwilight
+            "sleetshowers_day" -> R.drawable.sleetshowers_day
+            "rainshowersandthunder_night" -> R.drawable.rainshowersandthunder_night
+            "rainshowersandthunder_polartwilight" -> R.drawable.rainshowersandthunder_polartwilight
+            "rainshowersandthunder_day" -> R.drawable.rainshowersandthunder_day
+            "rainshowers_night" -> R.drawable.rainshowers_night
+            "rainshowers_polartwilight" -> R.drawable.rainshowers_polartwilight
+            "rainshowers_day" -> R.drawable.rainshowers_day
+            "cloudy" -> R.drawable.cloudy
+            "partlycloudy_night" -> R.drawable.partlycloudy_night
+            else -> { R.drawable.cloudy }
+        }
+
+    return id
+
+}
+
+
+
+
+
+
+
 
 @Composable
 fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
