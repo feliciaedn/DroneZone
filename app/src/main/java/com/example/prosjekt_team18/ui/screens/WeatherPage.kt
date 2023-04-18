@@ -183,13 +183,6 @@ fun getBilde(summaryCode: String) : Int{
     return id
 }
 
-
-
-
-
-
-
-
 @Composable
 fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
     Card (
