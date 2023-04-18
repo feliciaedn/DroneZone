@@ -92,10 +92,6 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 					SearchBar(mapViewModel)
 				}
 			}
-//			if (screenUiState.showWeather) {
-//				WeatherMessage(weatherUiState)
-//				weatherModel.
-//			}
 
 			if (userLocation == LatLng(0.0, 0.0)) {
 				IconButton(
@@ -130,11 +126,6 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 		}
 
 	}
-
-data class AutocompleteResult(
-	val address: String,
-	val placeId: String,
-)
 
 @Composable
 fun SearchBar(mapViewModel: MapViewModel){
@@ -296,15 +287,3 @@ fun NavigationBar(modifier: Modifier = Modifier,
 		}    
 	}
 }
-//@Composable
-//fun WeatherMessage(weatherUiState: WeatherUiState) {
-
-//	} else {
-//		Toast.makeText(
-//			contextForToast,
-//			"ERROR: Kunne ikke laste værdata",
-//			Toast.LENGTH_SHORT
-//		).show()
-//	}
-
-//}

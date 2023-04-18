@@ -5,9 +5,9 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prosjekt_team18.data.maps.MapState
+import com.example.prosjekt_team18.data.maps.SearchResult
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.data.weather.WeatherModel
-import com.example.prosjekt_team18.ui.screens.AutocompleteResult
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
@@ -37,7 +37,7 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 	lateinit var placesClient: PlacesClient
 	lateinit var fusedLocationClient: FusedLocationProviderClient
 
-	val locationAutofill = mutableStateListOf<AutocompleteResult>()
+	val locationAutofill = mutableStateListOf<SearchResult>()
 
 	var text by mutableStateOf("")
 
@@ -59,7 +59,7 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 			val request = FindAutocompletePredictionsRequest.builder().setQuery(query).build()
 			placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
 				locationAutofill += response.autocompletePredictions.map {
-					AutocompleteResult(
+					SearchResult(
 						it.getFullText(null).toString(), it.placeId
 					)
 				}
@@ -71,7 +71,7 @@ class MapViewModel(val weatherDataSource: WeatherDataSource) : ViewModel() {
 		}
 	}
 
-	fun getCoordinates(result: AutocompleteResult) {
+	fun getCoordinates(result: SearchResult) {
 		val placeFields = listOf(Place.Field.LAT_LNG)
 		val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
 		placesClient.fetchPlace(request).addOnSuccessListener {
