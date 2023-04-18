@@ -1,6 +1,8 @@
 package com.example.prosjekt_team18.ui.screens
 
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,15 +21,49 @@ import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
+import com.google.android.gms.maps.model.LatLng
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 @Composable
-fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context){
+fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, userLocation: LatLng){
 
     val weatherModel = sunWeatherUiState.value.currentWeather
     val sunData = sunWeatherUiState.value.sunData
+
+
+    val placeName : String // Navn på stedet
+
+    val addressLine : String
+    val locality : String
+
+    var country by remember {
+        mutableStateOf( "")
+    }
+    var by by remember {
+        mutableStateOf( "")
+    }
+
+
+
+    val geocoder = Geocoder(context, Locale.getDefault())
+    val addresses = geocoder.getFromLocation(userLocation.latitude, userLocation.longitude, 1)
+    if (addresses != null && addresses.isNotEmpty()) {
+        val address: Address = addresses[0]
+        by = address.adminArea
+         placeName = address.featureName // Navn på stedet
+        println( "her er addressen folkens her her her: " + placeName)
+        addressLine = address.getAddressLine(0) // Adresse
+         locality = address.locality // Lokalitet
+      country = address.countryName // Land
+
+
+    } else {
+        // Håndter tilfelle der ingen resultater ble funnet.
+    }
+
+
 
     if (weatherModel != null && sunData != null) {
         val sunriseTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunrise.time)
@@ -39,10 +75,10 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Oslo, Norway",
+                by + ", "+ country,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 50.sp,
+                    fontSize = 35.sp,
                     color = Color(0xFF1B467C)
                 )
             )

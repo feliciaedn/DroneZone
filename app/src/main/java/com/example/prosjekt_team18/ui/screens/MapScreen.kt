@@ -106,7 +106,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
 
-					WeatherPage(sunWeatherUiState, context)
+					WeatherPage(sunWeatherUiState, context, userLocation)
 
 				}
 
