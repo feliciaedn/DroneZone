@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +43,7 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
 import com.example.prosjekt_team18.ui.viewmodels.Sheet
-import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
+import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
@@ -56,8 +55,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
 	val screenUiState = mapViewModel.screenUiState.collectAsState()
-	val weatherUiState = mapViewModel.weatherUiState.collectAsState()
+	val sunWeatherUiState = mapViewModel.sunWeatherUiState.collectAsState()
 	mapViewModel.updateWeatherData(userLocation)
+	mapViewModel.updateSunData(userLocation)
 
 	val coroutineScope = rememberCoroutineScope()
 
@@ -115,7 +115,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
 
-					WeatherPage(weatherUiState)
+					WeatherPage(sunWeatherUiState)
 
 				}
 
@@ -132,7 +132,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
                 //contentAlignment = Alignment.Center,
             ) {
                 Column() {
-					MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, context, screenUiState, weatherUiState)
+					MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, context, screenUiState, sunWeatherUiState)
 
 				}
             }
@@ -151,7 +151,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			  permissionGranted: Boolean,
 			  context: Context,
 			  screenUiState: State<ScreenUiState>,
-			  weatherUiState: State<WeatherUiState>
+			  sunWeatherUiState: State<SunWeatherUiState>
 ) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
@@ -198,7 +198,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			}
 		}
 
-		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, weatherUiState, context, userLocation)
+		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, sunWeatherUiState, context, userLocation)
 	}
 
 }
@@ -259,7 +259,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  tonalElevation: Dp = NavigationBarDefaults.Elevation,
 				  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 				  mapViewModel: MapViewModel,
-				  weatherUiState: State<WeatherUiState>,
+				  sunWeatherUiState: State<SunWeatherUiState>,
 				  context: Context,
 				  userLocation: LatLng,
 ) {
@@ -291,6 +291,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				selected = selectedItem == 2,
 				onClick = {
 					mapViewModel.updateWeatherData(userLocation)
+					mapViewModel.updateSunData(userLocation)
 					mapViewModel.toggleShowSheet(Sheet.Weather)
 				}
 			)

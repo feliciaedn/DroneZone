@@ -35,6 +35,7 @@ class SunDataSource {
     suspend fun getSunData(dateString: String = currentDate, latitude: Double, longitude: Double): SunData {
         val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=+02:00"
 
+        println(url)
         val data: SunDataWrapper = client.get(url).body()
 
         return data.properties

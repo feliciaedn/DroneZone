@@ -12,5 +12,5 @@ data class SunData (
 )
 
 data class SunTime(
-    val time: Date
+    val time: Date,
 )

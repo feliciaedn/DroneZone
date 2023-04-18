@@ -18,15 +18,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.data.weather.WeatherModel
-import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
+import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
-fun WeatherPage(weatherUiState: State<WeatherUiState>){
+fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>){
 
-    val weatherModel = weatherUiState.value.currentWeather
+    val weatherModel = sunWeatherUiState.value.currentWeather
+    val sunData = sunWeatherUiState.value.sunData
 
-    if (weatherModel != null) {
+
+    if (weatherModel != null && sunData != null) {
+        val sunriseTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunrise.time)
+        val sunsetTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunset.time)
+
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -64,7 +71,7 @@ fun WeatherPage(weatherUiState: State<WeatherUiState>){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WeatherCard(weatherModel)
-                SunCard()
+                SunCard(sunriseTimeString, sunsetTimeString)
 
             }
         }
@@ -117,7 +124,7 @@ fun WeatherCard(weatherModel: WeatherModel) {
 }
 
 @Composable
-fun SunCard() {
+fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
     Card (
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color.White,
@@ -139,7 +146,7 @@ fun SunCard() {
                 .fillMaxSize()
         ) {
             Image (painter = painterResource(id = R.drawable.long_arrow_up), contentDescription = null, modifier = Modifier.size(25.dp))
-            Text("06:08", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+            Text(sunriseTimeString, style = TextStyle( fontSize = 10.sp,color = Color.Black))
             Text("Soloppgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
         }
         Column(
@@ -150,7 +157,7 @@ fun SunCard() {
         ) {
             Column( ){
                 Image (painter = painterResource(id = R.drawable._247262), contentDescription = null, modifier = Modifier.size(25.dp))
-                Text("20:27", style = TextStyle( fontSize = 10.sp,color = Color.Black))
+                Text(sunsetTimeString, style = TextStyle( fontSize = 10.sp,color = Color.Black))
                 Text("Solnedgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
 
             }
