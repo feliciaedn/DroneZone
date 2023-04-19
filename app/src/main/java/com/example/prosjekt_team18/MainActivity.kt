@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
 			//fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 			//var default by remember { mutableStateOf(LatLng(59.9, 10.75)) } // oslo-koordinater
-			var userLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
+			//var userLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
 
 			if (ActivityCompat.checkSelfPermission(
 					this,
@@ -143,7 +143,7 @@ class MainActivity : ComponentActivity() {
 			}
 
 			if(buttonClicked) {
-				MainScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
+				MainScreen(mapViewModel, cameraPositionState, mapViewModel.userLocation, permissionGranted, this)
 			}
 
 			LaunchedEffect(mapViewModel.hasLocation) {
@@ -154,8 +154,10 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
-			LaunchedEffect(mapViewModel.searchLatLong) {
-				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
+			if(mapViewModel.searchLatLong != LatLng(0.0, 0.0)) {
+				LaunchedEffect(mapViewModel.searchLatLong) {
+					cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
+				}
 			}
 		}
 	}

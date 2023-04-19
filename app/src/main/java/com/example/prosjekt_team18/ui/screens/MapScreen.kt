@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -80,7 +81,9 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		}
 	}
 
-	val modifier = Modifier.height(570.dp)
+	//val modifier = Modifier.height(570.dp)
+	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
+
 
 	ModalBottomSheetLayout(
 		modifier = Modifier.fillMaxHeight(),
@@ -89,7 +92,10 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		sheetContent = {
 			IconButton(
 				onClick = {
-					coroutineScope.launch { modalSheetState.hide() }
+					coroutineScope.launch {
+						modalSheetState.hide()
+//						mapViewModel.toggleShowSheet(Shee)
+					}
 				}
 			) {
 				androidx.compose.material.Icon(

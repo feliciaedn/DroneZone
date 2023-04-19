@@ -54,8 +54,8 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
         by = address.adminArea
          placeName = address.featureName // Navn på stedet
         println( "her er addressen folkens her her her: " + placeName)
-        addressLine = address.getAddressLine(0) // Adresse
-         locality = address.locality // Lokalitet
+       // addressLine = address.getAddressLine(0) // Adresse
+                //         locality = address.locality // Lokalitet
       country = address.countryName // Land
 
 
