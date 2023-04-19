@@ -107,7 +107,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 			Column(
 				modifier =  modifier
 					//.fillMaxWidth()
-					.padding(16.dp)
+					.padding(top = 0.dp, bottom = 10.dp, start = 10.dp, end = 10.dp)
 
 			) {
 				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {

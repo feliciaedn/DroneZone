@@ -71,7 +71,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
 
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+//            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -84,11 +84,18 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
             )
             println("her er ideeeennnenenen: " + getBilde(weatherModel.summaryCode))
 
-            Image(
-                painter = painterResource(id = getBilde(weatherModel.summaryCode)),
-                contentDescription = null,
-                modifier = Modifier.size(160.dp)
-            )
+//            Image(
+//                painter = painterResource(id = getBilde(weatherModel.summaryCode)),
+//                contentDescription = null,
+//                modifier = Modifier.size(160.dp)
+//            )
+            val imageName = weatherModel.summaryCode // Dette er navnet på bildet du vil vise
+            val resourceId = getStringToDrawableId( imageName,context)
+            if (resourceId != 0) {
+                // Riktig drawable-ressurs-ID ble funnet
+                val painter = painterResource(id = resourceId)
+                Image (painter = painter, contentDescription = null, modifier = Modifier.size(200.dp))
+            } else { println ("fungerer ikke")}
 
 
             Text(
@@ -104,8 +111,8 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
                 style = TextStyle(fontSize = 17.sp, color = Color(0xFF1B467C))
             )
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize().padding(top =30.dp),
+//                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WeatherCard(weatherModel, context)
@@ -125,7 +132,7 @@ fun WeatherCard(weatherModel: WeatherModel,context: Context) {
             .padding(horizontal = 16.dp, vertical=0.dp)
             .fillMaxWidth()
             .width(120.dp)
-            .height(88.dp)
+            .height(110.dp)
             // Merger alle elementer i carden for bedre tilgjenglighet
             .semantics(mergeDescendants = true) {},
 
@@ -141,8 +148,8 @@ fun WeatherCard(weatherModel: WeatherModel,context: Context) {
             //id = R.drawable._72922)
             Column() {
                 Image (painter = painterResource(id = R.drawable._72922), contentDescription = null, modifier = Modifier.size(40.dp))
-                Text("${weatherModel.windSpeed} m/s", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-                Text("Vind", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+                Text("${weatherModel.windSpeed} m/s", style = TextStyle( fontSize = 16.sp,color = Color.Black))
+                Text("Vind", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
 
             }
         }
@@ -154,17 +161,12 @@ fun WeatherCard(weatherModel: WeatherModel,context: Context) {
                 .fillMaxSize()
         ) {
             Column(){
-                //(painter = painterResource(id = R.drawable._038403),
-                val imageName = weatherModel.summaryCode // Dette er navnet på bildet du vil vise
-                val resourceId = getStringToDrawableId( imageName,context)
-                if (resourceId != 0) {
-                    // Riktig drawable-ressurs-ID ble funnet
-                    val painter = painterResource(id = resourceId)
-                    Image (painter = painter, contentDescription = null, modifier = Modifier.size(40.dp))
-                } else { println ("fungerer ikke")}
+                //(painter =
 
-                Text("${weatherModel.rainNext6h} mm", style = TextStyle( fontSize = 10.sp,color = Color.Black))
-                Text("Regn", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+                Image (painter = painterResource(id = R.drawable._038403), contentDescription = null, modifier = Modifier.size(40.dp))
+
+                Text("${weatherModel.rainNext6h} mm", style = TextStyle( fontSize = 16.sp,color = Color.Black))
+                Text("Regn", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
             }
 
         }
@@ -235,7 +237,7 @@ fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
             .padding(16.dp)
             .fillMaxWidth()
             .width(120.dp)
-            .height(88.dp)
+            .height(100.dp)
             // Merger alle elementer i carden for bedre tilgjenglighet
             .semantics(mergeDescendants = true) {},
 
@@ -249,8 +251,8 @@ fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
                 .fillMaxSize()
         ) {
             Image (painter = painterResource(id = R.drawable.long_arrow_up), contentDescription = null, modifier = Modifier.size(25.dp))
-            Text(sunriseTimeString, style = TextStyle( fontSize = 10.sp,color = Color.Black))
-            Text("Soloppgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+            Text(sunriseTimeString, style = TextStyle( fontSize = 16.sp,color = Color.Black))
+            Text("Soloppgang", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
         }
         Column(
             horizontalAlignment = Alignment.End,
@@ -260,8 +262,8 @@ fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
         ) {
             Column( ){
                 Image (painter = painterResource(id = R.drawable._247262), contentDescription = null, modifier = Modifier.size(25.dp))
-                Text(sunsetTimeString, style = TextStyle( fontSize = 10.sp,color = Color.Black))
-                Text("Solnedgang", style = TextStyle( fontSize = 10.sp,color = Color(0xFF1B467C)))
+                Text(sunsetTimeString, style = TextStyle( fontSize = 16.sp,color = Color.Black))
+                Text("Solnedgang", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
 
             }
 

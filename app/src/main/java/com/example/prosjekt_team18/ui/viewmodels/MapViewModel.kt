@@ -55,6 +55,7 @@ class MapViewModel(
 	var hasLocation: Boolean = false
 
 	var showMarker = mutableStateOf(false)
+	// MARKER HINDA
 	var markerLocation: LatLng = LatLng(0.0, 0.0)
 
 	private var job: Job? = null
