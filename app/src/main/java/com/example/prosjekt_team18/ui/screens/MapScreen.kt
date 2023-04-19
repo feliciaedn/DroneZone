@@ -69,6 +69,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		coroutineScope.launch {
 			if (modalSheetState.isVisible){
 				modalSheetState.hide()
+				mapViewModel.hideSheet()
 			} else {
 				modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
 			}
@@ -77,6 +78,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		if (modalSheetState.isVisible){
 			coroutineScope.launch {
 				modalSheetState.hide()
+				mapViewModel.hideSheet()
 			}
 		}
 	}
@@ -94,7 +96,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				onClick = {
 					coroutineScope.launch {
 						modalSheetState.hide()
-//						mapViewModel.toggleShowSheet(Shee)
+						mapViewModel.hideSheet()
 					}
 				}
 			) {
@@ -368,7 +370,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 
 					mapViewModel.updateWeatherData(userLocation)
 					mapViewModel.updateSunData(userLocation)
-					mapViewModel.toggleShowSheet(Sheet.Weather)
+					mapViewModel.showSheet(Sheet.Weather)
 				}
 			)
 			NavigationBarItem(
@@ -376,7 +378,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == items[3],
-				onClick = {mapViewModel.toggleShowSheet(Sheet.Rules)}
+				onClick = {mapViewModel.showSheet(Sheet.Rules)}
 			)
 		}
 	}

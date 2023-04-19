@@ -100,19 +100,16 @@ class MapViewModel(
 		}
 	}
 
-	fun toggleShowSheet(sheet: Sheet) {
-		val showing: Sheet = _screenUiState.value.showSheet
-
-		if (showing == Sheet.None) {
-			_screenUiState.update { currentState ->
-				currentState.copy(showSheet = sheet)
-			}
-		} else {
-			_screenUiState.update { currentState ->
-				currentState.copy(showSheet = Sheet.None)
-			}
+	fun showSheet(sheet: Sheet) {
+		_screenUiState.update { currentState ->
+			currentState.copy(showSheet = sheet)
 		}
+	}
 
+	fun hideSheet() {
+		_screenUiState.update { currentState ->
+			currentState.copy(showSheet = Sheet.None)
+		}
 	}
 
 
