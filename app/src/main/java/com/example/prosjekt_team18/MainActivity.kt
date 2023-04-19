@@ -10,23 +10,28 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.maps.LocationDetails
+import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
-import com.example.prosjekt_team18.ui.screens.MapScreen
+import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -35,11 +40,11 @@ import com.google.maps.android.compose.*
 class MainActivity : ComponentActivity() {
 
 	private val weatherDataSource = WeatherDataSource()
-//	private val mapViewModel: MapViewModel by viewModels()
-	private val mapViewModel: MapViewModel = MapViewModel(weatherDataSource)
+	private val sunDataSource = SunDataSource()
 
+	private val mapViewModel: MapViewModel = MapViewModel(weatherDataSource, sunDataSource)
 
-	//private var fusedLocationClient: FusedLocationProviderClient? = null
+	private var fusedLocationClient: FusedLocationProviderClient? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,7 +146,7 @@ class MainActivity : ComponentActivity() {
 			}
 
 			if(buttonClicked) {
-				MapScreen(mapViewModel, cameraPositionState, mapViewModel.userLocation, permissionGranted, this)
+				MainScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, this)
 			}
 
 			LaunchedEffect(mapViewModel.hasLocation) {
@@ -155,8 +160,8 @@ class MainActivity : ComponentActivity() {
 			LaunchedEffect(mapViewModel.searchLatLong) {
 				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
 			}
-        }
-    }
+		}
+	}
 
 	// check initially if the permission is granted
 	private fun isPermissionGranted(): Boolean {

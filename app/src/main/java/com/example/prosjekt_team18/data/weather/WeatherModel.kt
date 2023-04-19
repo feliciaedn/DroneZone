@@ -5,6 +5,8 @@ import java.util.*
 data class WeatherModel (
     val date: Date,
     val temperature: Double,
+    val summaryCode: String,
+    val summaryNext6h: String,
     val rainNext6h: Double,
     val windDirection: Double,
     val windSpeed: Double,
