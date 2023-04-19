@@ -17,13 +17,13 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +40,7 @@ import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
 import com.example.prosjekt_team18.ui.viewmodels.Sheet
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
-import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
@@ -312,7 +309,7 @@ fun SearchBar(mapViewModel: MapViewModel){
 							mapViewModel.getCoordinates(it)
 							//println("showMarker får ny verdi: " + mapViewModel.showMarker.value)
 						}) {
-						Text(it.address)
+						Text(text = it.address)
 					}
 				}
 			}
@@ -330,8 +327,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  context: Context,
 				  userLocation: LatLng,
 ) {
-	var selectedItem by remember { mutableStateOf(0) }
-				  userLocation: LatLng) {
 	var selectedItem by remember { mutableStateOf("") }
 	val items = listOf("Search", "Map", "Weather", "Rules")
 
@@ -374,7 +369,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				icon = {
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
-				selected = selectedItem == 3,
+				selected = selectedItem == items[3],
 				onClick = {mapViewModel.toggleShowSheet(Sheet.Rules)}
 			)
 		}
