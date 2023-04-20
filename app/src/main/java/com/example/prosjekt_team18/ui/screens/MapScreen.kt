@@ -67,12 +67,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 	if(screenUiState.value.showSheet != Sheet.None){
 		coroutineScope.launch {
-			if (modalSheetState.isVisible){
-				modalSheetState.hide()
-				mapViewModel.hideSheet()
-			} else {
-				modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
-			}
+			modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
 		}
 	} else {
 		if (modalSheetState.isVisible){
@@ -85,7 +80,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 	//val modifier = Modifier.height(570.dp)
 	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
-
 
 	ModalBottomSheetLayout(
 		modifier = Modifier.fillMaxHeight(),
@@ -112,16 +106,21 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					.padding(top = 0.dp, bottom = 10.dp, start = 10.dp, end = 10.dp)
 
 			) {
-				if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Rules) {
+				if (screenUiState.value.showSheet == Sheet.Rules) {
 					//Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
 					var modifier = Modifier
 					RulePage(modifier)
 
-				} else if (screenUiState.value.showSheet != Sheet.None && screenUiState.value.showSheet == Sheet.Weather) {
+				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
 					WeatherPage(sunWeatherUiState, context, userLocation)
+					coroutineScope.launch {
 
+							modalSheetState.show()
+//							modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+
+					}
 				}
 
 			}
@@ -137,7 +136,14 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
                 //contentAlignment = Alignment.Center,
             ) {
                 Column() {
-					MapScreen(mapViewModel, cameraPositionState, userLocation, permissionGranted, context, screenUiState, sunWeatherUiState)
+					MapScreen(mapViewModel,
+						cameraPositionState,
+						userLocation,
+						permissionGranted,
+						context,
+						screenUiState,
+						sunWeatherUiState,
+						modalSheetState)
 
 				}
             }
@@ -148,6 +154,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun MapScreen(mapViewModel: MapViewModel,
@@ -156,7 +163,8 @@ fun MapScreen(mapViewModel: MapViewModel,
 			  permissionGranted: Boolean,
 			  context: Context,
 			  screenUiState: State<ScreenUiState>,
-			  sunWeatherUiState: State<SunWeatherUiState>
+			  sunWeatherUiState: State<SunWeatherUiState>,
+			  modalSheetState: ModalBottomSheetState,
 ) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
@@ -229,7 +237,16 @@ fun MapScreen(mapViewModel: MapViewModel,
 			}
 		}
 
-		NavigationBar(Modifier.padding(12.dp),  NavigationBarDefaults.containerColor,12.dp,NavigationBarDefaults.windowInsets, mapViewModel, sunWeatherUiState, context, userLocation)
+		NavigationBar(
+			Modifier.padding(12.dp),
+			NavigationBarDefaults.containerColor,
+			12.dp,
+			NavigationBarDefaults.windowInsets,
+			mapViewModel, sunWeatherUiState,
+			context,
+			userLocation,
+			modalSheetState,
+		)
 	}
 
 }
@@ -325,6 +342,7 @@ fun SearchBar(mapViewModel: MapViewModel){
 		}
 	}
 }
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier,
 				  containerColor: Color = NavigationBarDefaults.containerColor,
@@ -334,9 +352,13 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  sunWeatherUiState: State<SunWeatherUiState>,
 				  context: Context,
 				  userLocation: LatLng,
+				  modalSheetState: ModalBottomSheetState
 ) {
+	val coroutineScope = rememberCoroutineScope()
+
 	var selectedItem by remember { mutableStateOf("") }
 	val items = listOf("Search", "Map", "Weather", "Rules")
+
 
 	BottomAppBar {
 		Row {
@@ -371,6 +393,9 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					mapViewModel.updateWeatherData(userLocation)
 					mapViewModel.updateSunData(userLocation)
 					mapViewModel.showSheet(Sheet.Weather)
+					coroutineScope.launch {
+						modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+					}
 				}
 			)
 			NavigationBarItem(
@@ -378,7 +403,12 @@ fun NavigationBar(modifier: Modifier = Modifier,
 					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == items[3],
-				onClick = {mapViewModel.showSheet(Sheet.Rules)}
+				onClick = {
+					mapViewModel.showSheet(Sheet.Rules)
+					coroutineScope.launch {
+						modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+					}
+				}
 			)
 		}
 	}

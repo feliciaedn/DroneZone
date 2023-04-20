@@ -1,7 +1,9 @@
 package com.example.prosjekt_team18.ui.viewmodels
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prosjekt_team18.data.maps.MapState
@@ -11,7 +13,6 @@ import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
@@ -25,7 +26,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.util.*
 
 class MapViewModel(
 	private val weatherDataSource: WeatherDataSource,
@@ -104,12 +104,15 @@ class MapViewModel(
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = sheet)
 		}
+		println("SHOWING: " + _screenUiState.value.showSheet)
 	}
 
 	fun hideSheet() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = Sheet.None)
 		}
+		println("SHOWING: " + _screenUiState.value.showSheet)
+
 	}
 
 
