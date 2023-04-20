@@ -169,6 +169,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
 
+	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding\"") }
 
 	Column(modifier = Modifier.fillMaxSize()) {
 
@@ -189,8 +190,15 @@ fun MapScreen(mapViewModel: MapViewModel,
 					Marker(
 						state = rememberMarkerState(position = mapViewModel.markerLocation),
 						title = "Lokasjon",
-						snippet = "Trykk for å sjekke værmelding",
+						snippet = lagre2.value,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
+						onInfoWindowClick = {
+							var lagre = mapViewModel.markerLocation
+							mapViewModel.updateWeatherData(lagre)
+							lagre2.value = sunWeatherUiState.value.currentWeather?.temperature.toString()
+
+
+						}
 					)
 				}
 			}
@@ -277,6 +285,7 @@ fun SearchBar(mapViewModel: MapViewModel){
 						Icons.Filled.Search,
 						contentDescription = null
 					)
+
 				},
 				trailingIcon = {
 					androidx.compose.material.Icon(
