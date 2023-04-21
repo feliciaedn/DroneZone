@@ -152,8 +152,10 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
-			LaunchedEffect(mapViewModel.searchLatLong) {
-				cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
+			if (mapViewModel.searchLatLong != LatLng(0.0, 0.0)) {
+				LaunchedEffect(mapViewModel.searchLatLong) {
+					cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.searchLatLong))
+				}
 			}
         }
     }
