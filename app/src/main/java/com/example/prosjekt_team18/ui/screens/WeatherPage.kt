@@ -3,6 +3,7 @@ package com.example.prosjekt_team18.ui.screens
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.location.Geocoder.GeocodeListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,8 +45,6 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
     var by by remember {
         mutableStateOf( "")
     }
-
-
 
     val geocoder = Geocoder(context, Locale.getDefault())
     val addresses = geocoder.getFromLocation(userLocation.latitude, userLocation.longitude, 1)

@@ -60,6 +60,8 @@ class MainActivity : ComponentActivity() {
 				mutableStateOf(isPermissionGranted())
 			}
 
+			var startup by remember { mutableStateOf(false) }
+
 			var permissionGranted by remember {
 				mutableStateOf(isPermissionGranted())
 			}
@@ -75,7 +77,7 @@ class MainActivity : ComponentActivity() {
 					permissionGranted = permissionGranted_
 				}
 
-			if (!permissionGranted) {
+			if (!permissionGranted && !startup) {
 				Button(modifier = Modifier
 					.fillMaxSize()
 					.wrapContentSize(Alignment.Center),
@@ -91,13 +93,14 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
-			if (permissionGranted) {
+			if (permissionGranted && !startup) {
 				// update your UI
 				Toast.makeText(
 					this@MainActivity,
 					"Permission granted",
 					Toast.LENGTH_SHORT
 				).show()
+				startup = true
 			}
 
 			//fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
