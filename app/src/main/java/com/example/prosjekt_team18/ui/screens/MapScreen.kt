@@ -122,6 +122,9 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 					}
 				}
+				else if (screenUiState.value.showSheet == Sheet.Feedback) {
+					FeedbackPage()
+				}
 
 			}
 		}
@@ -169,7 +172,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
 
-	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding\"") }
+	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding") }
 
 	Column(modifier = Modifier.fillMaxSize()) {
 
@@ -180,6 +183,9 @@ fun MapScreen(mapViewModel: MapViewModel,
 				properties = positionUiState.properties,
 				cameraPositionState = cameraPositionState,
 				onMapClick = {
+					if(mapViewModel.showMarker.value) {
+						lagre2.value = "Trykk for å sjekke værmelding"
+					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
 					mapViewModel.markerLocation = it
 					println("Marker lokasjon: " + mapViewModel.markerLocation.toString())
@@ -366,7 +372,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 	val coroutineScope = rememberCoroutineScope()
 
 	var selectedItem by remember { mutableStateOf("") }
-	val items = listOf("Search", "Map", "Weather", "Rules")
+	val items = listOf("Search", "Feedback", "Weather", "Rules")
 
 
 	BottomAppBar {
@@ -390,7 +396,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				//label = { Text("Search") },
 				selected =
 				selectedItem == items[1],
-				onClick = { /* TO DO */ }
+				onClick = { mapViewModel.showSheet(Sheet.Feedback) }
 			)
 			NavigationBarItem(
 				icon = {
