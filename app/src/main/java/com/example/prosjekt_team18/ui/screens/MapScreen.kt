@@ -115,9 +115,9 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					//Tekst regler her:
 					var modifier = Modifier
 					RulePage(modifier)
-					coroutineScope.launch {
-						modalSheetState.show()
-					}
+//					coroutineScope.launch {
+//						modalSheetState.show()
+//					}
 
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
@@ -125,10 +125,10 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					println("SHOWING WEATHER PAGE for location ${screenUiState.value.selectedLocation}")
 					println("weathermodel: " + sunWeatherUiState.value.currentWeather)
 
-					coroutineScope.launch {
-							modalSheetState.show()
-//							modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
-					}
+//					coroutineScope.launch {
+//							modalSheetState.show()
+////							modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+//					}
 				}
 				else if (screenUiState.value.showSheet == Sheet.Feedback) {
 					FeedbackPage()
