@@ -54,8 +54,12 @@ import kotlinx.coroutines.launch
 fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
 	val screenUiState = mapViewModel.screenUiState.collectAsState()
 	val sunWeatherUiState = mapViewModel.sunWeatherUiState.collectAsState()
-	mapViewModel.updateWeatherData(userLocation)
-	mapViewModel.updateSunData(userLocation)
+//	mapViewModel.updateWeatherData(userLocation)
+//	mapViewModel.updateSunData(userLocation)
+
+//	mapViewModel.selectLocation(userLocation)
+	mapViewModel.updateLocationData()
+
 
 	val coroutineScope = rememberCoroutineScope()
 
@@ -111,15 +115,19 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					//Tekst regler her:
 					var modifier = Modifier
 					RulePage(modifier)
+					coroutineScope.launch {
+						modalSheetState.show()
+					}
 
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
-					WeatherPage(sunWeatherUiState, context, userLocation)
-					coroutineScope.launch {
+					WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
+					println("SHOWING WEATHER PAGE for location ${screenUiState.value.selectedLocation}")
+					println("weathermodel: " + sunWeatherUiState.value.currentWeather)
 
+					coroutineScope.launch {
 							modalSheetState.show()
 //							modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
-
 					}
 				}
 				else if (screenUiState.value.showSheet == Sheet.Feedback) {
@@ -199,9 +207,11 @@ fun MapScreen(mapViewModel: MapViewModel,
 						snippet = lagre2.value,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
-							var lagre = mapViewModel.markerLocation
-							mapViewModel.updateWeatherData(lagre)
-							lagre2.value = sunWeatherUiState.value.currentWeather?.temperature.toString()
+							mapViewModel.selectLocation(mapViewModel.markerLocation)
+							mapViewModel.showSheet(Sheet.Weather)
+//							var lagre = mapViewModel.markerLocation
+//							mapViewModel.updateWeatherData(mapViewModel)
+//							lagre2.value = sunWeatherUiState.value.currentWeather?.temperature.toString()
 
 
 						}
@@ -405,8 +415,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				selected = selectedItem == items[2],
 				onClick = {
 
-					mapViewModel.updateWeatherData(userLocation)
-					mapViewModel.updateSunData(userLocation)
+					mapViewModel.selectLocation(userLocation)
 					mapViewModel.showSheet(Sheet.Weather)
 					coroutineScope.launch {
 						modalSheetState.animateTo(ModalBottomSheetValue.Expanded)

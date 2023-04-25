@@ -18,21 +18,21 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.maps.LocationDetails
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import com.google.maps.android.compose.*
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.rememberCameraPositionState
 
 class MainActivity : ComponentActivity() {
 
@@ -146,6 +146,8 @@ class MainActivity : ComponentActivity() {
 			}
 
 			if(buttonClicked) {
+				println("PERMISSION GRANTED: ")
+				mapViewModel.selectLocation(mapViewModel.userLocation)
 				MainScreen(mapViewModel, cameraPositionState, mapViewModel.userLocation, permissionGranted, this)
 			}
 

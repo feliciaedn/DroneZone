@@ -32,14 +32,7 @@ class MapViewModel(
 	private val sunDataSource: SunDataSource,
 ) : ViewModel() {
 
-	private val _mapUiState = MutableStateFlow(MapState())
-	val mapUiState: StateFlow<MapState> = _mapUiState.asStateFlow()
 
-	private val _screenUiState = MutableStateFlow(ScreenUiState())
-	val screenUiState: StateFlow<ScreenUiState> = _screenUiState.asStateFlow()
-
-	private val _sunWeatherUiState = MutableStateFlow(SunWeatherUiState())
-	val sunWeatherUiState: StateFlow<SunWeatherUiState> = _sunWeatherUiState.asStateFlow()
 
 	lateinit var placesClient: PlacesClient
 	lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -55,10 +48,24 @@ class MapViewModel(
 	var hasLocation: Boolean = false
 
 	var showMarker = mutableStateOf(false)
-	// MARKER HINDA
 	var markerLocation: LatLng = LatLng(0.0, 0.0)
 
 	private var job: Job? = null
+
+	/* --- STATE FLOWS  --- */
+	private val _mapUiState = MutableStateFlow(MapState())
+	val mapUiState: StateFlow<MapState> = _mapUiState.asStateFlow()
+
+	private val _screenUiState = MutableStateFlow(ScreenUiState(selectedLocation = userLocation))
+	val screenUiState: StateFlow<ScreenUiState> = _screenUiState.asStateFlow()
+
+	private val _sunWeatherUiState = MutableStateFlow(SunWeatherUiState())
+	val sunWeatherUiState: StateFlow<SunWeatherUiState> = _sunWeatherUiState.asStateFlow()
+
+	/* -------------------- */
+//	init {
+////		selectLocation(userLocation)
+//	}
 
 	fun searchPlaces(query: String) {
 		job?.cancel()
@@ -92,6 +99,15 @@ class MapViewModel(
 		}
 	}
 
+	fun selectLocation(location: LatLng) {
+		_screenUiState.update { currentState ->
+			currentState.copy(selectedLocation = location)
+		}
+
+		updateLocationData()
+
+		println("SELECTED LOCATION: From $userLocation to $location")
+	}
 
 	fun toggleShowSearchBar() {
 		val showing: Boolean = _screenUiState.value.showSearchBar
@@ -104,15 +120,26 @@ class MapViewModel(
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = sheet)
 		}
-		println("SHOWING: " + _screenUiState.value.showSheet)
+//		println("SHOWING: " + _screenUiState.value.showSheet)
 	}
 
 	fun hideSheet() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = Sheet.None)
 		}
-		println("SHOWING: " + _screenUiState.value.showSheet)
+//		println("SHOWING: " + _screenUiState.value.showSheet)
 
+	}
+
+	fun updateLocationData() {
+		// skal det vaere scope her ogsaa ????
+//		viewModelScope.launch(Dispatchers.IO) {
+		val selectedLocation = _screenUiState.value.selectedLocation
+		updateWeatherData(selectedLocation)
+		updateSunData(selectedLocation)
+		println("UPDATED LOCATION DATA TO $selectedLocation")
+
+//		}
 	}
 
 
