@@ -192,6 +192,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 				cameraPositionState = cameraPositionState,
 				onMapClick = {
 					if(mapViewModel.showMarker.value) {
+						println("HELLOOOOO-------")
 						lagre2.value = "Trykk for å sjekke værmelding"
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
@@ -201,22 +202,22 @@ fun MapScreen(mapViewModel: MapViewModel,
 				}
 			) {
 				if(mapViewModel.showMarker.value) {
+					val markerState = rememberMarkerState(position = mapViewModel.markerLocation)
+					markerState.showInfoWindow()
 					Marker(
-						state = rememberMarkerState(position = mapViewModel.markerLocation),
+						state = markerState,
 						title = "Lokasjon",
 						snippet = lagre2.value,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
 							mapViewModel.selectLocation(mapViewModel.markerLocation)
 							mapViewModel.showSheet(Sheet.Weather)
-//							var lagre = mapViewModel.markerLocation
-//							mapViewModel.updateWeatherData(mapViewModel)
-//							lagre2.value = sunWeatherUiState.value.currentWeather?.temperature.toString()
-
 
 						}
 					)
+
 				}
+
 			}
 
 			if (screenUiState.value.showSearchBar) {
