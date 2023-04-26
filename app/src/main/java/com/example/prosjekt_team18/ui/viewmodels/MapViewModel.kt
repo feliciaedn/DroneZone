@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.prosjekt_team18.data.AirportData
 import com.example.prosjekt_team18.data.FeedbackModel
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.maps.SearchResult
@@ -33,6 +34,7 @@ class MapViewModel(
 	private val weatherDataSource: WeatherDataSource,
 	private val sunDataSource: SunDataSource,
 	private val feedbackModel: FeedbackModel,
+	private val airportData: AirportData,
 ) : ViewModel() {
 
 	lateinit var placesClient: PlacesClient
@@ -106,8 +108,6 @@ class MapViewModel(
 		}
 
 		updateLocationData()
-
-		println("SELECTED LOCATION: From $userLocation to $location")
 	}
 
 	fun toggleShowSearchBar() {
@@ -210,5 +210,17 @@ class MapViewModel(
 		windCheck: Boolean
 	): Boolean {
 		return feedbackModel.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck)
+	}
+
+	fun airportLatCoordinates(): List<Double> {
+		return airportData.latCoordinates
+	}
+
+	fun airportLngCoordinates(): List<Double> {
+		return airportData.lngCoordinates
+	}
+
+	fun airportNames(): List<String> {
+		return airportData.airportNames
 	}
 }

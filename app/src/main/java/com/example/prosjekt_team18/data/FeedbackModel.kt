@@ -1,10 +1,11 @@
 package com.example.prosjekt_team18.data
 
 import com.example.prosjekt_team18.data.weather.WeatherModel
+import com.google.android.gms.maps.model.LatLng
 import java.text.DateFormat
 import java.util.*
 
-class FeedbackModel {
+class FeedbackModel (val airportData: AirportData) {
     private val calendar = Calendar.getInstance().time
     private var timeNow = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar)
 
@@ -31,6 +32,10 @@ class FeedbackModel {
             return weatherModel.windSpeed < 10.0
         }
         return false
+    }
+
+    fun airportFunction(selectedLocation: LatLng): Boolean {
+        return airportData.locationWithin5km(selectedLocation)
     }
 
     fun checkApproval(

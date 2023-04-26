@@ -42,15 +42,9 @@ import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
 import com.example.prosjekt_team18.ui.viewmodels.Sheet
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.maps.CameraUpdate
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import androidx.fragment.app.FragmentManager
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -185,43 +179,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
 
 	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding") }
-	val latCoordinates = listOf(
-		(69.9779), (69.3106), (58.5159), (69.0595), (60.2918), (70.8700), (67.2683), (65.4599),
-		(70.6028), (61.5858), (61.3911), (70.6800), (68.4919), (70.4866), (59.3445), (71.0087),
-		(60.2120), (69.7214), (59.9693), (58.2038), (63.1139), (70.0664), (68.1535), (71.0275),
-		(66.3646), (62.7464), (65.7844), (64.4725), (59.5652), (78.9278), (62.6512), (60.1976),
-		(59.3976), (62.5770), (64.8392), (67.5272), (61.8290), (59.1824), (65.9594), (59.1843),
-		(61.1575), (58.8804), (68.5795), (59.7930), (78.2469), (68.2450), (69.7856), (69.6819),
-		(63.4583), (70.0641), (70.3564), (63.6953), (62.1800), (62.5585)
-	)
-	val lngCoordinates = listOf(
-		(23.3466), (16.1239), (8.7027), (18.5378), (5.2220), (29.0303), (14.3622), (12.2092),
-		(29.6923), (5.0242), (5.7642), (23.6755), (16.6841), (22.1471), (5.2166), (25.9775),
-		(10.3180), (29.8830), (11.0395), (8.0838), (7.8254), (24.9819), (13.6145), (27.8291),
-		(14.3034), (7.2608), (13.2170), (11.5717), (9.2183), (11.8749), (9.8504), (11.1004),
-		(11.3468), (11.3530), (11.1443), (12.1058), (6.1071), (10.2569), (12.4755), (9.5699),
-		(7.1374), (5.6314), (15.0315), (5.3424), (15.4933), (14.6668), (20.9576), (18.9163),
-		(10.9226), (29.8385), (31.0397), (9.6035), (6.0795), (6.1153)
-	)
-	val airportNames = listOf(
-		("Alta lufthavn"), ("Andøya lufthavn"), ("Arendal lufthavn"), ("Bardufoss lufthavn"),
-		("Bergen lufthavn"), ("Berlevåg lufthavn"), ("Bodø lufthavn"), ("Brønnøysund lufthavn, Brønnøy"),
-		("Båtsfjord lufthavn"), ("Florø lufthamn"), ("Førde lufthamn, Bringeland"), ("Hammerfest lufthavn"),
-		("Harstad/Narvik lufthavn, Evenes"), ("Hasvik lufthavn"), ("Haugesund lufthavn, Karmøy"),
-		("Honningsvåg lufthavn, Valan"), ("Hønefoss flyplass, Eggemoen"), ("Kirkenes lufthavn, Høybuktmoen"),
-		("Kjeller flyplass"), ("Kristiansand lufthavn, Kjevik"), ("Kristiansund lufthavn, Kvernberget"),
-		("Lakselv lufthavn, Banak"), ("Leknes lufthavn"), ("Mehamn lufthavn"), ("Mo i Rana lufthavn, Røssvoll"),
-		("Molde lufthavn, Årø"), ("Mosjøen lufthavn, Kjærstad"), ("Namsos lufthavn"), ("Notodden lufthavn"),
-		("Ny-Ålesund flyplass, Havnerabben"), ("Oppdal flyplass, Fagerhaug"), ("Oslo lufthavn, Gardermoen"),
-		("Rakkestad flyplass, Åstorp"), ("Røros lufthavn"), ("Rørvik lufthavn, Ryum"),
-		("Røst lufthavn"), ("Sandane lufthamn, Anda"), ("Sandefjord lufthavn, Torp"),
-		("Sandnessjøen lufthavn, Stokka"), ("Skien flyplass, Geiteryggen"), ("Sogndal lufthavn, Haukåsen"),
-		("Stavanger lufthavn, Sola"), ("Stokmarknes lufthavn, Skagen"), ("Stord lufthamn, Sørstokken"),
-		("Svalbard lufthavn, Longyear"), ("Svolvær lufthavn, Helle"), ("Sørkjosen lufthavn"),
-		("Tromsø lufthavn, Langnes"), ("Trondheim lufthavn, Værnes"), ("Vadsø lufthavn"),
-		("Vardø lufthavn, Svartnes"), ("Ørland lufthavn"), ("Ørsta/Volda lufthamn, Hovden"),
-		("Ålesund lufthavn, Vigra")
-	)
 
 	Column(modifier = Modifier.fillMaxSize()) {
 
@@ -233,13 +190,12 @@ fun MapScreen(mapViewModel: MapViewModel,
 				cameraPositionState = cameraPositionState,
 				onMapClick = {
 					if(mapViewModel.showMarker.value) {
-						println("HELLOOOOO-------")
 						lagre2.value = "Trykk for å sjekke værmelding"
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
 					mapViewModel.markerLocation = it
-					println("Marker lokasjon: " + mapViewModel.markerLocation.toString())
-					println("showMarker: " + mapViewModel.showMarker)
+//					println("Marker lokasjon: " + mapViewModel.markerLocation.toString())
+//					println("showMarker: " + mapViewModel.showMarker)
 				}
 			) {
 				if(mapViewModel.showMarker.value) {
@@ -259,10 +215,15 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 				}
 
+				// DRAW AIRPORTS
+
+				val latCoordinates = mapViewModel.airportLatCoordinates()
+				val lngCoordinates = mapViewModel.airportLngCoordinates()
+
 				for (i in latCoordinates.indices) {
 					Marker(
 						state = rememberMarkerState(position = LatLng(latCoordinates[i], lngCoordinates[i])),
-						title = airportNames[i],
+						title = mapViewModel.airportNames()[i],
 						//Legge inn ikon for flyplass i stedet?
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
 					)
@@ -274,43 +235,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 						visible = true
 					)
 				}
-
-				/*
-				// Get a reference to the SupportMapFragment
-				val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-
-				// Get the ID of the SupportMapFragment
-				val mapFragmentId = mapFragment.id
-
-				// Obtain a reference to the GoogleMap object
-				mapFragment.getMapAsync { googleMap ->
-
-					// Define the circle options
-					val circleOptions = CircleOptions()
-						.center(LatLng(37.4, -122.1))
-						.radius(5000.0)
-
-					// Add the circle to the map
-					val circle = googleMap.addCircle(circleOptions)
-				}
-
-				 */
-
-
-
-				/*
-				val googleMap = GoogleMap()
-
-				val circleOptions = CircleOptions()
-					.center(LatLng(37.4, -122.1))
-					.radius(5000.0) // In meters
-
-
-				val circle = googleMap.addCircle(circleOptions)
-
-				 */
-				//val circle = mapView.getMap().addCircle(circleOptions)
-
 
 			}
 
