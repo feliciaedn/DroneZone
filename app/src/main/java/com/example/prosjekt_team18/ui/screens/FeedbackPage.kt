@@ -41,7 +41,13 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	val flightApproval by remember { mutableStateOf(mapViewModel.checkApproval(sunlightCheck, rainCheck, windCheck, snowCheck)) }
+	val airportCheck by remember { mutableStateOf(mapViewModel.airportFunction()) }
+	val	airportImageResource = when(airportCheck) {
+		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
+		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
+	}
+
+	val flightApproval by remember { mutableStateOf(mapViewModel.checkApproval(sunlightCheck, rainCheck, windCheck, snowCheck, airportCheck)) }
 
 	Column(modifier = modifier.fillMaxSize()) {
 		Text(modifier = Modifier
@@ -62,9 +68,7 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.fillMaxWidth()
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(
-					id = com.example.prosjekt_team18.R.drawable.icons8_done_128
-				),
+				painter = painterResource(airportImageResource),
 				contentDescription = "")
 		}
 

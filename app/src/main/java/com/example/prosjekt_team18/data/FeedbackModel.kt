@@ -7,10 +7,10 @@ import java.util.*
 
 class FeedbackModel (val airportData: AirportData) {
     private val calendar = Calendar.getInstance().time
-    private var timeNow = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar)
+//    private var timeNow = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar)
 
-    fun sunlightFunction(sunriseTimeString: String?, sunsetTimeString: String?): Boolean {
-        return timeNow > sunriseTimeString.toString() && timeNow < sunsetTimeString.toString()
+    fun sunlightFunction(sunriseTime: Date, sunsetTime: Date): Boolean {
+        return calendar.after(sunriseTime) && calendar.before(sunsetTime)
     }
 
     fun rainFunction(weatherModel: WeatherModel?): Boolean {
@@ -42,7 +42,8 @@ class FeedbackModel (val airportData: AirportData) {
         sunlightCheck: Boolean,
         rainCheck: Boolean,
         snowCheck: Boolean,
-        windCheck: Boolean
+        windCheck: Boolean,
+        airportCheck: Boolean
     ): Boolean {
 
         if(!sunlightCheck) {
@@ -55,6 +56,9 @@ class FeedbackModel (val airportData: AirportData) {
             return false
         }
         if(!windCheck) {
+            return false
+        }
+        if(!airportCheck) {
             return false
         }
         return true

@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.DateFormat
+import java.util.*
 
 class MapViewModel(
 	private val weatherDataSource: WeatherDataSource,
@@ -179,14 +180,8 @@ class MapViewModel(
 
 	fun sunlightFunction(): Boolean {
 		val sunData = sunWeatherUiState.value.sunData
-		val weatherModel = sunWeatherUiState.value.currentWeather
-		if (weatherModel != null && sunData != null) {
-			val sunriseTimeString =
-				DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunrise.time)
-			val sunsetTimeString =
-				DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunset.time)
-
-			return feedbackModel.sunlightFunction(sunriseTimeString, sunsetTimeString)
+		if (sunData != null) {
+			return feedbackModel.sunlightFunction(sunData.sunrise.time, sunData.sunset.time)
 		}
 		return false
 	}
@@ -203,13 +198,18 @@ class MapViewModel(
 		return feedbackModel.windFunction(_sunWeatherUiState.value.currentWeather)
 	}
 
+	fun airportFunction(): Boolean {
+		return feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
+	}
+
 	fun checkApproval(
 		sunlightCheck: Boolean,
 		rainCheck: Boolean,
 		snowCheck: Boolean,
-		windCheck: Boolean
+		windCheck: Boolean,
+		airportCheck: Boolean
 	): Boolean {
-		return feedbackModel.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck)
+		return feedbackModel.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck, airportCheck)
 	}
 
 	fun airportLatCoordinates(): List<Double> {

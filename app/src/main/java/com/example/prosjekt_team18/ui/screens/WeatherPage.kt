@@ -66,8 +66,8 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
 
 
     if (weatherModel != null && sunData != null) {
-        val sunriseTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunrise.time)
-        val sunsetTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunset.time)
+        val sunriseTimeString = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData.sunrise.time)
+        val sunsetTimeString = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData.sunset.time)
 
         Column(
             modifier = Modifier.fillMaxSize(),

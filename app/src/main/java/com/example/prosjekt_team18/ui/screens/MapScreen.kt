@@ -129,6 +129,8 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 //					}
 				}
 				else if (screenUiState.value.showSheet == Sheet.Feedback) {
+					println("SHOWING FEEDBACK PAGE for location ${screenUiState.value.selectedLocation}")
+
 					FeedbackPage(mapViewModel)
 				}
 
@@ -200,6 +202,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			) {
 				if(mapViewModel.showMarker.value) {
 					val markerState = rememberMarkerState(position = mapViewModel.markerLocation)
+					mapViewModel.selectLocation(mapViewModel.markerLocation)
 					markerState.showInfoWindow()
 					Marker(
 						state = markerState,
@@ -207,7 +210,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 						snippet = lagre2.value,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
-							mapViewModel.selectLocation(mapViewModel.markerLocation)
+//							mapViewModel.selectLocation(mapViewModel.markerLocation)
 							mapViewModel.showSheet(Sheet.Weather)
 
 						}

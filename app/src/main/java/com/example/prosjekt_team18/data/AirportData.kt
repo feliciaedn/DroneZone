@@ -60,9 +60,5 @@ class AirportData {
         return true
     }
 
-    fun nrOfAirports(): Int {
-        return latCoordinates.size
-    }
-
 
 }
