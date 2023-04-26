@@ -400,7 +400,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_map_marker_96_1), contentDescription = items[1]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_pass_fail_96), contentDescription = items[1]) },
 				//label = { Text("Search") },
 				selected =
 				selectedItem == items[1],
@@ -427,7 +427,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 			)
 			NavigationBarItem(
 				icon = {
-					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_list_view_96), contentDescription = items[3]) },
+					Image(modifier = Modifier.size(32.dp) ,painter = painterResource(id = R.drawable.icons8_literature_96), contentDescription = items[3]) },
 				//label = { Text("Rules") },
 				selected = selectedItem == items[3],
 				onClick = {

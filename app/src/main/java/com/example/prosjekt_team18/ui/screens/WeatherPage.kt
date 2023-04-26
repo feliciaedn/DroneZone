@@ -250,7 +250,7 @@ fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            Image (painter = painterResource(id = R.drawable.long_arrow_up), contentDescription = null, modifier = Modifier.size(25.dp))
+            Image (painter = painterResource(id = R.drawable.icons8_sunrise_90), contentDescription = null, modifier = Modifier.size(25.dp))
             Text(sunriseTimeString, style = TextStyle( fontSize = 16.sp,color = Color.Black))
             Text("Soloppgang", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
         }
@@ -261,7 +261,7 @@ fun SunCard(sunriseTimeString: String, sunsetTimeString: String) {
                 .fillMaxSize()
         ) {
             Column( ){
-                Image (painter = painterResource(id = R.drawable._247262), contentDescription = null, modifier = Modifier.size(25.dp))
+                Image (painter = painterResource(id = R.drawable.icons8_sunset_90), contentDescription = null, modifier = Modifier.size(25.dp))
                 Text(sunsetTimeString, style = TextStyle( fontSize = 16.sp,color = Color.Black))
                 Text("Solnedgang", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
 
