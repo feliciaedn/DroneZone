@@ -127,6 +127,13 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 						//Legge inn ikon for flyplass i stedet?
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
 					)
+					Circle(
+						center = LatLng(latCoordinates[i], lngCoordinates[i]),
+						fillColor = Color(0x80FF0000),
+						strokeWidth = 0F,
+						radius = 5000.0,
+						visible = true
+					)
 				}
 
 				/*
@@ -216,6 +223,8 @@ fun MapScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSta
 		}
 
 	}
+
+
 
 data class AutocompleteResult(
 	val address: String,
