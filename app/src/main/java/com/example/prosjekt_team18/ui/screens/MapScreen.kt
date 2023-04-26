@@ -41,7 +41,7 @@ import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
 import com.example.prosjekt_team18.ui.viewmodels.Sheet
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
-import com.example.prosjekt_team18.ui.viewmodels.WeatherUiState
+
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.SupportMapFragment
@@ -376,7 +376,7 @@ data class AutocompleteResult(
 	val address: String,
 	val placeId: String,
 )
-}
+
 
 @Composable
 fun SearchBar(mapViewModel: MapViewModel){
