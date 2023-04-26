@@ -23,6 +23,7 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 import com.google.android.gms.maps.model.LatLng
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -65,8 +66,8 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
 
 
     if (weatherModel != null && sunData != null) {
-        val sunriseTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunrise.time)
-        val sunsetTimeString = SimpleDateFormat("h:mm", Locale.getDefault()).format(sunData.sunset.time)
+        val sunriseTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunrise.time)
+        val sunsetTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunset.time)
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -106,7 +107,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
                 )
             )
             Text(
-                weatherModel.summaryNext6h,
+                weatherModel.summaryNextHour,
                 style = TextStyle(fontSize = 17.sp, color = Color(0xFF1B467C))
             )
             Column(
@@ -164,7 +165,7 @@ fun WeatherCard(weatherModel: WeatherModel,context: Context) {
 
                 Image (painter = painterResource(id = R.drawable._038403), contentDescription = null, modifier = Modifier.size(40.dp))
 
-                Text("${weatherModel.rainNext6h} mm", style = TextStyle( fontSize = 16.sp,color = Color.Black))
+                Text("${weatherModel.rainNextHour} mm", style = TextStyle( fontSize = 16.sp,color = Color.Black))
                 Text("Regn", style = TextStyle( fontSize = 16.sp,color = Color(0xFF1B467C)))
             }
 

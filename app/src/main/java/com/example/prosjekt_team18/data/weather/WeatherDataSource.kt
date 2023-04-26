@@ -36,10 +36,10 @@ class WeatherDataSource {
 
         val date = forecastAtTime.time
         val temperature = forecastAtTime.data.instant.details.air_temperature
-        val summaryCode = forecastAtTime.data.next_6_hours.summary.symbol_code
+        val summaryCode = forecastAtTime.data.next_1_hours.summary.symbol_code
         val summary = summaryCode.replace("_", " ")
 
-        val rain = forecastAtTime.data.next_6_hours.details.precipitation_amount
+        val rain = forecastAtTime.data.next_1_hours.details.precipitation_amount
         val windDirection = forecastAtTime.data.instant.details.wind_from_direction
         val windSpeed = forecastAtTime.data.instant.details.wind_speed
 

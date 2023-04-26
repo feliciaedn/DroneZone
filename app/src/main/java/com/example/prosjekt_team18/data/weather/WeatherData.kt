@@ -30,7 +30,7 @@ data class ForecastAtTime(
 
 data class ForecastData(
     val instant: ForecastInstant,
-    val next_6_hours: Forecast6Hours,
+    val next_1_hours: Forecast1Hour,
 )
 data class ForecastInstant (
     val details: ForecastInstantDetails,
@@ -41,12 +41,12 @@ data class ForecastInstantDetails (
     val wind_speed: Double,
 )
 
-data class Forecast6Hours (
+data class Forecast1Hour (
     val summary: ForecastSummary,
-    val details: Forecast6HoursDetails,
+    val details: Forecast1HourDetails,
 )
 
-data class Forecast6HoursDetails (
+data class Forecast1HourDetails (
     val precipitation_amount: Double
 )
 

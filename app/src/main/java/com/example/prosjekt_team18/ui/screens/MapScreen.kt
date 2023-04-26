@@ -131,7 +131,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 //					}
 				}
 				else if (screenUiState.value.showSheet == Sheet.Feedback) {
-					FeedbackPage()
+					FeedbackPage(sunWeatherUiState)
 				}
 
 			}
@@ -407,7 +407,12 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				//label = { Text("Search") },
 				selected =
 				selectedItem == items[1],
-				onClick = { mapViewModel.showSheet(Sheet.Feedback) }
+				onClick = {
+					mapViewModel.showSheet(Sheet.Feedback)
+					coroutineScope.launch {
+						modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+					}
+				}
 			)
 			NavigationBarItem(
 				icon = {
