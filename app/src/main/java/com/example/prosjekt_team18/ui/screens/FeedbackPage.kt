@@ -3,7 +3,6 @@ package com.example.prosjekt_team18.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,55 +12,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.prosjekt_team18.data.weather.WeatherModel
-import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 
 @Composable
-fun FeedbackPage(sunWeatherUiState: State<SunWeatherUiState>, modifier: Modifier = Modifier) {
-	val calendar by remember {
-		mutableStateOf(Calendar.getInstance().time)
-	}
-	var timeNow by remember {
-		mutableStateOf(DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar))
-	}
-	val sunData = sunWeatherUiState.value.sunData
-	val weatherModel = sunWeatherUiState.value.currentWeather
+fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 
-	var sunriseTimeString: String? = null
-	var sunsetTimeString: String? = null
-
-	if (weatherModel != null && sunData != null) {
-		sunriseTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunrise.time)
-		sunsetTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunset.time) }
-
-	var sunlightCheck by remember { mutableStateOf(sunlightFunction(timeNow, sunriseTimeString, sunsetTimeString)) }
+	val sunlightCheck by remember { mutableStateOf(mapViewModel.sunlightFunction()) }
 	val sunlightImageResource = when(sunlightCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	var rainCheck by remember { mutableStateOf(rainFunction(weatherModel)) }
+	val rainCheck by remember { mutableStateOf(mapViewModel.rainFunction()) }
 	val rainImageResource = when(rainCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	var snowCheck by remember { mutableStateOf(snowFunction(weatherModel)) }
+	val snowCheck by remember { mutableStateOf(mapViewModel.snowFunction()) }
 	val snowImageResource = when(snowCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	var windCheck by remember { mutableStateOf(windFunction(weatherModel)) }
+	val windCheck by remember { mutableStateOf(mapViewModel.windFunction()) }
 	val windImageResource = when(windCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	var flightApproval by remember { mutableStateOf(checkApproval(sunlightCheck, rainCheck, windCheck, snowCheck)) }
+	val flightApproval by remember { mutableStateOf(mapViewModel.checkApproval(sunlightCheck, rainCheck, windCheck, snowCheck)) }
 
 	Column(modifier = modifier.fillMaxSize()) {
 		Text(modifier = Modifier
@@ -83,12 +63,8 @@ fun FeedbackPage(sunWeatherUiState: State<SunWeatherUiState>, modifier: Modifier
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(
-				//if(approved) {
 					id = com.example.prosjekt_team18.R.drawable.icons8_done_128
-				//}
-				//else {
-				//id = com.example.prosjekt_team18.R.drawable.icons8_close_128) }
-			),
+				),
 				contentDescription = "")
 		}
 
@@ -187,76 +163,5 @@ fun FeedbackPage(sunWeatherUiState: State<SunWeatherUiState>, modifier: Modifier
 				color = Color(204, 0, 0)
 			)
 		}
-
-		/*
-		if (weatherModel != null) {
-			Text(modifier = Modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.CenterHorizontally),
-				text = weatherModel.windSpeed.toString(), fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color(51, 153, 51))
-		}
-		 */
-
-		/*
-		if (sunData != null) {
-			if (sunriseTimeString != null) {
-				Text(modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentWidth(Alignment.CenterHorizontally),
-					text = sunriseTimeString, fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color(51, 153, 51))
-			}
-		}
-		*/
 	}
-}
-
-fun sunlightFunction(timeNow: String, sunriseTimeString: String?, sunsetTimeString: String?): Boolean {
-	return timeNow > sunriseTimeString.toString() && timeNow < sunsetTimeString.toString()
-}
-
-fun rainFunction(weatherModel: WeatherModel?): Boolean {
-	if (weatherModel != null) {
-		return weatherModel.rainNextHour < 0.1
-	}
-	return false
-}
-
-fun snowFunction(weatherModel: WeatherModel?): Boolean {
-	if (weatherModel != null) {
-		return weatherModel.summaryNextHour != "snow" && weatherModel.summaryNextHour != "sleet"
-	}
-	return false
-}
-
-fun windFunction(weatherModel: WeatherModel?): Boolean {
-	if (weatherModel != null) {
-		return weatherModel.windSpeed < 10.0
-	}
-	return false
-}
-
-
-fun checkApproval(
-	sunlightCheck: Boolean,
-	rainCheck: Boolean,
-	snowCheck: Boolean,
-	windCheck: Boolean
-): Boolean {
-	/*
-	if(!) {
-		return false
-	}*/
-	if(!sunlightCheck) {
-		return false
-	}
-	if(!rainCheck) {
-		return false
-	}
-	if(!snowCheck) {
-		return false
-	}
-	if(!windCheck) {
-		return false
-	}
-	return true
 }

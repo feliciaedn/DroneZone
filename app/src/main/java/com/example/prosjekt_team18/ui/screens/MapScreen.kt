@@ -54,10 +54,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionState, userLocation: LatLng, permissionGranted: Boolean, context: Context) {
 	val screenUiState = mapViewModel.screenUiState.collectAsState()
 	val sunWeatherUiState = mapViewModel.sunWeatherUiState.collectAsState()
-//	mapViewModel.updateWeatherData(userLocation)
-//	mapViewModel.updateSunData(userLocation)
 
-//	mapViewModel.selectLocation(userLocation)
 	mapViewModel.updateLocationData()
 
 
@@ -131,7 +128,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 //					}
 				}
 				else if (screenUiState.value.showSheet == Sheet.Feedback) {
-					FeedbackPage(sunWeatherUiState)
+					FeedbackPage(mapViewModel)
 				}
 
 			}

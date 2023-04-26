@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.prosjekt_team18.data.FeedbackModel
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.maps.SearchResult
 import com.example.prosjekt_team18.data.sunrise.SunData
@@ -26,13 +27,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.DateFormat
 
 class MapViewModel(
 	private val weatherDataSource: WeatherDataSource,
 	private val sunDataSource: SunDataSource,
+	private val feedbackModel: FeedbackModel,
 ) : ViewModel() {
-
-
 
 	lateinit var placesClient: PlacesClient
 	lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -143,7 +144,7 @@ class MapViewModel(
 	}
 
 
-	fun updateWeatherData(userLocation: LatLng) {
+	private fun updateWeatherData(userLocation: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
 				try {
@@ -159,7 +160,7 @@ class MapViewModel(
 		}
 	}
 
-	fun updateSunData(userLocation: LatLng) {
+	private fun updateSunData(userLocation: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
 				try {
@@ -174,5 +175,40 @@ class MapViewModel(
 				}
 			}
 		}
+	}
+
+	fun sunlightFunction(): Boolean {
+		val sunData = sunWeatherUiState.value.sunData
+		val weatherModel = sunWeatherUiState.value.currentWeather
+		if (weatherModel != null && sunData != null) {
+			val sunriseTimeString =
+				DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunrise.time)
+			val sunsetTimeString =
+				DateFormat.getTimeInstance(DateFormat.SHORT).format(sunData.sunset.time)
+
+			return feedbackModel.sunlightFunction(sunriseTimeString, sunsetTimeString)
+		}
+		return false
+	}
+
+	fun rainFunction(): Boolean {
+		return feedbackModel.rainFunction(_sunWeatherUiState.value.currentWeather)
+	}
+
+	fun snowFunction(): Boolean {
+		return feedbackModel.snowFunction(_sunWeatherUiState.value.currentWeather)
+	}
+
+	fun windFunction(): Boolean {
+		return feedbackModel.windFunction(_sunWeatherUiState.value.currentWeather)
+	}
+
+	fun checkApproval(
+		sunlightCheck: Boolean,
+		rainCheck: Boolean,
+		snowCheck: Boolean,
+		windCheck: Boolean
+	): Boolean {
+		return feedbackModel.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck)
 	}
 }
