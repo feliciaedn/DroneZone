@@ -107,7 +107,6 @@ class MapViewModel(
 		_screenUiState.update { currentState ->
 			currentState.copy(selectedLocation = location)
 		}
-
 		updateLocationData()
 	}
 
@@ -199,7 +198,11 @@ class MapViewModel(
 	}
 
 	fun airportFunction(): Boolean {
-		return feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
+		var result: Boolean = false
+		viewModelScope.launch(Dispatchers.Default) {
+			result = feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
+		}
+		return result
 	}
 
 	fun checkApproval(

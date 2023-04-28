@@ -67,18 +67,18 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 		skipHalfExpanded = true,
 	)
 
-	if(screenUiState.value.showSheet != Sheet.None){
+//	if(screenUiState.value.showSheet != Sheet.None){
+//		coroutineScope.launch {
+//			modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+//		}
+//	} else {
+	if (screenUiState.value.showSheet == Sheet.None && modalSheetState.isVisible){
 		coroutineScope.launch {
-			modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
-		}
-	} else {
-		if (modalSheetState.isVisible){
-			coroutineScope.launch {
-				modalSheetState.hide()
-				mapViewModel.hideSheet()
-			}
+			modalSheetState.hide()
+			mapViewModel.hideSheet()
 		}
 	}
+//	}
 
 	//val modifier = Modifier.height(570.dp)
 	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
@@ -111,7 +111,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				if (screenUiState.value.showSheet == Sheet.Rules) {
 					//Spacer(modifier = Modifier.height(16.dp))
 					//Tekst regler her:
-					var modifier = Modifier
+					val modifier = Modifier
 					RulePage(modifier)
 //					coroutineScope.launch {
 //						modalSheetState.show()
@@ -211,6 +211,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
 //							mapViewModel.selectLocation(mapViewModel.markerLocation)
+							println("CLICKED INFO WINDOW")
 							mapViewModel.showSheet(Sheet.Weather)
 
 						}
