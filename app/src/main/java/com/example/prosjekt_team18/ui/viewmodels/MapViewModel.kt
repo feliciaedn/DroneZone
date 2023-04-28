@@ -198,11 +198,12 @@ class MapViewModel(
 	}
 
 	fun airportFunction(): Boolean {
-		var result: Boolean = false
-		viewModelScope.launch(Dispatchers.Default) {
-			result = feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
-		}
-		return result
+//		var result: Boolean = false
+//		viewModelScope.launch(Dispatchers.Default) {
+//			result = feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
+//		}
+//		return result
+		return feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
 	}
 
 	fun checkApproval(

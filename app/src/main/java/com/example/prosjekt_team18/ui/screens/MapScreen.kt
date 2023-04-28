@@ -45,6 +45,7 @@ import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -154,7 +155,8 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 						context,
 						screenUiState,
 						sunWeatherUiState,
-						modalSheetState)
+						modalSheetState,
+						coroutineScope)
 
 				}
             }
@@ -176,6 +178,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			  screenUiState: State<ScreenUiState>,
 			  sunWeatherUiState: State<SunWeatherUiState>,
 			  modalSheetState: ModalBottomSheetState,
+			  coroutineScope: CoroutineScope,
 ) {
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
@@ -213,6 +216,9 @@ fun MapScreen(mapViewModel: MapViewModel,
 //							mapViewModel.selectLocation(mapViewModel.markerLocation)
 							println("CLICKED INFO WINDOW")
 							mapViewModel.showSheet(Sheet.Weather)
+							coroutineScope.launch {
+								modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
+							}
 
 						}
 					)
@@ -293,6 +299,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			context,
 			userLocation,
 			modalSheetState,
+			coroutineScope,
 		)
 	}
 
@@ -408,9 +415,9 @@ fun NavigationBar(modifier: Modifier = Modifier,
 				  sunWeatherUiState: State<SunWeatherUiState>,
 				  context: Context,
 				  userLocation: LatLng,
-				  modalSheetState: ModalBottomSheetState
+				  modalSheetState: ModalBottomSheetState,
+				  coroutineScope: CoroutineScope,
 ) {
-	val coroutineScope = rememberCoroutineScope()
 
 	var selectedItem by remember { mutableStateOf("") }
 	val items = listOf("Search", "Feedback", "Weather", "Rules")
