@@ -1,11 +1,13 @@
 package com.example.prosjekt_team18.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -92,12 +94,12 @@ fun RulePageDescription(modifier: Modifier = Modifier) {
 @Composable
 fun RuleImageColumn(modifier: Modifier = Modifier) {
     val ruleImageIds = listOf(
-        R.drawable.regel1_registrering,
-        R.drawable.regel2_forsikring,
-        R.drawable.regel3_droneforbudssoner,
-        R.drawable.regel4_sedronen,
-        R.drawable.regel5_ikkeflyover,
-        R.drawable.regel6_avstand
+        R.drawable.droneregel1_registering,
+        R.drawable.droneregel2_forsikring,
+        R.drawable.droneregel3_droneforbudssoner,
+        R.drawable.droneregel4_sedronen,
+        R.drawable.droneregel5_ikkeflyover,
+        R.drawable.droneregel6_avstand
     )
 
     val ruleDescriptionIds = stringArrayResource(R.array.rule_descriptions)
@@ -107,12 +109,21 @@ fun RuleImageColumn(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var ruleNr = 1
+        item { RuleCard(ruleImageIds[0], ruleDescriptionIds[0],modifier) }
+        item { RuleCard(ruleImageIds[1], ruleDescriptionIds[1],modifier) }
+        item { RuleCard(ruleImageIds[2], ruleDescriptionIds[2],modifier) }
+        item { RuleCard(ruleImageIds[3], ruleDescriptionIds[3],modifier) }
+        item { RuleCard(ruleImageIds[4], ruleDescriptionIds[4],modifier) }
+        item { RuleCard(ruleImageIds[5], ruleDescriptionIds[5],modifier) }
+    }
+        /*
+        var ruleNr = 0
         items(ruleImageIds) { ruleImageId ->
             RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++ % ruleDescriptionIds.size], modifier)
             //RuleCard(ruleImageId, ruleDescriptionIds[ruleNr++], modifier)
         }
     }
+         */
 }
 
 @Composable
@@ -146,6 +157,11 @@ fun RuleCard(
                 painter = painterResource(id = imageId),
                 contentDescription = ruleDescription
             )
+
+            Text(ruleDescription, fontSize = 20.sp, color = Color(0xFF1B467C), modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally))
 
         }
 
