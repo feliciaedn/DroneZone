@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.prosjekt_team18.data.AirportData
+import com.example.prosjekt_team18.data.resources.AirportData
 import com.example.prosjekt_team18.data.FeedbackModel
 import com.example.prosjekt_team18.data.maps.LocationDetails
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
@@ -40,11 +40,11 @@ class MainActivity : ComponentActivity() {
 
 	private val weatherDataSource = WeatherDataSource()
 	private val sunDataSource = SunDataSource()
-	private val airportData = AirportData()
-	private val feedbackModel = FeedbackModel(airportData)
+//	private val airportData = AirportData()
+	private val feedbackModel = FeedbackModel()
 
 	private val mapViewModel: MapViewModel =
-		MapViewModel(weatherDataSource, sunDataSource, feedbackModel, airportData)
+		MapViewModel(weatherDataSource, sunDataSource, feedbackModel)
 
 	private var fusedLocationClient: FusedLocationProviderClient? = null
 

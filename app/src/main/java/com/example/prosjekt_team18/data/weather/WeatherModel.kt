@@ -11,9 +11,9 @@ data class WeatherModel (
     val windDirection: Double,
     val windSpeed: Double,
 
-    val tempUnit: String,
-    val rainUnit: String,
-    val windDirUnit: String,
-    val windSpeedUnit: String,
+//    val tempUnit: String,
+//    val rainUnit: String,
+//    val windDirUnit: String,
+//    val windSpeedUnit: String,
 
 )

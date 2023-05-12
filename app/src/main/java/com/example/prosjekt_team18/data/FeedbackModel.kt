@@ -1,41 +1,57 @@
 package com.example.prosjekt_team18.data
 
+import android.location.Location
+import com.example.prosjekt_team18.data.resources.AirportData
+import com.example.prosjekt_team18.data.resources.AirportData.latCoordinates
+import com.example.prosjekt_team18.data.resources.AirportData.lngCoordinates
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.google.android.gms.maps.model.LatLng
-import java.text.DateFormat
 import java.util.*
 
-class FeedbackModel (val airportData: AirportData) {
-    private val calendar = Calendar.getInstance().time
-//    private var timeNow = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar)
+class FeedbackModel () {
 
-    fun sunlightFunction(sunriseTime: Date, sunsetTime: Date): Boolean {
-        return calendar.after(sunriseTime) && calendar.before(sunsetTime)
+    fun enoughSunlight(sunriseTime: Date, sunsetTime: Date, timeNow: Date): Boolean {
+        return timeNow.after(sunriseTime) && timeNow.before(sunsetTime)
     }
 
-    fun rainFunction(weatherModel: WeatherModel?): Boolean {
+    fun okRain(weatherModel: WeatherModel?): Boolean {
         if (weatherModel != null) {
             return weatherModel.rainNextHour < 0.1
         }
         return false
     }
 
-    fun snowFunction(weatherModel: WeatherModel?): Boolean {
+    fun okSnow(weatherModel: WeatherModel?): Boolean {
         if (weatherModel != null) {
-            return weatherModel.summaryNextHour != "snow" && weatherModel.summaryNextHour != "sleet"
+            return !weatherModel.summaryNextHour.contains("snow")
         }
         return false
     }
 
-    fun windFunction(weatherModel: WeatherModel?): Boolean {
+    fun okWind(weatherModel: WeatherModel?): Boolean {
         if (weatherModel != null) {
             return weatherModel.windSpeed < 10.0
         }
         return false
     }
 
-    fun airportFunction(selectedLocation: LatLng): Boolean {
-        return airportData.locationWithin5km(selectedLocation)
+
+    fun notInAirportZone(selectedLocation: LatLng): Boolean {
+        for (i in latCoordinates.indices) {
+            val airportLocation = LatLng(latCoordinates[i], lngCoordinates[i])
+
+            val results = FloatArray(1)
+            Location.distanceBetween(
+                selectedLocation.latitude, selectedLocation.longitude,
+                airportLocation.latitude, airportLocation.longitude, results
+            )
+
+            if (results[0] <= 5000) {
+                return false
+            }
+
+        }
+        return true
     }
 
     fun checkApproval(

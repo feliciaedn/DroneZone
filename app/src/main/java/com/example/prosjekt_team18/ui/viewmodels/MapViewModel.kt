@@ -6,10 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.prosjekt_team18.data.AirportData
 import com.example.prosjekt_team18.data.FeedbackModel
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.maps.SearchResult
+import com.example.prosjekt_team18.data.resources.AirportData.latCoordinates
+import com.example.prosjekt_team18.data.resources.AirportData.lngCoordinates
+import com.example.prosjekt_team18.data.resources.AirportData.airportNames
 import com.example.prosjekt_team18.data.sunrise.SunData
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
@@ -28,14 +30,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.text.DateFormat
 import java.util.*
 
 class MapViewModel(
 	private val weatherDataSource: WeatherDataSource,
 	private val sunDataSource: SunDataSource,
 	private val feedbackModel: FeedbackModel,
-	private val airportData: AirportData,
 ) : ViewModel() {
 
 	lateinit var placesClient: PlacesClient
@@ -177,33 +177,30 @@ class MapViewModel(
 		}
 	}
 
-	fun sunlightFunction(): Boolean {
+	fun enoughSunlight(): Boolean {
 		val sunData = sunWeatherUiState.value.sunData
+		val calendar = Calendar.getInstance().time
+
 		if (sunData != null) {
-			return feedbackModel.sunlightFunction(sunData.sunrise.time, sunData.sunset.time)
+			return feedbackModel.enoughSunlight(sunData.sunrise.time, sunData.sunset.time, calendar)
 		}
 		return false
 	}
 
-	fun rainFunction(): Boolean {
-		return feedbackModel.rainFunction(_sunWeatherUiState.value.currentWeather)
+	fun okRain(): Boolean {
+		return feedbackModel.okRain(_sunWeatherUiState.value.currentWeather)
 	}
 
-	fun snowFunction(): Boolean {
-		return feedbackModel.snowFunction(_sunWeatherUiState.value.currentWeather)
+	fun okSnow(): Boolean {
+		return feedbackModel.okSnow(_sunWeatherUiState.value.currentWeather)
 	}
 
-	fun windFunction(): Boolean {
-		return feedbackModel.windFunction(_sunWeatherUiState.value.currentWeather)
+	fun okWind(): Boolean {
+		return feedbackModel.okWind(_sunWeatherUiState.value.currentWeather)
 	}
 
-	fun airportFunction(): Boolean {
-//		var result: Boolean = false
-//		viewModelScope.launch(Dispatchers.Default) {
-//			result = feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
-//		}
-//		return result
-		return feedbackModel.airportFunction(_screenUiState.value.selectedLocation)
+	fun notInAirportZone(): Boolean {
+		return feedbackModel.notInAirportZone(_screenUiState.value.selectedLocation)
 	}
 
 	fun checkApproval(
@@ -217,14 +214,14 @@ class MapViewModel(
 	}
 
 	fun airportLatCoordinates(): List<Double> {
-		return airportData.latCoordinates
+		return latCoordinates
 	}
 
 	fun airportLngCoordinates(): List<Double> {
-		return airportData.lngCoordinates
+		return lngCoordinates
 	}
 
 	fun airportNames(): List<String> {
-		return airportData.airportNames
+		return airportNames
 	}
 }

@@ -17,31 +17,31 @@ import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 @Composable
 fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 
-	val sunlightCheck by remember { mutableStateOf(mapViewModel.sunlightFunction()) }
+	val sunlightCheck by remember { mutableStateOf(mapViewModel.enoughSunlight()) }
 	val sunlightImageResource = when(sunlightCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	val rainCheck by remember { mutableStateOf(mapViewModel.rainFunction()) }
+	val rainCheck by remember { mutableStateOf(mapViewModel.okRain()) }
 	val rainImageResource = when(rainCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	val snowCheck by remember { mutableStateOf(mapViewModel.snowFunction()) }
+	val snowCheck by remember { mutableStateOf(mapViewModel.okSnow()) }
 	val snowImageResource = when(snowCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	val windCheck by remember { mutableStateOf(mapViewModel.windFunction()) }
+	val windCheck by remember { mutableStateOf(mapViewModel.okWind()) }
 	val windImageResource = when(windCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128
 	}
 
-	val airportCheck by remember { mutableStateOf(mapViewModel.airportFunction()) }
+	val airportCheck by remember { mutableStateOf(mapViewModel.notInAirportZone()) }
 	val	airportImageResource = when(airportCheck) {
 		true -> com.example.prosjekt_team18.R.drawable.icons8_done_128
 		else -> com.example.prosjekt_team18.R.drawable.icons8_close_128

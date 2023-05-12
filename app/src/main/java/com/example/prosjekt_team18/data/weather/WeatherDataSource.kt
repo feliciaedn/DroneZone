@@ -43,13 +43,13 @@ class WeatherDataSource {
         val windDirection = forecastAtTime.data.instant.details.wind_from_direction
         val windSpeed = forecastAtTime.data.instant.details.wind_speed
 
-        val metaData = data.properties.meta
-        val tempUnit = metaData.units.air_temperature
-        val rainUnit = metaData.units.precipitation_amount
-        val windDirUnit = metaData.units.wind_from_direction
-        val windSpeedUnit = metaData.units.wind_speed
+//        val metaData = data.properties.meta
+//        val tempUnit = metaData.units.air_temperature
+//        val rainUnit = metaData.units.precipitation_amount
+//        val windDirUnit = metaData.units.wind_from_direction
+//        val windSpeedUnit = metaData.units.wind_speed
 
-        return WeatherModel(date, temperature, summaryCode, summary, rain, windDirection, windSpeed, tempUnit, rainUnit,
-            windDirUnit, windSpeedUnit)
+        return WeatherModel(date, temperature, summaryCode, summary, rain, windDirection, windSpeed /*, tempUnit, rainUnit,
+            windDirUnit, windSpeedUnit*/)
     }
 }

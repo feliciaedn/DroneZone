@@ -58,7 +58,7 @@ class WeatherDataSourceTest {
         // Act
         val result: WeatherModel = weatherDataSource.getWeatherData(lat, lon)
         // Assert
-        assertEquals(0.0, result.rainNext6h)
+        assertEquals(0.0, result.rainNextHour)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
