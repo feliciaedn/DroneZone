@@ -73,10 +73,7 @@ fun SearchBar(mapViewModel: MapViewModel){
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = { focusManager.clearFocus() },
-//                    onSearch = {
-//                        mapViewModel.text = ""
-//                        focusManager.clearFocus()
-//                    }
+                    onSearch = { focusManager.clearFocus() }
                 ),
                 singleLine = true,
                 textStyle = MaterialTheme.typography.body1.copy(color = Color.Black),
@@ -110,6 +107,7 @@ fun SearchBar(mapViewModel: MapViewModel){
                             mapViewModel.text = it.address
                             mapViewModel.locationAutofill.clear()
                             mapViewModel.getCoordinates(it)
+                            focusManager.clearFocus()
                             //println("showMarker får ny verdi: " + mapViewModel.showMarker.value)
                         }) {
                         Text(text = it.address)
