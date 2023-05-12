@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.prosjekt_team18.data.FeedbackModel
+import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.maps.SearchResult
 import com.example.prosjekt_team18.data.resources.AirportData.latCoordinates
@@ -33,9 +33,9 @@ import java.io.IOException
 import java.util.*
 
 class MapViewModel(
-	private val weatherDataSource: WeatherDataSource,
-	private val sunDataSource: SunDataSource,
-	private val feedbackModel: FeedbackModel,
+    private val weatherDataSource: WeatherDataSource,
+    private val sunDataSource: SunDataSource,
+    private val feedbackCheck: FeedbackCheck,
 ) : ViewModel() {
 
 	lateinit var placesClient: PlacesClient
@@ -182,25 +182,25 @@ class MapViewModel(
 		val calendar = Calendar.getInstance().time
 
 		if (sunData != null) {
-			return feedbackModel.enoughSunlight(sunData.sunrise.time, sunData.sunset.time, calendar)
+			return feedbackCheck.enoughSunlight(sunData.sunrise.time, sunData.sunset.time, calendar)
 		}
 		return false
 	}
 
 	fun okRain(): Boolean {
-		return feedbackModel.okRain(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okRain(_sunWeatherUiState.value.currentWeather)
 	}
 
 	fun okSnow(): Boolean {
-		return feedbackModel.okSnow(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
 	}
 
 	fun okWind(): Boolean {
-		return feedbackModel.okWind(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okWind(_sunWeatherUiState.value.currentWeather)
 	}
 
 	fun notInAirportZone(): Boolean {
-		return feedbackModel.notInAirportZone(_screenUiState.value.selectedLocation)
+		return feedbackCheck.notInAirportZone(_screenUiState.value.selectedLocation)
 	}
 
 	fun checkApproval(
@@ -210,7 +210,7 @@ class MapViewModel(
 		windCheck: Boolean,
 		airportCheck: Boolean
 	): Boolean {
-		return feedbackModel.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck, airportCheck)
+		return feedbackCheck.checkApproval(sunlightCheck, rainCheck, snowCheck, windCheck, airportCheck)
 	}
 
 	fun airportLatCoordinates(): List<Double> {

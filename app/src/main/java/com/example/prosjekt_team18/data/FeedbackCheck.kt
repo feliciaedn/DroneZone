@@ -1,14 +1,13 @@
 package com.example.prosjekt_team18.data
 
 import android.location.Location
-import com.example.prosjekt_team18.data.resources.AirportData
 import com.example.prosjekt_team18.data.resources.AirportData.latCoordinates
 import com.example.prosjekt_team18.data.resources.AirportData.lngCoordinates
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.google.android.gms.maps.model.LatLng
 import java.util.*
 
-class FeedbackModel () {
+class FeedbackCheck () {
 
     fun enoughSunlight(sunriseTime: Date, sunsetTime: Date, timeNow: Date): Boolean {
         return timeNow.after(sunriseTime) && timeNow.before(sunsetTime)

@@ -1,19 +1,14 @@
 package com.example.prosjekt_team18
 
-import android.location.Location
-import com.example.prosjekt_team18.data.FeedbackModel
+import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.weather.WeatherModel
-import com.google.android.gms.maps.model.LatLng
-import io.ktor.util.date.*
 import org.junit.Test
 import java.time.LocalDate
-import java.time.LocalTime
-import junit.framework.TestCase.assertEquals
 
 import java.time.ZoneOffset
 import java.util.*
 
-class FeedbackModelTest {
+class FeedbackCheckTest {
     private val sunrise: Date = Date.from(
         LocalDate.of(2023, 5, 10).atTime(6, 0)
             .toInstant(ZoneOffset.UTC)
@@ -28,7 +23,7 @@ class FeedbackModelTest {
     fun testEnoughSunlightTrue() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val testTime = Date.from(
             LocalDate.of(2023, 5, 10)
@@ -36,7 +31,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val enoughSunlight = feedbackModel.enoughSunlight(sunrise, sunset, testTime)
+        val enoughSunlight = feedbackCheck.enoughSunlight(sunrise, sunset, testTime)
 
         // Assert
         assert(enoughSunlight)
@@ -47,7 +42,7 @@ class FeedbackModelTest {
     fun testEnoughSunlightFalseBeforeSunrise() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val testTime = Date.from(
             LocalDate.of(2023, 5, 10)
@@ -55,7 +50,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val enoughSunlight = feedbackModel.enoughSunlight(sunrise, sunset, testTime)
+        val enoughSunlight = feedbackCheck.enoughSunlight(sunrise, sunset, testTime)
 
         // Assert
         assert(!enoughSunlight)
@@ -66,7 +61,7 @@ class FeedbackModelTest {
     fun testEnoughSunlightFalseAfterSunset() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val testTime = Date.from(
             LocalDate.of(2023, 5, 10)
@@ -74,7 +69,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val enoughSunlight = feedbackModel.enoughSunlight(sunrise, sunset, testTime)
+        val enoughSunlight = feedbackCheck.enoughSunlight(sunrise, sunset, testTime)
 
         // Assert
         assert(!enoughSunlight)
@@ -85,7 +80,7 @@ class FeedbackModelTest {
     fun testOkRainTrue() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -98,7 +93,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okRain = feedbackModel.okRain(weatherModel)
+        val okRain = feedbackCheck.okRain(weatherModel)
 
         // Assert
         assert(okRain)
@@ -109,7 +104,7 @@ class FeedbackModelTest {
     fun testOkRainFalse() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -122,7 +117,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okRain = feedbackModel.okRain(weatherModel)
+        val okRain = feedbackCheck.okRain(weatherModel)
 
         // Assert
         assert(!okRain)
@@ -133,7 +128,7 @@ class FeedbackModelTest {
     fun testOkSnowTrue() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -146,7 +141,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okSnow = feedbackModel.okSnow(weatherModel)
+        val okSnow = feedbackCheck.okSnow(weatherModel)
 
         // Assert
         assert(okSnow)
@@ -157,7 +152,7 @@ class FeedbackModelTest {
     fun testOkSnowFalse() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -170,7 +165,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okSnow = feedbackModel.okSnow(weatherModel)
+        val okSnow = feedbackCheck.okSnow(weatherModel)
 
         // Assert
         assert(!okSnow)
@@ -181,7 +176,7 @@ class FeedbackModelTest {
     fun testOkWindTrue() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -194,7 +189,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okWind = feedbackModel.okWind(weatherModel)
+        val okWind = feedbackCheck.okWind(weatherModel)
 
         // Assert
         assert(okWind)
@@ -205,7 +200,7 @@ class FeedbackModelTest {
     fun testOkWindFalse() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         val weatherModel = WeatherModel(
             date = Date(),
@@ -218,7 +213,7 @@ class FeedbackModelTest {
         )
 
         // Act
-        val okWind = feedbackModel.okWind(weatherModel)
+        val okWind = feedbackCheck.okWind(weatherModel)
 
         // Assert
         assert(!okWind)
@@ -228,10 +223,10 @@ class FeedbackModelTest {
     @Test
     fun testCheckApprovalTrue() {
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         // Act
-        val approval = feedbackModel.checkApproval(
+        val approval = feedbackCheck.checkApproval(
             sunlightCheck = true,
             rainCheck = true,
             snowCheck = true,
@@ -247,10 +242,10 @@ class FeedbackModelTest {
     @Test
     fun testCheckApprovalFalse() {
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
 
         // Act
-        val approval = feedbackModel.checkApproval(
+        val approval = feedbackCheck.checkApproval(
             sunlightCheck = true,
             rainCheck = false,
             snowCheck = true,

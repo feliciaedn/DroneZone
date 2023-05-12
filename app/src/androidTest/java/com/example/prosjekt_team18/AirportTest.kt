@@ -1,6 +1,6 @@
 package com.example.prosjekt_team18
 
-import com.example.prosjekt_team18.data.FeedbackModel
+import com.example.prosjekt_team18.data.FeedbackCheck
 import com.google.android.gms.maps.model.LatLng
 import org.junit.Test
 
@@ -10,12 +10,12 @@ class AirportTest {
     fun notInAirportZoneTrue() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
         // ifi
         val location = LatLng(59.9444, 10.7184)
 
         // Act
-        val notInAirportZone = feedbackModel.notInAirportZone(location)
+        val notInAirportZone = feedbackCheck.notInAirportZone(location)
 
         // Assert
         assert(notInAirportZone)
@@ -26,12 +26,12 @@ class AirportTest {
     fun notInAirportZoneFalse() {
 
         // Arrange
-        val feedbackModel = FeedbackModel()
+        val feedbackCheck = FeedbackCheck()
         // Gardermoen
         val location = LatLng(60.191750, 11.101218)
 
         // Act
-        val notInAirportZone = feedbackModel.notInAirportZone(location)
+        val notInAirportZone = feedbackCheck.notInAirportZone(location)
 
         // Assert
         assert(!notInAirportZone)
