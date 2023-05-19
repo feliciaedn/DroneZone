@@ -156,8 +156,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding") }
 
 	Column(modifier = Modifier.fillMaxSize()) {
-
-
 		Box(modifier = Modifier.weight(15f)) {
 			//Displayer google mappet
 			GoogleMap(
@@ -257,7 +255,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 				)
 			}
 		}
-
 		NavigationBar(
 			Modifier.padding(12.dp),
 			NavigationBarDefaults.containerColor,
@@ -270,8 +267,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			coroutineScope,
 		)
 	}
-
-	}
+}
 
 
 

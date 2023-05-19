@@ -69,7 +69,11 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(airportImageResource),
-				contentDescription = "")
+				contentDescription = if(airportCheck) {
+					"godkjent lokasjon"
+				} else {
+					"Ikke godkjent lokasjon"
+				})
 		}
 
 
@@ -86,8 +90,13 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(sunlightImageResource),
-				contentDescription = "")
+				contentDescription = if(sunlightCheck) {
+					"godkjente sollysforhold"
+				} else {
+					"Ikke godkjente sollysforhold"
+				})
 		}
+
 
 
 		Divider(modifier = Modifier
@@ -103,8 +112,13 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(rainImageResource),
-				contentDescription = "")
+				contentDescription = if(rainCheck) {
+					"godkjente regnforhold"
+				} else {
+					"Ikke godkjente regnforhold"
+				})
 		}
+
 
 
 		Divider(modifier = Modifier
@@ -120,7 +134,11 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(snowImageResource),
-				contentDescription = "")
+				contentDescription = if(snowCheck) {
+					"godkjente snøforhold"
+				} else {
+					"Ikke godkjente snøforhold"
+				})
 		}
 
 
@@ -137,7 +155,11 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				.wrapContentWidth(Alignment.End)
 				.padding(top = 5.dp, end = 20.dp),
 				painter = painterResource(windImageResource),
-				contentDescription = "")
+				contentDescription = if(windCheck) {
+					"godkjente vindforhold"
+				} else {
+					"Ikke godkjente vindforhold"
+				})
 		}
 
 
@@ -153,7 +175,7 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 				text = "Godkjent",
 				fontSize = 30.sp,
 				fontWeight = FontWeight.Bold,
-				color = Color(51, 153, 51)
+				color = Color(45, 134, 45)
 			)
 		}
 		else {

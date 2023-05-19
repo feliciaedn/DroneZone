@@ -22,7 +22,7 @@ class FeedbackCheck () {
 
     fun okSnow(weatherModel: WeatherModel?): Boolean {
         if (weatherModel != null) {
-            return !weatherModel.summaryNextHour.contains("snow")
+            return !weatherModel.summaryNextHour.contains("snow") && !weatherModel.summaryNextHour.contains("sleet")
         }
         return false
     }
