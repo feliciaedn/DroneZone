@@ -79,7 +79,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 			) {
 				androidx.compose.material.Icon(
 					Icons.Default.Close,
-					contentDescription = null, //endre
+					contentDescription = "lukk siden",
 					tint = MaterialTheme.colors.onSurface
 				)
 			}
@@ -198,7 +198,12 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 				for (i in latCoordinates.indices) {
 					Marker(
-						state = rememberMarkerState(position = LatLng(latCoordinates[i], lngCoordinates[i])),
+						state = rememberMarkerState(
+							position = LatLng(
+								latCoordinates[i],
+								lngCoordinates[i]
+							)
+						),
 						title = mapViewModel.airportNames()[i],
 						//Legge inn ikon for flyplass i stedet?
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
@@ -255,6 +260,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 				)
 			}
 		}
+
 		NavigationBar(
 			Modifier.padding(12.dp),
 			NavigationBarDefaults.containerColor,
@@ -266,8 +272,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			modalSheetState,
 			coroutineScope,
 		)
-	}
-}
+	}}
 
 
 
