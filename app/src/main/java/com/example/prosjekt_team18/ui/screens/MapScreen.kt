@@ -79,7 +79,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 			) {
 				androidx.compose.material.Icon(
 					Icons.Default.Close,
-					contentDescription = null, //endre
+					contentDescription = "lukk siden",
 					tint = MaterialTheme.colors.onSurface
 				)
 			}
@@ -164,7 +164,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 				properties = positionUiState.properties,
 				cameraPositionState = cameraPositionState,
 				onMapClick = {
-					if(mapViewModel.showMarker.value) {
+					if (mapViewModel.showMarker.value) {
 						lagre2.value = "Trykk for å sjekke værmelding"
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
@@ -172,7 +172,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 				}
 			) {
-				if(mapViewModel.showMarker.value) {
+				if (mapViewModel.showMarker.value) {
 					val markerState = rememberMarkerState(position = mapViewModel.markerLocation)
 					mapViewModel.selectLocation(mapViewModel.markerLocation)
 					markerState.showInfoWindow()
@@ -200,7 +200,12 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 				for (i in latCoordinates.indices) {
 					Marker(
-						state = rememberMarkerState(position = LatLng(latCoordinates[i], lngCoordinates[i])),
+						state = rememberMarkerState(
+							position = LatLng(
+								latCoordinates[i],
+								lngCoordinates[i]
+							)
+						),
 						title = mapViewModel.airportNames()[i],
 						//Legge inn ikon for flyplass i stedet?
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
@@ -269,9 +274,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			modalSheetState,
 			coroutineScope,
 		)
-	}
-
-	}
+	}}
 
 
 

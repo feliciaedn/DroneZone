@@ -31,6 +31,7 @@ import com.example.prosjekt_team18.R
 
 @Composable
 fun RulePage(modifier: Modifier = Modifier) {
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -50,6 +51,7 @@ fun RulePage(modifier: Modifier = Modifier) {
 
 @Composable
 fun RulePageDescription(modifier: Modifier = Modifier) {
+
     // TEXT WITH HYPERLINK
     // Creating an annonated string
     val annotatedLinkString = buildAnnotatedString {
@@ -116,6 +118,7 @@ fun RuleImageColumn(modifier: Modifier = Modifier) {
         item { RuleCard(ruleImageIds[4], ruleDescriptionIds[4],modifier) }
         item { RuleCard(ruleImageIds[5], ruleDescriptionIds[5],modifier) }
     }
+
         /*
         var ruleNr = 0
         items(ruleImageIds) { ruleImageId ->
@@ -132,6 +135,7 @@ fun RuleCard(
     ruleDescription: String,
     modifier: Modifier = Modifier,
 ) {
+
     Card (
         shape = RoundedCornerShape(10.dp),
         colors =  CardDefaults.cardColors(
