@@ -129,6 +129,7 @@ class MainActivity : ComponentActivity() {
 				println("går inn3")
 				// Request current location
 				mapViewModel.fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener { _location: Location? ->
+					println("hentet brukers lokasjon")
 					if (_location == null) {
 						Toast.makeText(
 							this@MainActivity,
