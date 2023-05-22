@@ -25,8 +25,7 @@ import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -39,14 +38,12 @@ class MainActivity : ComponentActivity() {
 
 	private val weatherDataSource = WeatherDataSource()
 	private val sunDataSource = SunDataSource()
-//	private val airportData = AirportData()
 	private val feedbackCheck = FeedbackCheck()
 
 	private val mapViewModel: MapViewModel =
 		MapViewModel(weatherDataSource, sunDataSource, feedbackCheck)
 
-	private var fusedLocationClient: FusedLocationProviderClient? = null
-
+//	private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -130,15 +127,23 @@ class MainActivity : ComponentActivity() {
 				println("går inn2")
 			} else {
 				println("går inn3")
-				mapViewModel.fusedLocationClient.lastLocation.addOnSuccessListener { _location: Location? ->
-					if (_location != null) {
+				// Request current location
+				mapViewModel.fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener { _location: Location? ->
+					if (_location == null) {
+						Toast.makeText(
+							this@MainActivity,
+							"Error: Kunne ikke laste inn nåværende lokasjon",
+							Toast.LENGTH_SHORT
+						).show()
+
+					} else {
 						mapViewModel.userLocation = LatLng(_location.latitude, _location.longitude)
 						mapViewModel.mapUiState.value.currentLocation =
 							LocationDetails(_location.latitude, _location.longitude)
 						mapViewModel.mapUiState.value.properties =
 							MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
 						mapViewModel.hasLocation = true
-						println("inni if")
+						println("inni else2")
 						println(mapViewModel.userLocation.toString())
 					}
 				}
