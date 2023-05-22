@@ -127,6 +127,20 @@ class MainActivity : ComponentActivity() {
 				println("går inn2")
 			} else {
 				println("går inn3")
+				/*else {
+					println("går inn3")
+					mapViewModel.fusedLocationClient.lastLocation.addOnSuccessListener { _location: Location? ->
+						if (_location != null) {
+							mapViewModel.userLocation = LatLng(_location.latitude, _location.longitude)
+							mapViewModel.mapUiState.value.currentLocation =
+								LocationDetails(_location.latitude, _location.longitude)
+							mapViewModel.mapUiState.value.properties =
+								MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
+							mapViewModel.hasLocation = true
+							println("inni if")
+							println(mapViewModel.userLocation.toString())
+						}
+					}*/
 				// Request current location
 				mapViewModel.fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener { _location: Location? ->
 					println("hentet brukers lokasjon")
