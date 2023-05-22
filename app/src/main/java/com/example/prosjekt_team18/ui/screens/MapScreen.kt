@@ -24,11 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.components.NavigationBar
+import com.example.prosjekt_team18.ui.components.PopupDialog
 import com.example.prosjekt_team18.ui.components.SearchBar
-import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
-import com.example.prosjekt_team18.ui.viewmodels.ScreenUiState
-import com.example.prosjekt_team18.ui.viewmodels.Sheet
-import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
+import com.example.prosjekt_team18.ui.viewmodels.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
@@ -95,15 +93,31 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
-					WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
-					println("SHOWING WEATHER PAGE for location ${screenUiState.value.selectedLocation}")
-					println("weathermodel: " + sunWeatherUiState.value.currentWeather)
+					if (sunWeatherUiState.value.status == Status.Success) {
+						WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
 
-				}
-				else if (screenUiState.value.showSheet == Sheet.Feedback) {
-					println("SHOWING FEEDBACK PAGE for location ${screenUiState.value.selectedLocation}")
+					} else if (sunWeatherUiState.value.status == Status.Error){
+						PopupDialog(
+							title = "Kunne ikke laste inn værdata",
+							description = "Sjekk at du er tilkoblet internet og prøv igjen."
+						)
+					}
+//					WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
+//					println("SHOWING WEATHER PAGE for location ${screenUiState.value.selectedLocation}")
+//					println("weathermodel: " + sunWeatherUiState.value.currentWeather)
 
-					FeedbackPage(mapViewModel)
+				} else if (screenUiState.value.showSheet == Sheet.Feedback) {
+					if (sunWeatherUiState.value.status == Status.Success) {
+						FeedbackPage(mapViewModel)
+
+					} else if (sunWeatherUiState.value.status == Status.Error){
+						PopupDialog(
+							title = "Kunne ikke laste inn værdata",
+							description = "Værdata for valgt lokasjon trengs for beregning av " +
+									"flyvetillatelse. Sjekk at du er tilkoblet internet og prøv igjen."
+						)
+					}
+//					println("SHOWING FEEDBACK PAGE for location ${screenUiState.value.selectedLocation}")
 				}
 
 			}
