@@ -1,9 +1,9 @@
-package com.example.prosjekt_team18.ui.screens
+package com.example.prosjekt_team18.ui.pages
 
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
-import android.location.Geocoder.GeocodeListener
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +23,8 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 import com.google.android.gms.maps.model.LatLng
+import java.io.IOException
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -47,32 +47,59 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
         mutableStateOf( "")
     }
 
-    val geocoder = Geocoder(context, Locale.getDefault())
-    val addresses = geocoder.getFromLocation(userLocation.latitude, userLocation.longitude, 1)
-    if (addresses != null && addresses.isNotEmpty()) {
-        val address: Address = addresses[0]
-        by = address.adminArea
-         placeName = address.featureName // Navn på stedet
-        println( "her er addressen folkens her her her: " + placeName)
-       // addressLine = address.getAddressLine(0) // Adresse
-                //         locality = address.locality // Lokalitet
-      country = address.countryName // Land
-
-
-    } else {
-        // Håndter tilfelle der ingen resultater ble funnet.
+    var addressString by remember {
+        mutableStateOf( "")
     }
 
+    val geocoder = Geocoder(context, Locale.getDefault())
+    try {
+        val addresses = geocoder.getFromLocation(userLocation.latitude, userLocation.longitude, 1)
+        if (addresses != null && addresses.isNotEmpty()) {
+            val address: Address = addresses[0]
+            by = if (address.adminArea != null) {
+                address.adminArea
+            } else {
+                ""
+            }
 
+            placeName = if (address.featureName != null) {
+                address.featureName // Navn på stedet
+            } else {
+                ""
+            }
+            println("her er addressen folkens her her her: " + placeName)
+
+            // addressLine = address.getAddressLine(0) // Adresse
+            //         locality = address.locality // Lokalitet
+            country = if (address.countryName != null) {
+                address.countryName // Land
+            } else {
+                ""
+            }
+
+            addressString = if (by != "") {
+                "$by, $country"
+            } else {
+                country
+            }
+
+        }
+    } catch (e: IOException) {
+        Toast.makeText(
+            context,
+            "Kunne ikke laste inn addressen. Sjekk at du er koblet til nettet.",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     if (weatherModel != null && sunData != null) {
-		var sunriseTimeString: String = if(sunData.sunrise.time != null) {
+		val sunriseTimeString: String = if(sunData.sunrise.time != null) {
 			DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY)
 				.format(sunData.sunrise.time)
 		} else {
 			"N/A"
 		}
-		var sunsetTimeString: String = if(sunData.sunset.time != null) {
+		val sunsetTimeString: String = if(sunData.sunset.time != null) {
 			DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY)
 				.format(sunData.sunset.time)
 		} else {
@@ -85,7 +112,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                by + ", "+ country,
+                addressString,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 35.sp,

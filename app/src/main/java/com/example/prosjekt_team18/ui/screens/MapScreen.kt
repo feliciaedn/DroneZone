@@ -26,6 +26,7 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.components.NavigationBar
 import com.example.prosjekt_team18.ui.components.PopupDialog
 import com.example.prosjekt_team18.ui.components.SearchBar
+import com.example.prosjekt_team18.ui.pages.WeatherPage
 import com.example.prosjekt_team18.ui.viewmodels.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng

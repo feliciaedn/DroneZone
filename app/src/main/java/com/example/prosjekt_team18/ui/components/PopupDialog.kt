@@ -61,13 +61,13 @@ fun PopupDialog(title: String, description: String) {
                             )
                         )
 
-                        Spacer(modifier = Modifier.height(5.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         Button(
                             onClick = { openDialog.value = false },
                             shape = RoundedCornerShape(50.dp),
                             modifier = Modifier
-                                .height(50.dp).align(Alignment.End)
+                                .height(50.dp).align(Alignment.CenterHorizontally)
                                 .padding(bottom = 5.dp, top = 5.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B467C))
                         ) {

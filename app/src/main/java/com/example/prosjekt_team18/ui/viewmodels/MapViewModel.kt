@@ -1,5 +1,9 @@
 package com.example.prosjekt_team18.ui.viewmodels
 
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +51,8 @@ class MapViewModel(
 
 	var userLocation by mutableStateOf(LatLng(0.0, 0.0))
 	var searchLatLong by mutableStateOf(LatLng(0.0, 0.0))
+
+	var locationAddress by mutableStateOf(null)
 
 	var hasLaunched: Boolean = false
 	var hasLocation: Boolean = false
@@ -133,16 +139,12 @@ class MapViewModel(
 	}
 
 	fun updateLocationData() {
-		// skal det vaere scope her ogsaa ????
-//		viewModelScope.launch(Dispatchers.IO) {
 		val selectedLocation = _screenUiState.value.selectedLocation
 		updateWeatherData(selectedLocation)
 		updateSunData(selectedLocation)
 		println("UPDATED LOCATION DATA TO $selectedLocation")
 
-//		}
 	}
-
 
 	private fun updateWeatherData(userLocation: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
