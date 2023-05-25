@@ -26,6 +26,7 @@ import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.components.NavigationBar
 import com.example.prosjekt_team18.ui.components.PopupDialog
 import com.example.prosjekt_team18.ui.components.SearchBar
+import com.example.prosjekt_team18.ui.components.SegmentedControl
 import com.example.prosjekt_team18.ui.pages.WeatherPage
 import com.example.prosjekt_team18.ui.viewmodels.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -95,6 +96,17 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
 					if (sunWeatherUiState.value.status == Status.Success) {
+						SegmentedControl(
+							items = listOf("Min Lokasjon", "Søk"),
+							defaultSelectedItemIndex = 1,
+							useFixedWidth = true,
+							itemWidth = 129.dp,
+							cornerRadius = 100,
+							color =  R.color.my_color,
+							onItemSelection = { selectedItemIndex ->
+								// Do something with the selected item index
+							},mapViewModel
+						)
 						WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
 
 					} else if (sunWeatherUiState.value.status == Status.Error){
