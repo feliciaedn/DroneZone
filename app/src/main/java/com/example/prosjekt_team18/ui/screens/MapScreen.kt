@@ -44,7 +44,8 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	val screenUiState = mapViewModel.screenUiState.collectAsState()
 	val sunWeatherUiState = mapViewModel.sunWeatherUiState.collectAsState()
 
-	mapViewModel.updateLocationData()
+	mapViewModel.updateLocationData(userLocation)
+//	mapViewModel.selectLocation(userLocation)
 
 
 	val coroutineScope = rememberCoroutineScope()
@@ -63,26 +64,46 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	}
 
 	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
+	var showCurrentLocationData by remember {mutableStateOf( true)}
+
 
 	ModalBottomSheetLayout(
 		modifier = Modifier.fillMaxHeight(),
 		sheetShape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
 		sheetState = modalSheetState,
 		sheetContent = {
-			IconButton(
-				onClick = {
-					coroutineScope.launch {
-						modalSheetState.hide()
-						mapViewModel.hideSheet()
-					}
+			Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+				IconButton(
+					onClick = {
+						coroutineScope.launch {
+							modalSheetState.hide()
+							mapViewModel.hideSheet()
+						}
+					},
+				) {
+					androidx.compose.material.Icon(
+						Icons.Default.Close,
+						contentDescription = "lukk siden",
+						tint = MaterialTheme.colors.onSurface
+					)
 				}
-			) {
-				androidx.compose.material.Icon(
-					Icons.Default.Close,
-					contentDescription = "lukk siden",
-					tint = MaterialTheme.colors.onSurface
-				)
+				Spacer(Modifier.weight(1f))
+				if (screenUiState.value.showSheet == Sheet.Weather && sunWeatherUiState.value.status == Status.Success) {
+					SegmentedControl(
+						items = listOf("Min lokasjon", "Markert"),
+						defaultSelectedItemIndex = 0,
+						useFixedWidth = false,
+						itemWidth = 50.dp,
+						cornerRadius = 100,
+						color =  R.color.my_color,
+						onItemSelection = { selectedItemIndex ->
+							showCurrentLocationData = selectedItemIndex == 0
+						},
+						pinnedLocation = mapViewModel.showMarker.value
+					)
+				}
 			}
+
 			Column(
 				modifier =  modifier
 					//.fillMaxWidth()
@@ -96,18 +117,25 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
 					if (sunWeatherUiState.value.status == Status.Success) {
-						SegmentedControl(
-							items = listOf("Min Lokasjon", "Søk"),
-							defaultSelectedItemIndex = 1,
-							useFixedWidth = true,
-							itemWidth = 129.dp,
-							cornerRadius = 100,
-							color =  R.color.my_color,
-							onItemSelection = { selectedItemIndex ->
-								// Do something with the selected item index
-							},mapViewModel
-						)
-						WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
+//						var showCurrentLocationData by remember {mutableStateOf( true)}
+//							SegmentedControl(
+//								items = listOf("Min lokasjon", "Markert"),
+//								defaultSelectedItemIndex = 0,
+//								useFixedWidth = true,
+//								itemWidth = 129.dp,
+//								cornerRadius = 100,
+//								color =  R.color.my_color,
+//								onItemSelection = { selectedItemIndex ->
+//									showCurrentLocationData = selectedItemIndex == 0
+//								},
+//								pinnedLocation = mapViewModel.showMarker.value
+//							)
+							if (showCurrentLocationData) {
+								WeatherPage(sunWeatherUiState, context, userLocation, true)
+							} else {
+								WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation, false)
+							}
+
 
 					} else if (sunWeatherUiState.value.status == Status.Error){
 						PopupDialog(

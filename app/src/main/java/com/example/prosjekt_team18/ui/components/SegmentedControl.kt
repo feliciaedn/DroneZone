@@ -2,10 +2,8 @@ package com.example.prosjekt_team18.ui.components
 
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
@@ -16,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -32,12 +31,12 @@ fun SegmentedControl(
     cornerRadius : Int = 10,
     @ColorRes color : Int = R.color.my_color,
     onItemSelection: (selectedItemIndex: Int) -> Unit,
-    mapViewModel: MapViewModel
+    pinnedLocation: Boolean
 ) {
-    val selectedIndex = remember { mutableStateOf(0) }
+    val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
 
     Row(
-        modifier = Modifier
+        modifier = Modifier.padding(10.dp)
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(
@@ -66,42 +65,26 @@ fun SegmentedControl(
                             .zIndex(if (selectedIndex.value == index) 1f else 0f)
                     }
                 },
+                enabled = !(index == 1 && !pinnedLocation),
+
                 onClick = {
-                    selectedIndex.value = index
-                    onItemSelection(selectedIndex.value)
-                    println ("dette er det som er: $index")
+                        selectedIndex.value = index
+                        onItemSelection(selectedIndex.value)
+                        println("dette er det som er: $index")
                 },
                 shape = when (index) {
-                    /**
-                     * left outer button
-                     */
-                    /**
-                     * left outer button
-                     */
                     0 -> RoundedCornerShape(
                         topStartPercent = cornerRadius,
                         topEndPercent = 0,
                         bottomStartPercent = cornerRadius,
                         bottomEndPercent = 0
                     )
-                    /**
-                     * right outer button
-                     */
-                    /**
-                     * right outer button
-                     */
                     items.size - 1 -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = cornerRadius,
                         bottomStartPercent = 0,
                         bottomEndPercent = cornerRadius
                     )
-                    /**
-                     * middle button
-                     */
-                    /**
-                     * middle button
-                     */
                     else -> RoundedCornerShape(
                         topStartPercent = 0,
                         topEndPercent = 0,
@@ -117,43 +100,56 @@ fun SegmentedControl(
                     }
                 ),
                 colors = if (selectedIndex.value == index) {
-                    /**
-                     * selected colors
-                     */
-                    /**
-                     * selected colors
-                     */
+                    // selected colors
                     ButtonDefaults.outlinedButtonColors(
                         backgroundColor = colorResource(
                             id = color
                         )
                     )
                 } else {
-                    /**
-                     * not selected colors
-                     */
-                    /**
-                     * not selected colors
-                     */
-                    ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
+                    // not selected colors
+                    if (index == 1 && !pinnedLocation) {
+                        ButtonDefaults.outlinedButtonColors(backgroundColor = Color(230, 230, 240))
+                    } else {
+                        ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent)
+                    }
                 },
             ) {
-                if ( selectedIndex.value == 0){
-                    mapViewModel.selectLocation(mapViewModel.userLocation)
-                }
-                else{
-                    mapViewModel.selectLocation(mapViewModel.markerLocation)
+//                Text(
+//                    text = item,
+//                    fontWeight = FontWeight.Normal,
+//                    color = if (selectedIndex.value == index) {
+//                        Color.White
+//                    } else {
+//                        colorResource(id = color).copy(alpha = 0.9f)
+//                    },
+//                )
+                if (index == 0) {
+                    val imgId = if (selectedIndex.value == 0) {
+                        R.drawable.my_location_24_white
+                    } else {
+                        R.drawable.my_location_24_blue
+                    }
+                    Image(
+                        painter = painterResource(id = imgId),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    val imgId = if (selectedIndex.value == 1) {
+                        R.drawable.pin_24_white
+                    } else if (pinnedLocation) {
+                        R.drawable.pin_24_blue
+                    } else {
+                        R.drawable.pin_24_gray
+                    }
+                    Image(
+                        painter = painterResource(id = imgId),
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
 
-                Text(
-                    text = item,
-                    fontWeight = FontWeight.Normal,
-                    color = if (selectedIndex.value == index) {
-                        Color.White
-                    } else {
-                        colorResource(id = color).copy(alpha = 0.9f)
-                    },
-                )
             }
         }
     }

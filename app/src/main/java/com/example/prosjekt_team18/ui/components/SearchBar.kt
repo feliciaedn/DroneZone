@@ -43,7 +43,7 @@ fun SearchBar(mapViewModel: MapViewModel){
                     mapViewModel.searchPlaces(it)
                     println(mapViewModel.locationAutofill.toString())
                 },
-                placeholder = { androidx.compose.material.Text("Search") },
+                placeholder = { androidx.compose.material.Text("Søk etter lokasjon") },
                 shape = RoundedCornerShape(16.dp),
                 leadingIcon = {
                     Icon(
@@ -104,6 +104,7 @@ fun SearchBar(mapViewModel: MapViewModel){
                         .fillMaxWidth()
                         .padding(16.dp)
                         .clickable {
+                            mapViewModel.showMarker.value = false
                             mapViewModel.text = it.address
                             mapViewModel.locationAutofill.clear()
                             mapViewModel.getCoordinates(it)

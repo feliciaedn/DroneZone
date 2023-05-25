@@ -96,7 +96,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 						selected = selectedItem == items[2],
 						onClick = {
 
-							mapViewModel.selectLocation(userLocation)
+//							mapViewModel.selectLocation(userLocation)
 							mapViewModel.showSheet(Sheet.Weather)
 							coroutineScope.launch {
 								modalSheetState.animateTo(ModalBottomSheetValue.Expanded)

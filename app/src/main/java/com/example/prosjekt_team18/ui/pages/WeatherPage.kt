@@ -17,9 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
+import com.example.prosjekt_team18.data.sunrise.SunData
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
 import com.google.android.gms.maps.model.LatLng
@@ -29,11 +31,20 @@ import java.util.*
 
 
 @Composable
-fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, userLocation: LatLng){
+fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, userLocation: LatLng,
+                showCurrentLocation: Boolean
+){
 
-    val weatherModel = sunWeatherUiState.value.currentWeather
-    val sunData = sunWeatherUiState.value.sunData
+    var weatherModel: WeatherModel? by remember { mutableStateOf(null)}
+    var sunData: SunData? by remember { mutableStateOf(null)}
 
+    if (showCurrentLocation) {
+        weatherModel = sunWeatherUiState.value.currentWeather
+        sunData = sunWeatherUiState.value.sunData
+    } else {
+        weatherModel = sunWeatherUiState.value.pinnedCurrentWeather
+        sunData = sunWeatherUiState.value.pinnedSunData
+    }
 
     val placeName : String // Navn på stedet
 
@@ -50,6 +61,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
     var addressString by remember {
         mutableStateOf( "")
     }
+
 
     val geocoder = Geocoder(context, Locale.getDefault())
     try {
@@ -93,18 +105,8 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
     }
 
     if (weatherModel != null && sunData != null) {
-		val sunriseTimeString: String = if(sunData.sunrise.time != null) {
-			DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY)
-				.format(sunData.sunrise.time)
-		} else {
-			"N/A"
-		}
-		val sunsetTimeString: String = if(sunData.sunset.time != null) {
-			DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY)
-				.format(sunData.sunset.time)
-		} else {
-			"N/A"
-		}
+		val sunriseTimeString: String = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunrise.time)
+        val sunsetTimeString: String = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunset.time)
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -116,17 +118,18 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 35.sp,
-                    color = Color(0xFF1B467C)
+                    color = Color(0xFF1B467C),
+                    textAlign = TextAlign.Center
                 )
             )
-            println("her er ideeeennnenenen: " + getBilde(weatherModel.summaryCode))
+            println("her er ideeeennnenenen: " + getBilde(weatherModel!!.summaryCode))
 
 //            Image(
 //                painter = painterResource(id = getBilde(weatherModel.summaryCode)),
 //                contentDescription = null,
 //                modifier = Modifier.size(160.dp)
 //            )
-            val imageName = weatherModel.summaryCode // Dette er navnet på bildet du vil vise
+            val imageName = weatherModel!!.summaryCode // Dette er navnet på bildet du vil vise
             val resourceId = getStringToDrawableId( imageName,context)
             if (resourceId != 0) {
                 // Riktig drawable-ressurs-ID ble funnet
@@ -136,7 +139,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
 
 
             Text(
-                "${weatherModel.temperature}°",
+                "${weatherModel!!.temperature}°",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 60.sp,
@@ -144,7 +147,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
                 )
             )
             Text(
-                weatherModel.summaryNextHour,
+                weatherModel!!.summaryNextHour,
                 style = TextStyle(fontSize = 17.sp, color = Color(0xFF1B467C))
             )
             Column(
@@ -152,7 +155,7 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
 //                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                WeatherCard(weatherModel, context)
+                WeatherCard(weatherModel!!, context)
                 SunCard(sunriseTimeString, sunsetTimeString)
 
             }

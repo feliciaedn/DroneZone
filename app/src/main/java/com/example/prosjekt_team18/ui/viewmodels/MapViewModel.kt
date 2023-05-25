@@ -103,6 +103,8 @@ class MapViewModel(
 			if (it != null) {
 				searchLatLong = it.place.latLng!!
 				println("inni getCoordinates: " + searchLatLong.latitude + ", " + searchLatLong.longitude)
+				showMarker.value = true
+				markerLocation = searchLatLong
 			}
 		}.addOnFailureListener {
 			it.printStackTrace()
@@ -113,7 +115,7 @@ class MapViewModel(
 		_screenUiState.update { currentState ->
 			currentState.copy(selectedLocation = location)
 		}
-		updateLocationData()
+		updateLocationData(location)
 	}
 
 	fun toggleShowSearchBar() {
@@ -138,23 +140,27 @@ class MapViewModel(
 
 	}
 
-	fun updateLocationData() {
-		val selectedLocation = _screenUiState.value.selectedLocation
-		updateWeatherData(selectedLocation)
-		updateSunData(selectedLocation)
-		println("UPDATED LOCATION DATA TO $selectedLocation")
+	fun updateLocationData(location: LatLng) {
+		updateWeatherData(location)
+		updateSunData(location)
+		println("UPDATED LOCATION DATA TO $location")
 
 	}
 
-	private fun updateWeatherData(userLocation: LatLng) {
+	private fun updateWeatherData(location: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
 				try {
-					val currentWeather: WeatherModel = weatherDataSource.getWeatherData(
-						userLocation.latitude,
-						userLocation.longitude
+					val weatherModel: WeatherModel = weatherDataSource.getWeatherData(
+						location.latitude,
+						location.longitude
 					)
-					currentState.copy(status = Status.Success, currentWeather = currentWeather)
+					if (location != userLocation) {
+						currentState.copy(status = Status.Success, pinnedCurrentWeather = weatherModel)
+					} else {
+						currentState.copy(status = Status.Success, currentWeather = weatherModel)
+
+					}
 				} catch (e: IOException) {
 					currentState.copy(status = Status.Error)
 				}
@@ -162,16 +168,20 @@ class MapViewModel(
 		}
 	}
 
-	private fun updateSunData(userLocation: LatLng) {
+	private fun updateSunData(location: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
 				try {
 					val sunData: SunData = sunDataSource.getSunData(
-						latitude = userLocation.latitude,
-						longitude = userLocation.longitude
+						latitude = location.latitude,
+						longitude = location.longitude
 					)
 
-					currentState.copy(status = Status.Success, sunData = sunData)
+					if (location != userLocation) {
+						currentState.copy(status = Status.Success, pinnedSunData = sunData)
+					} else {
+						currentState.copy(status = Status.Success, sunData = sunData)
+					}
 				} catch (e: IOException) {
 					currentState.copy(status = Status.Error)
 				}
