@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Prosjekt_team18</string>
+    <string name="app_name">DroneZone</string>
 
     <string-array name="rule_descriptions">
         <item>Registrer deg på flydrone.no og ta nettkurs og eksamen, unntak for CE-merkede leketøy og droner under 250 g uten kamera.</item>

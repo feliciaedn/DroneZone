@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.maps.LocationDetails
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
@@ -51,10 +52,10 @@ class MainActivity : ComponentActivity() {
 //	}
 	private val mapViewModel: MapViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+//		installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContent {
-//			val mapViewModel: MapViewModel by remember {mutableStateOf(MapViewModel(WeatherDataSource(), SunDataSource(), FeedbackCheck()))}
 
 			mapViewModel.fusedLocationClient =
 				LocationServices.getFusedLocationProviderClient(this)
