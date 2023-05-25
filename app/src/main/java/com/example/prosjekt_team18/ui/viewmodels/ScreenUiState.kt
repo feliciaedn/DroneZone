@@ -8,6 +8,7 @@ data class ScreenUiState(
     val showWeather: Boolean = false,
 	val showFeedback: Boolean = false,
     val showSheet: Sheet = Sheet.None,
+    val showCurrentLocationData: Boolean = true,
 )
 
 enum class Sheet {

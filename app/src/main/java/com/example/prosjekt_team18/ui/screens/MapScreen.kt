@@ -27,6 +27,7 @@ import com.example.prosjekt_team18.ui.components.NavigationBar
 import com.example.prosjekt_team18.ui.components.PopupDialog
 import com.example.prosjekt_team18.ui.components.SearchBar
 import com.example.prosjekt_team18.ui.components.SegmentedControl
+import com.example.prosjekt_team18.ui.pages.FeedbackPage
 import com.example.prosjekt_team18.ui.pages.WeatherPage
 import com.example.prosjekt_team18.ui.viewmodels.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -64,8 +65,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	}
 
 	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
-	var showCurrentLocationData by remember {mutableStateOf( true)}
-
+//	var showCurrentLocationData by remember {mutableStateOf(!mapViewModel.showMarker.value)}
 
 	ModalBottomSheetLayout(
 		modifier = Modifier.fillMaxHeight(),
@@ -88,16 +88,18 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					)
 				}
 				Spacer(Modifier.weight(1f))
-				if (screenUiState.value.showSheet == Sheet.Weather && sunWeatherUiState.value.status == Status.Success) {
+				if ((screenUiState.value.showSheet == Sheet.Weather ||  screenUiState.value.showSheet == Sheet.Feedback)
+					&& sunWeatherUiState.value.status == Status.Success) {
+//					showCurrentLocationData = !mapViewModel.showMarker.value
 					SegmentedControl(
 						items = listOf("Min lokasjon", "Markert"),
-						defaultSelectedItemIndex = 0,
+						defaultSelectedItemIndex = if (mapViewModel.showMarker.value) 1 else 0,
 						useFixedWidth = false,
 						itemWidth = 50.dp,
 						cornerRadius = 100,
 						color =  R.color.dark_blue,
 						onItemSelection = { selectedItemIndex ->
-							showCurrentLocationData = selectedItemIndex == 0
+							mapViewModel.setShowCurrentLocationData(selectedItemIndex == 0)
 						},
 						pinnedLocation = mapViewModel.showMarker.value
 					)
@@ -117,25 +119,11 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				} else if (screenUiState.value.showSheet == Sheet.Weather) {
 
 					if (sunWeatherUiState.value.status == Status.Success) {
-//						var showCurrentLocationData by remember {mutableStateOf( true)}
-//							SegmentedControl(
-//								items = listOf("Min lokasjon", "Markert"),
-//								defaultSelectedItemIndex = 0,
-//								useFixedWidth = true,
-//								itemWidth = 129.dp,
-//								cornerRadius = 100,
-//								color =  R.color.my_color,
-//								onItemSelection = { selectedItemIndex ->
-//									showCurrentLocationData = selectedItemIndex == 0
-//								},
-//								pinnedLocation = mapViewModel.showMarker.value
-//							)
-							if (showCurrentLocationData) {
+							if (screenUiState.value.showCurrentLocationData) {
 								WeatherPage(sunWeatherUiState, context, userLocation, true)
 							} else {
 								WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation, false)
 							}
-
 
 					} else if (sunWeatherUiState.value.status == Status.Error){
 						PopupDialog(
@@ -149,7 +137,11 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 				} else if (screenUiState.value.showSheet == Sheet.Feedback) {
 					if (sunWeatherUiState.value.status == Status.Success) {
-						FeedbackPage(mapViewModel)
+						if (screenUiState.value.showCurrentLocationData) {
+							FeedbackPage(mapViewModel, showCurrentLocation = true)
+						} else {
+							FeedbackPage(mapViewModel, showCurrentLocation = false)
+						}
 
 					} else if (sunWeatherUiState.value.status == Status.Error){
 						PopupDialog(
@@ -236,6 +228,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
 							println("CLICKED INFO WINDOW")
+							mapViewModel.setShowCurrentLocationData(false)
 							mapViewModel.showSheet(Sheet.Weather)
 							coroutineScope.launch {
 								modalSheetState.animateTo(ModalBottomSheetValue.Expanded)

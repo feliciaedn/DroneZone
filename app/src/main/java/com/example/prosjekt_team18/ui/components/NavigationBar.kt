@@ -78,6 +78,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 						selected =
 						selectedItem == items[1],
 						onClick = {
+							mapViewModel.setShowCurrentLocationData(!mapViewModel.showMarker.value)
 							mapViewModel.showSheet(Sheet.Feedback)
 							coroutineScope.launch {
 								modalSheetState.animateTo(ModalBottomSheetValue.Expanded)
@@ -95,8 +96,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
 						//label = { Text("Weather") },
 						selected = selectedItem == items[2],
 						onClick = {
-
-//							mapViewModel.selectLocation(userLocation)
+							mapViewModel.setShowCurrentLocationData(!mapViewModel.showMarker.value)
 							mapViewModel.showSheet(Sheet.Weather)
 							coroutineScope.launch {
 								modalSheetState.animateTo(ModalBottomSheetValue.Expanded)

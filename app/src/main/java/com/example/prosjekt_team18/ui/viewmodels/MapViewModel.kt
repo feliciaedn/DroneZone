@@ -131,6 +131,12 @@ class MapViewModel(
 //		println("SHOWING: " + _screenUiState.value.showSheet)
 	}
 
+	fun setShowCurrentLocationData(show: Boolean) {
+		_screenUiState.update { currentState ->
+			currentState.copy(showCurrentLocationData = show)
+		}
+	}
+
 	fun hideSheet() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = Sheet.None)
@@ -188,8 +194,9 @@ class MapViewModel(
 		}
 	}
 
-	fun enoughSunlight(): Boolean {
-		val sunData = sunWeatherUiState.value.sunData
+	fun enoughSunlight(forCurrentLocation: Boolean): Boolean {
+		val sunData = if (forCurrentLocation) sunWeatherUiState.value.sunData else sunWeatherUiState.value.pinnedSunData
+
 		val calendar = Calendar.getInstance().time
 
 		if (sunData != null) {
@@ -198,19 +205,28 @@ class MapViewModel(
 		return false
 	}
 
-	fun okRain(): Boolean {
-		return feedbackCheck.okRain(_sunWeatherUiState.value.currentWeather)
+	fun okRain(forCurrentLocation: Boolean): Boolean {
+		if (forCurrentLocation)
+			return feedbackCheck.okRain(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okRain(_sunWeatherUiState.value.pinnedCurrentWeather)
 	}
 
-	fun okSnow(): Boolean {
-		return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
+	fun okSnow(forCurrentLocation: Boolean): Boolean {
+		if (forCurrentLocation)
+			return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okSnow(_sunWeatherUiState.value.pinnedCurrentWeather)
 	}
 
-	fun okWind(): Boolean {
-		return feedbackCheck.okWind(_sunWeatherUiState.value.currentWeather)
+	fun okWind(forCurrentLocation: Boolean): Boolean {
+		if (forCurrentLocation)
+			return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
+		return feedbackCheck.okWind(_sunWeatherUiState.value.pinnedCurrentWeather)
+
 	}
 
-	fun notInAirportZone(): Boolean {
+	fun notInAirportZone(forCurrentLocation: Boolean): Boolean {
+		if (forCurrentLocation)
+			return feedbackCheck.notInAirportZone(userLocation)
 		return feedbackCheck.notInAirportZone(_screenUiState.value.selectedLocation)
 	}
 
