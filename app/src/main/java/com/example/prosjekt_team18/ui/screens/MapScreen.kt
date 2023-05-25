@@ -270,11 +270,12 @@ fun MapScreen(mapViewModel: MapViewModel,
 			if (screenUiState.value.showSearchBar) {
 				Surface(
 					modifier = Modifier
-						.align(Alignment.TopCenter)
-						.padding(8.dp)
-						.fillMaxWidth(),
+					.align(Alignment.TopCenter)
+					.padding(8.dp)
+					.fillMaxWidth()
+						.shadow(elevation = 10.dp),
 					color = Color.White,
-					shape = RoundedCornerShape(8.dp)
+					shape = RoundedCornerShape(16.dp)
 				) {
 					SearchBar(mapViewModel)
 				}
@@ -320,8 +321,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 			modalSheetState,
 			coroutineScope,
 		)
-	}}
-
+		}}
 
 
 

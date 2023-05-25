@@ -14,10 +14,12 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.prosjekt_team18.data.FeedbackCheck
@@ -92,7 +94,9 @@ class MainActivity : ComponentActivity() {
 							permissionLauncher.launch(ACCESS_FINE_LOCATION)
 							buttonClicked = true
 						}
-					}) {
+					},
+					colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B467C))
+				) {
 					Text(text = if (permissionGranted) "Permission Granted" else "Enable Permission")
 				}
 			}
