@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
@@ -25,7 +26,8 @@ import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -35,22 +37,23 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 
 class MainActivity : ComponentActivity() {
-
-	private val weatherDataSource = WeatherDataSource()
-	private val sunDataSource = SunDataSource()
-	private val feedbackCheck = FeedbackCheck()
-
-	private val mapViewModel: MapViewModel =
-		MapViewModel(weatherDataSource, sunDataSource, feedbackCheck)
-
 //	private lateinit var fusedLocationClient: FusedLocationProviderClient
-
+//	override fun onSaveInstanceState(outState: Bundle) {
+//		outState.run {
+//			put
+//			(GAME_STATE_KEY, gameState)
+//			putString(TEXT_VIEW_KEY, textView.text.toString())
+//		}
+//		// Call superclass to save any view hierarchy.
+//		super.onSaveInstanceState(outState)
+//	}
+	private val mapViewModel: MapViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
-
         super.onCreate(savedInstanceState)
+
         setContent {
+//			val mapViewModel: MapViewModel by remember {mutableStateOf(MapViewModel(WeatherDataSource(), SunDataSource(), FeedbackCheck()))}
+
 			mapViewModel.fusedLocationClient =
 				LocationServices.getFusedLocationProviderClient(this)
 			Places.initialize(this.applicationContext, BuildConfig.GOOGLE_API_KEY)
@@ -198,4 +201,18 @@ class MainActivity : ComponentActivity() {
 			ACCESS_FINE_LOCATION
 		) == PackageManager.PERMISSION_GRANTED
 	}
+
+
+
+//	override fun onSaveInstanceState(savedInstanceState: Bundle) {
+//		super.onSaveInstanceState(savedInstanceState)
+//		// Save UI state changes to the savedInstanceState.
+//		// This bundle will be passed to onCreate if the process is
+//		// killed and restarted.
+//		savedInstanceState.putBoolean("MyBoolean", true)
+//		savedInstanceState.putDouble("myDouble", 1.9)
+//		savedInstanceState.putInt("MyInt", 1)
+//		savedInstanceState.putString("MyString", "Welcome back to Android")
+//		// etc.
+//	}
 }

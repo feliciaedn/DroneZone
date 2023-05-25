@@ -95,7 +95,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 						useFixedWidth = false,
 						itemWidth = 50.dp,
 						cornerRadius = 100,
-						color =  R.color.my_color,
+						color =  R.color.dark_blue,
 						onItemSelection = { selectedItemIndex ->
 							showCurrentLocationData = selectedItemIndex == 0
 						},

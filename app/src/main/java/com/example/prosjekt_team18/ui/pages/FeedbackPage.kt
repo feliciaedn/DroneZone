@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 
 @Composable
@@ -54,7 +55,7 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier) {
 			.fillMaxWidth()
 			.wrapContentWidth(Alignment.CenterHorizontally)
 			.padding(20.dp),
-			text = "Sjekkliste for flyving", fontSize = 25.sp, fontWeight = FontWeight.Bold)
+			text = "Sjekkliste for flyving", fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1B467C))
 
 		Divider(modifier = Modifier
 			.fillMaxWidth()

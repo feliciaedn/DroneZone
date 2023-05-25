@@ -1,9 +1,5 @@
 package com.example.prosjekt_team18.ui.viewmodels
 
-import android.content.Context
-import android.location.Address
-import android.location.Geocoder
-import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.maps.MapState
 import com.example.prosjekt_team18.data.maps.SearchResult
+import com.example.prosjekt_team18.data.resources.AirportData.airportNames
 import com.example.prosjekt_team18.data.resources.AirportData.latCoordinates
 import com.example.prosjekt_team18.data.resources.AirportData.lngCoordinates
-import com.example.prosjekt_team18.data.resources.AirportData.airportNames
 import com.example.prosjekt_team18.data.sunrise.SunData
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import com.example.prosjekt_team18.data.weather.WeatherDataSource
@@ -37,10 +33,13 @@ import java.io.IOException
 import java.util.*
 
 class MapViewModel(
-    private val weatherDataSource: WeatherDataSource,
-    private val sunDataSource: SunDataSource,
-    private val feedbackCheck: FeedbackCheck,
+//    private val weatherDataSource: WeatherDataSource,
+//    private val sunDataSource: SunDataSource,
+//    private val feedbackCheck: FeedbackCheck,
 ) : ViewModel() {
+	private val weatherDataSource: WeatherDataSource = WeatherDataSource()
+	private val sunDataSource: SunDataSource = SunDataSource()
+	private val feedbackCheck: FeedbackCheck = FeedbackCheck()
 
 	lateinit var placesClient: PlacesClient
 	lateinit var fusedLocationClient: FusedLocationProviderClient
