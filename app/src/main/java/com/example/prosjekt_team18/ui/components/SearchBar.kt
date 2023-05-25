@@ -60,6 +60,7 @@ fun SearchBar(mapViewModel: MapViewModel) {
                     modifier = Modifier.clickable {
                         if (mapViewModel.text.isEmpty()) {
                             focusManager.clearFocus()
+                            mapViewModel.toggleShowSearchBar()
                         } else {
                             mapViewModel.text = ""
                             mapViewModel.locationAutofill.clear()
