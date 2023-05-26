@@ -63,7 +63,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	}
 
 	val modifier = Modifier.height((LocalConfiguration.current.screenHeightDp*0.85).dp)
-//	var showCurrentLocationData by remember {mutableStateOf(!mapViewModel.showMarker.value)}
 
 	ModalBottomSheetLayout(
 		modifier = Modifier.fillMaxHeight(),
@@ -91,7 +90,8 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 //					showCurrentLocationData = !mapViewModel.showMarker.value
 					SegmentedControl(
 						items = listOf("Data for min lokasjon", "Data for markert lokasjon"),
-						defaultSelectedItemIndex = if (mapViewModel.showMarker.value) 1 else 0,
+//						if (mapViewModel.showMarker.value) 1 else 0
+						defaultSelectedItemIndex = if (screenUiState.value.showCurrentLocationData) 0 else 1,
 						itemWidth = 50.dp,
 						cornerRadius = 100,
 						color =  R.color.dark_blue,
@@ -209,6 +209,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
 					mapViewModel.markerLocation = it
+//					mapViewModel.setShowCurrentLocationData(false)
 
 				}
 			) {

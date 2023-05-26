@@ -104,6 +104,7 @@ class MapViewModel(
 				println("inni getCoordinates: " + searchLatLong.latitude + ", " + searchLatLong.longitude)
 				showMarker.value = true
 				markerLocation = searchLatLong
+//				setShowCurrentLocationData(false)
 			}
 		}.addOnFailureListener {
 			it.printStackTrace()

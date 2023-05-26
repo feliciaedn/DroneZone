@@ -42,7 +42,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
     var selectedItem by remember { mutableStateOf("") }
     val items = listOf("Search", "Feedback", "Weather", "Rules")
 
-    BottomAppBar(modifier = Modifier.fillMaxWidth().shadow(elevation = 15.dp), containerColor = Color(230, 230, 240)) {
+    BottomAppBar(modifier = Modifier.fillMaxWidth().shadow(elevation = 4.dp), containerColor = Color(230, 230, 240)) {
 		Column(modifier = Modifier.fillMaxSize()) {
 
 

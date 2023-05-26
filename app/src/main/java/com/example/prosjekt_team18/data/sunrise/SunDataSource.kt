@@ -19,6 +19,7 @@ class SunDataSource {
 
         private var currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         private var timeZone = TimeZone.getDefault()
+        // Tidsforskyvning aa sende inn som parameter i API-kallet, basert paa brukerens tidssone
         private var timezoneOffset = formatOffset(timeZone.getOffset(Date().time) / 60000)
 
         // Konfigurerer client
@@ -32,12 +33,12 @@ class SunDataSource {
 
         }
 
+        /* Gjoer kall til Sunrise API og returnerer et objekt av SunData. SunData inneholder
+         * tidspunkt for soloppgang og solnedgang. Hvis et tidspunkt ikke kunne hentes vil det vaere
+         * lik null
+         */
         suspend fun getSunData(dateString: String = currentDate, latitude: Double, longitude: Double): SunData {
-            val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=+02:00"
-
-//            println("LOCALE: ${Locale.getDefault()}")
-//            println(url)
-//            println("DATE: ${Date()}")
+            val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=$timezoneOffset"
             val data: SunDataWrapper = client.get(url).body()
 
             return data.properties
