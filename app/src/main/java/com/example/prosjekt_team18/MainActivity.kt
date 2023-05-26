@@ -40,19 +40,10 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 
 class MainActivity : ComponentActivity() {
-//	private lateinit var fusedLocationClient: FusedLocationProviderClient
-//	override fun onSaveInstanceState(outState: Bundle) {
-//		outState.run {
-//			put
-//			(GAME_STATE_KEY, gameState)
-//			putString(TEXT_VIEW_KEY, textView.text.toString())
-//		}
-//		// Call superclass to save any view hierarchy.
-//		super.onSaveInstanceState(outState)
-//	}
+
 	private val mapViewModel: MapViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
-//		installSplashScreen()
+		installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContent {
