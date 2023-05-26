@@ -1,9 +1,12 @@
 package com.example.prosjekt_team18.data.resources
 
-import android.location.Location
-import com.google.android.gms.maps.model.LatLng
+/* Konstanter for koordinater til alle norske flylpasser. Enhver breddegrad latCoordinates hoerer
+ * sammen med lengdegraden paa samme indeks i lngCoordinates, og flyplassnavnet paa samme indeks i
+ * airportNames
+ */
 
 object AirportData {
+    // Liste over breddegrader for norske flyplasser
     val latCoordinates = listOf(
         (69.9779), (69.3106), (58.5159), (69.0595), (60.2918), (70.8700), (67.2683), (65.4599),
         (70.6028), (61.5858), (61.3911), (70.6800), (68.4919), (70.4866), (59.3445), (71.0087),
@@ -13,6 +16,7 @@ object AirportData {
         (61.1575), (58.8804), (68.5795), (59.7930), (78.2469), (68.2450), (69.7856), (69.6819),
         (63.4583), (70.0641), (70.3564), (63.6953), (62.1800), (62.5585)
     )
+    // Liste over lengdegrader for norske flyplasser
     val lngCoordinates = listOf(
         (23.3466), (16.1239), (8.7027), (18.5378), (5.2220), (29.0303), (14.3622), (12.2092),
         (29.6923), (5.0242), (5.7642), (23.6755), (16.6841), (22.1471), (5.2166), (25.9775),
@@ -22,6 +26,8 @@ object AirportData {
         (7.1374), (5.6314), (15.0315), (5.3424), (15.4933), (14.6668), (20.9576), (18.9163),
         (10.9226), (29.8385), (31.0397), (9.6035), (6.0795), (6.1153)
     )
+
+    // Liste over flyplassnavn for norske flyplasser
     val airportNames = listOf(
         ("Alta lufthavn"), ("Andøya lufthavn"), ("Arendal lufthavn"), ("Bardufoss lufthavn"),
         ("Bergen lufthavn"), ("Berlevåg lufthavn"), ("Bodø lufthavn"), ("Brønnøysund lufthavn, Brønnøy"),

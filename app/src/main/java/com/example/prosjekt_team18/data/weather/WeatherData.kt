@@ -1,5 +1,9 @@
 package com.example.prosjekt_team18.data.weather
 
+/* Denne filen inneholder dataklasser som brukes for aa deserialisere JSON data fra
+ * Locationforecast API.
+ */
+
 import java.util.*
 
 data class WeatherDataWrapper (
@@ -18,7 +22,6 @@ data class WeatherMetaData(
 data class WeatherUnits(
     val air_temperature: String,
     val precipitation_amount: String,
-    val wind_from_direction: String,
     val wind_speed: String,
 )
 
@@ -37,7 +40,6 @@ data class ForecastInstant (
 )
 data class ForecastInstantDetails (
     val air_temperature: Double,
-    val wind_from_direction: Double,
     val wind_speed: Double,
 )
 

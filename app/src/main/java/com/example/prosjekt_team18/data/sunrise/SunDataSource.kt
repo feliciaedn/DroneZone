@@ -1,5 +1,8 @@
 package com.example.prosjekt_team18.data.sunrise
 
+/* Denne klassen brukes for aa hente inn vaerdata asynkront fra MET sin Sunrise API,
+ * gjennom en proxyserver.
+ */
 import com.example.prosjekt_team18.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -17,9 +20,13 @@ private const val BASE_URL =
 
 class SunDataSource {
 
+        /* Variabler for API-kallet */
         private var currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
         private var timeZone = TimeZone.getDefault()
+        // Tidsforskyvning aa sende inn som parameter i API-kallet, basert paa brukerens tidssone
         private var timezoneOffset = formatOffset(timeZone.getOffset(Date().time) / 60000)
+
 
         // Konfigurerer client
         private val client = HttpClient {
@@ -29,21 +36,25 @@ class SunDataSource {
             install(DefaultRequest) {
                 header("X-Gravitee-API-Key", API_KEY)
             }
-
         }
 
+        /* Gjoer kall til proxyn og returnerer et objekt av SunData. SunData inneholder
+         * tidspunkt for soloppgang og solnedgang. Hvis et tidspunkt ikke kunne hentes vil det vaere
+         * lik null
+         */
         suspend fun getSunData(dateString: String = currentDate, latitude: Double, longitude: Double): SunData {
-            val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=+02:00"
+            val url = "$BASE_URL?lat=$latitude&lon=$longitude&date=$dateString&offset=$timezoneOffset"
 
-//            println("LOCALE: ${Locale.getDefault()}")
-//            println(url)
-//            println("DATE: ${Date()}")
+            // Ktor brukes for aa parse JSON til et objekt av dataklassen SunDataWrapper
             val data: SunDataWrapper = client.get(url).body()
 
             return data.properties
         }
 
-        // Returnerer timezone offset paa riktig format, f.eks. +02:00
+        /* Denne funksjonen tar inn timezone offset i minutter som argument,
+         * og returnerer timezone offset i timer og minutter som en String paa riktig format,
+         * f.eks. "+02:00".
+         */
         private fun formatOffset(offsetInMinutes: Int): String {
             val hours = abs(offsetInMinutes / 60)
             val mins = abs(offsetInMinutes % 60)

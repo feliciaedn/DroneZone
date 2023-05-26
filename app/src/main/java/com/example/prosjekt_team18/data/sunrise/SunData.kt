@@ -1,5 +1,8 @@
 package com.example.prosjekt_team18.data.sunrise
 
+/* Denne filen inneholder dataklasser som brukes for aa deserialisere JSON data fra Sunrise API.
+ */
+
 import java.util.*
 
 data class SunDataWrapper (
