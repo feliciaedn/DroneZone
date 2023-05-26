@@ -9,7 +9,10 @@ import java.util.*
 
 class FeedbackCheck () {
 
-    fun enoughSunlight(sunriseTime: Date, sunsetTime: Date, timeNow: Date): Boolean {
+    fun enoughSunlight(sunriseTime: Date?, sunsetTime: Date?, timeNow: Date): Boolean {
+		if(sunriseTime == null || sunsetTime == null ) {
+			return true
+		}
         return timeNow.after(sunriseTime) && timeNow.before(sunsetTime)
     }
 

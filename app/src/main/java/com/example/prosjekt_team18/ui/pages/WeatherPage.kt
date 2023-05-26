@@ -106,8 +106,18 @@ fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, u
     }
 
     if (weatherModel != null && sunData != null) {
-		val sunriseTimeString: String = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunrise.time)
-        val sunsetTimeString: String = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunset.time)
+		val sunriseTimeString: String
+		val sunsetTimeString: String
+		if(sunData!!.sunrise.time != null) {
+			sunriseTimeString = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunrise.time)
+		} else {
+			sunriseTimeString = "N/A"
+		}
+		if(sunData!!.sunset.time != null) {
+			sunsetTimeString = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMANY).format(sunData!!.sunset.time)
+		} else {
+			sunsetTimeString = "N/A"
+		}
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
