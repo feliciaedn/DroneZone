@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
 					},
 					colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B467C))
 				) {
-					Text(text = if (permissionGranted) "Permission Granted" else "Enable Permission")
+					Text(text = if (permissionGranted) "Lokasjon godkjent" else "Gi tilgang til lokasjon")
 				}
 			}
 
@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
 				// update your UI
 				Toast.makeText(
 					this@MainActivity,
-					"Permission granted",
+					"Lokasjon godkjent",
 					Toast.LENGTH_SHORT
 				).show()
 				startup = true
