@@ -209,8 +209,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
 					mapViewModel.markerLocation = it
-//					mapViewModel.setShowCurrentLocationData(false)
-
 				}
 			) {
 				if(mapViewModel.showMarker.value) {
