@@ -19,6 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.prosjekt_team18.R
 
+/**
+ * Konstruerer en "switch"-knapp som velger mellom markør eller brukerens posisjon.
+ * Denne brukes i værsiden og begrunnelsessiden for å bestemme om man vil ha
+ * tilbakemelding basert på egen lokasjon eller markør-lokasjonen.
+ */
 @Composable
 fun SegmentedControl(
     items: List<String>,

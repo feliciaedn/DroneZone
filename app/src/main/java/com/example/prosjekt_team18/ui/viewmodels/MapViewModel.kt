@@ -32,6 +32,9 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
 
+/**
+ * Klassen inneholder essensiell data og funksjoner for funksjonalitet i appen.
+ */
 class MapViewModel(
 //    private val weatherDataSource: WeatherDataSource,
 //    private val sunDataSource: SunDataSource,
@@ -76,6 +79,11 @@ class MapViewModel(
 ////		selectLocation(userLocation)
 //	}
 
+	/**
+	 * Funksjonen finner forslag til steder basert på en input-streng, og legger
+	 * forslagene samlet i en liste, locationAutofill, som søkefunksjonen kan
+	 * vise frem for brukeren.
+	 */
 	fun searchPlaces(query: String) {
 		job?.cancel()
 		locationAutofill.clear()
@@ -95,6 +103,10 @@ class MapViewModel(
 		}
 	}
 
+	/**
+	 * Funksjonen får inn et søkeresultat for en lokasjon som parameter, og henter inn
+	 * breddegrad og lengdegrad for dette søket.
+	 */
 	fun getCoordinates(result: SearchResult) {
 		val placeFields = listOf(Place.Field.LAT_LNG)
 		val request = FetchPlaceRequest.newInstance(result.placeId, placeFields)
@@ -110,6 +122,10 @@ class MapViewModel(
 		}
 	}
 
+	/**
+	 * Funksjonen får inn en lokasjon som parameter, og setter screenUiState
+	 * sin valgte lokasjon til å være denne, samt oppdatere denne dataen.
+	 */
 	fun selectLocation(location: LatLng) {
 		_screenUiState.update { currentState ->
 			currentState.copy(selectedLocation = location)
@@ -145,6 +161,10 @@ class MapViewModel(
 
 	}
 
+	/**
+	 * Funksjonen kaller på relevante metoder for å oppdatere værdataen og
+	 * soldataen for en ny lokasjon.
+	 */
 	fun updateLocationData(location: LatLng) {
 		updateWeatherData(location)
 		updateSunData(location)
@@ -152,6 +172,11 @@ class MapViewModel(
 
 	}
 
+	/**
+	 * Funksjonen oppdaterer sunWeatherUiState sin værdata for en ny lokasjon. Dette
+	 * gjøres ved å iverksette metodekall for å innhente oppdatert værdata fra
+	 * vær-APIet til MET.
+	 */
 	private fun updateWeatherData(location: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
@@ -173,6 +198,11 @@ class MapViewModel(
 		}
 	}
 
+	/**
+	 * Funksjonen oppdaterer sunWeatherUiState sin soldata for en ny lokasjon. Dette
+	 * gjøres ved å iverksette metodekall for å innhente oppdatert soldata fra
+	 * sol-APIet til MET.
+	 */
 	private fun updateSunData(location: LatLng) {
 		viewModelScope.launch(Dispatchers.IO) {
 			_sunWeatherUiState.update { currentState ->
@@ -194,6 +224,12 @@ class MapViewModel(
 		}
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen som avgjør om brukeren
+	 * befinner seg på en lokasjon med nok sollys til å fly drone. Returnerer
+	 * false dersom sunData er null, og ellers returnerer den videre true/false
+	 * basert på returverdien fra feedbackCheck.enoughSunlight()
+	 */
 	fun enoughSunlight(forCurrentLocation: Boolean): Boolean {
 		val sunData = if (forCurrentLocation) sunWeatherUiState.value.sunData else sunWeatherUiState.value.pinnedSunData
 
@@ -205,18 +241,33 @@ class MapViewModel(
 		return false
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen for å sjekke om det er lite
+	 * nok regn på en lokasjon for å kunne fly drone. Returnerer videre true/false
+	 * avhengig av hva feedbackCheck.okRain() returnerer
+	 */
 	fun okRain(forCurrentLocation: Boolean): Boolean {
 		if (forCurrentLocation)
 			return feedbackCheck.okRain(_sunWeatherUiState.value.currentWeather)
 		return feedbackCheck.okRain(_sunWeatherUiState.value.pinnedCurrentWeather)
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen for å sjekke om det er lite
+	 * nok snø på en lokasjon for å kunne fly drone. Returnerer videre true/false
+	 * avhengig av hva feedbackCheck.okSnow() returnerer
+	 */
 	fun okSnow(forCurrentLocation: Boolean): Boolean {
 		if (forCurrentLocation)
 			return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
 		return feedbackCheck.okSnow(_sunWeatherUiState.value.pinnedCurrentWeather)
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen for å sjekke om det er lite
+	 * nok vind på en lokasjon for å kunne fly drone. Returnerer videre true/false
+	 * avhengig av hva feedbackCheck.okWind() returnerer
+	 */
 	fun okWind(forCurrentLocation: Boolean): Boolean {
 		if (forCurrentLocation)
 			return feedbackCheck.okSnow(_sunWeatherUiState.value.currentWeather)
@@ -224,12 +275,22 @@ class MapViewModel(
 
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen for å sjekke om en bruker
+	 * befinner seg langt nok unna en flyplass til å kunne fly drone. Returnerer
+	 * videre true/false avhengig av hva feedbackCheck.okRain() returnerer.
+	 */
 	fun notInAirportZone(forCurrentLocation: Boolean): Boolean {
 		if (forCurrentLocation)
 			return feedbackCheck.notInAirportZone(userLocation)
 		return feedbackCheck.notInAirportZone(_screenUiState.value.selectedLocation)
 	}
 
+	/**
+	 * Funksjonen iverksetter metodekall mot funksjonen som avgjør en samlet
+	 * vurdering på om brukeren kan fly drone på en lokasjon. Returnerer videre
+	 * true/false avhengig av hva feedbackCheck.okRain() returnerer.
+	 */
 	fun checkApproval(
 		sunlightCheck: Boolean,
 		rainCheck: Boolean,

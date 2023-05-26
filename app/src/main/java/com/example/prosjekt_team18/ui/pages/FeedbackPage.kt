@@ -14,6 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 
+/**
+ * Konstruerer begrunnelsessiden, en Page som har som hensikt å informere brukeren
+ * om krav for droneflyving er godkjent på egen lokasjon eller markør-lokasjon.
+ */
 @Composable
 fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier, showCurrentLocation: Boolean) {
 

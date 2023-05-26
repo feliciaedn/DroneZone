@@ -39,9 +39,18 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.rememberCameraPositionState
 
+/**
+ * Klassen inneholder applikasjonens main-metode, onCreate(), samt oppretter
+ * en private mapViewModel-instans.
+ */
 class MainActivity : ComponentActivity() {
 
 	private val mapViewModel: MapViewModel by viewModels()
+
+	/**
+	 * Funksjonen iverksetter hele applikasjonen og gjør relevante funksjonskall
+	 * for oppstart av applikasjonen, samt visning av UI elementer.
+	 */
     override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -157,7 +166,10 @@ class MainActivity : ComponentActivity() {
 		}
 	}
 
-	// check initially if the permission is granted
+	/**
+	 * Funksjonen sjekker om appen har tilgang til brukerens presise lokasjon,
+	 * og returnerer true/false avhengig av om den har det.
+	 */
 	private fun isPermissionGranted(): Boolean {
 		return ContextCompat.checkSelfPermission(
 			this,

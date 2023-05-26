@@ -24,7 +24,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 
-
+/**
+ * Konstruerer et søkefelt som lar brukeren søke opp lokasjoner,
+ */
 @Composable
 fun SearchBar(mapViewModel: MapViewModel) {
 

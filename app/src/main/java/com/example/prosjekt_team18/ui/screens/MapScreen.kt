@@ -36,6 +36,12 @@ import com.google.maps.android.compose.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
+/**
+ * Konstruerer hovedsiden som brukeren alltid vil ha åpen under kjøring av appen.
+ * Hovedsiden inneholder grunnleggende komponenter, samt kaller på MapScreen
+ * sitt metodekall for å konstruere Google Map og navigasjonsmenyen.
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition",
 	"UnusedMaterialScaffoldPaddingParameter"
@@ -179,6 +185,10 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	}
 }
 
+/**
+ * MapScreen konstruerer et Google Map, samt funksjonalitet rundt dette som markører.
+ * Det inneholder også funksjonskall videre for å hente frem navigasjonsmenyen.
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

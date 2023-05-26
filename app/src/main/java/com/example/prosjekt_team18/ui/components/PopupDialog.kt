@@ -18,6 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.Alignment.Companion as Alignment1
 
+/**
+ * Konstruerer et varselvindu til brukeren dersom brukeren ikke er tilgang til nett, men
+ * forsøker å aksessere en Page(begrunnelsessiden og værsiden) som krever nettverkstilgang.
+ */
 @Composable
 fun PopupDialog(title: String, description: String) {
     val openDialog = remember { mutableStateOf(true) }

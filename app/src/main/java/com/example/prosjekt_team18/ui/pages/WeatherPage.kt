@@ -30,7 +30,10 @@ import java.io.IOException
 import java.text.DateFormat
 import java.util.*
 
-
+/**
+ * Konstruerer værsiden, en Page som har som hensikt å informere brukeren om været,
+ * samt solinformasjon både for egen lokasjon og en markør-lokasjon.
+ */
 @Composable
 fun WeatherPage(sunWeatherUiState: State<SunWeatherUiState>, context: Context, userLocation: LatLng,
                 showCurrentLocation: Boolean

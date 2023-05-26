@@ -25,6 +25,9 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * Konstruerer en navigasjonsmany nederst på skjermen for tilgang til appens Pages og Søkefunksjon.
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NavigationBar(modifier: Modifier = Modifier,
@@ -42,7 +45,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
     var selectedItem by remember { mutableStateOf("") }
     val items = listOf("Search", "Feedback", "Weather", "Rules")
 
-    BottomAppBar(modifier = Modifier.fillMaxWidth().shadow(elevation = 15.dp), containerColor = Color(230, 230, 240)) {
+    BottomAppBar(modifier = Modifier.fillMaxWidth().shadow(elevation = 9.dp), containerColor = Color(230, 230, 240)) {
 		Column(modifier = Modifier.fillMaxSize()) {
 
 

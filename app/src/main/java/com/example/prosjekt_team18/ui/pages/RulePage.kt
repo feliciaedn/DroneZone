@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prosjekt_team18.R
 
+/**
+ * Konstruerer regelsiden, en Page som har som hensikt å informere brukeren om
+ * dronereglene som finnes, samt illustrere disse for brukeren.
+ */
 @Composable
 fun RulePage(modifier: Modifier = Modifier) {
 
