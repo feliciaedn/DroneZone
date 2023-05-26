@@ -93,10 +93,9 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 				Spacer(Modifier.weight(1f))
 				if ((screenUiState.value.showSheet == Sheet.Weather ||  screenUiState.value.showSheet == Sheet.Feedback)
 					&& sunWeatherUiState.value.status == Status.Success) {
-//					showCurrentLocationData = !mapViewModel.showMarker.value
+
 					SegmentedControl(
 						items = listOf("Data for min lokasjon", "Data for markert lokasjon"),
-//						if (mapViewModel.showMarker.value) 1 else 0
 						defaultSelectedItemIndex = if (screenUiState.value.showCurrentLocationData) 0 else 1,
 						itemWidth = 50.dp,
 						cornerRadius = 100,
@@ -242,8 +241,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 				}
 
-				// DRAW AIRPORTS
-
+				/* TEGNER OPP FLYPLASSSONER */
 				val latCoordinates = mapViewModel.airportLatCoordinates()
 				val lngCoordinates = mapViewModel.airportLngCoordinates()
 
@@ -256,7 +254,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 							)
 						),
 						title = mapViewModel.airportNames()[i],
-						//Legge inn ikon for flyplass i stedet?
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED),
 					)
 					Circle(
@@ -267,7 +264,6 @@ fun MapScreen(mapViewModel: MapViewModel,
 						visible = true
 					)
 				}
-
 			}
 
 			if (screenUiState.value.showSearchBar) {

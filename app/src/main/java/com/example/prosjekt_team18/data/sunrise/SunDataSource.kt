@@ -1,6 +1,7 @@
 package com.example.prosjekt_team18.data.sunrise
 
-/* Denne klassen brukes for aa hente inn vaerdata asynkront fra MET sin Sunrise API,
+/**
+ * Denne klassen brukes for aa hente inn vaerdata asynkront fra MET sin Sunrise API,
  * gjennom en proxyserver.
  */
 import com.example.prosjekt_team18.BuildConfig
@@ -28,7 +29,7 @@ class SunDataSource {
         private var timezoneOffset = formatOffset(timeZone.getOffset(Date().time) / 60000)
 
 
-        // Konfigurerer client
+        /* Konfigurerer client */
         private val client = HttpClient {
             install(ContentNegotiation) {
                 gson()
@@ -38,7 +39,8 @@ class SunDataSource {
             }
         }
 
-        /* Gjoer kall til proxyn og returnerer et objekt av SunData. SunData inneholder
+        /**
+         * Funksjonen gjoer kall til proxyn og returnerer et objekt av SunData. SunData inneholder
          * tidspunkt for soloppgang og solnedgang. Hvis et tidspunkt ikke kunne hentes vil det vaere
          * lik null
          */
@@ -51,7 +53,8 @@ class SunDataSource {
             return data.properties
         }
 
-        /* Denne funksjonen tar inn timezone offset i minutter som argument,
+        /**
+         * Funksjonen tar inn timezone offset i minutter som argument,
          * og returnerer timezone offset i timer og minutter som en String paa riktig format,
          * f.eks. "+02:00".
          */

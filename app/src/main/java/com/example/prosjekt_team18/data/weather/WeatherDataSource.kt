@@ -1,6 +1,7 @@
 package com.example.prosjekt_team18.data.weather
 
-/* Denne klassen brukes for aa hente inn vaerdata asynkront fra MET sin Locationforecast API,
+/**
+ * Denne klassen brukes for aa hente inn vaerdata asynkront fra MET sin Locationforecast API,
  * gjennom en proxyserver.
  */
 
@@ -17,7 +18,7 @@ private const val BASE_URL =
     "https://gw-uio.intark.uh-it.no/in2000/weatherapi/locationforecast/2.0/compact"
 
 class WeatherDataSource {
-    // Konfigurerer client
+    /* Konfigurerer client */
     private val client = HttpClient {
         install(ContentNegotiation) {
             gson()
@@ -28,7 +29,7 @@ class WeatherDataSource {
 
     }
 
-    /* Gjoer kall til proxyn og returnerer et objekt av WeatherModel.
+    /** Funksjonen gjoer kall til proxyn og returnerer et objekt av WeatherModel.
      */
     suspend fun getWeatherData(latitude: Double, longitude: Double): WeatherModel {
         val url = "$BASE_URL?lat=$latitude&lon=$longitude"

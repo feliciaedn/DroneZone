@@ -38,7 +38,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 /**
  * Klassen inneholder applikasjonens main-metode, onCreate(), samt oppretter
- * en private mapViewModel-instans.
+ * en private MapViewModel-instans.
  */
 class MainActivity : ComponentActivity() {
 
@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity() {
 	 */
     override fun onCreate(savedInstanceState: Bundle?) {
 		installSplashScreen()
-        super.onCreate(savedInstanceState)
 
+        super.onCreate(savedInstanceState)
         setContent {
 
 			mapViewModel.fusedLocationClient =

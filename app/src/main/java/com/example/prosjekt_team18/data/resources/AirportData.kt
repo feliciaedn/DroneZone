@@ -1,6 +1,7 @@
 package com.example.prosjekt_team18.data.resources
 
-/* Konstanter for koordinater til alle norske flylpasser. Enhver breddegrad latCoordinates hoerer
+/**
+ * Konstanter for koordinater til alle norske flylpasser. Enhver breddegrad latCoordinates hoerer
  * sammen med lengdegraden paa samme indeks i lngCoordinates, og flyplassnavnet paa samme indeks i
  * airportNames
  */

@@ -1,5 +1,14 @@
 package com.example.prosjekt_team18
 
+/**
+ * Enhetstest klassen SunDataSource, som henter inn data fra Sunrise API og lagrer det i et
+ * SunData-objekt. For aa teste at dataen som lagres er riktig, er det valgt ut en tilfeldig dato.
+ * Det har saa gjorts et kall til Sunrise API i nettleseren med denne datoen som argument, og
+ * verdiene som ble returnert har blitt hardkodet inn i testene. Testfunksjonene bruker SunDataSource
+ * for aa gjoere et kall med samme dato, og dataen som lagres i SunData-objektet blir sammenlignet
+ * med de forventede verdiene.
+ */
+
 import com.example.prosjekt_team18.data.sunrise.SunData
 import com.example.prosjekt_team18.data.sunrise.SunDataSource
 import junit.framework.TestCase.assertEquals
@@ -17,7 +26,7 @@ class SunDataSourceTest {
     fun setUp() {
         sunDataSource = SunDataSource()
 
-        // Date for test: 2023-03-26
+        // Dato for test: 2023-03-26
         cal = Calendar.getInstance()
         cal[Calendar.YEAR] = 2023
         cal[Calendar.MONTH] = Calendar.MARCH
@@ -27,6 +36,9 @@ class SunDataSourceTest {
     }
 
 
+    /**
+     * Tester at tidspunktet for soloppgang er hentet ut korrekt fra API-et
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     // runTest is a coroutine builder designed for testing
@@ -50,6 +62,9 @@ class SunDataSourceTest {
         assertEquals(date, result.sunrise.time)
     }
 
+    /**
+     * Tester at tidspunktet for solnedgang er hentet ut korrekt fra API-et
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun testGetSunDataReturnsCorrectSunset() = runTest {

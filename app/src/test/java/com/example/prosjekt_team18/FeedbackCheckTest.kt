@@ -1,5 +1,12 @@
 package com.example.prosjekt_team18
 
+/**
+ * Enhetstest for alle funksjoner i FeedbackCheckTest, unntatt funksjonen notInAirportZone().
+ * Enhetstesten for notInAirportZone() ligger i mappen androidTest.
+ * Det er skrevet to tester for hver funksjon: en hvor funksjonen skal returnere true, og en hvor
+ * funksjonen skal returnere false
+ */
+
 import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.weather.WeatherModel
 import org.junit.Test
@@ -88,7 +95,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "",
             rainNextHour = 0.0, // <- value for check
-            windDirection = 0.0,
             windSpeed = 0.0
         )
 
@@ -112,7 +118,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "",
             rainNextHour = 6.0, // <- value for check
-            windDirection = 0.0,
             windSpeed = 0.0
         )
 
@@ -136,7 +141,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "clearsky day", // <- value for check
             rainNextHour = 0.0,
-            windDirection = 0.0,
             windSpeed = 0.0
         )
 
@@ -160,7 +164,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "heavysnow", // <- value for check
             rainNextHour = 0.0,
-            windDirection = 0.0,
             windSpeed = 0.0
         )
 
@@ -184,7 +187,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "",
             rainNextHour = 0.0,
-            windDirection = 0.0,
             windSpeed = 4.0 // <- value for check
         )
 
@@ -208,7 +210,6 @@ class FeedbackCheckTest {
             summaryCode = "",
             summaryNextHour = "",
             rainNextHour = 0.0,
-            windDirection = 0.0,
             windSpeed = 11.0 // <- value for check
         )
 

@@ -2,6 +2,7 @@ package com.example.prosjekt_team18.ui.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -53,145 +54,204 @@ fun FeedbackPage(mapViewModel: MapViewModel, modifier: Modifier = Modifier, show
 
 	val flightApproval by remember { mutableStateOf(mapViewModel.checkApproval(sunlightCheck, rainCheck, windCheck, snowCheck, airportCheck)) }
 
-	Column(modifier = modifier.fillMaxSize()) {
-		Text(modifier = Modifier
-			.fillMaxWidth()
-			.wrapContentWidth(Alignment.CenterHorizontally)
-			.padding(20.dp),
-			text = "Sjekkliste for flyving", fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1B467C))
+	LazyColumn(modifier = modifier.fillMaxSize()) {
+		item {
+			Text(
+				modifier = Modifier
+					.fillMaxWidth()
+					.wrapContentWidth(Alignment.CenterHorizontally)
+					.padding(20.dp),
+				text = "Sjekkliste for flyving",
+				fontSize = 25.sp,
+				fontWeight = FontWeight.Bold,
+				color = Color(0xFF1B467C)
+			)
+		}
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(bottom = 10.dp), thickness = 10.dp
+			)
+		}
+		item {
+			Row(modifier = Modifier.fillMaxWidth()) {
+				Text(
+					modifier = modifier.padding(20.dp),
+					text = "Utenfor en rød sone:", fontSize = 16.sp, fontWeight = FontWeight.Bold
+				)
 
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(bottom = 10.dp), thickness = 10.dp)
+				Image(
+					modifier = modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 5.dp, end = 20.dp),
+					painter = painterResource(airportImageResource),
+					contentDescription = if (airportCheck) {
+						"godkjent lokasjon"
+					} else {
+						"Ikke godkjent lokasjon"
+					}
+				)
+			}
+		}
 
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Text(modifier = modifier.padding(20.dp),
-				text = "Utenfor en rød sone:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(10.dp), thickness = 2.dp
+			)
+		}
 
-			Image(modifier = modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.End)
-				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(airportImageResource),
-				contentDescription = if(airportCheck) {
-					"godkjent lokasjon"
-				} else {
-					"Ikke godkjent lokasjon"
-				})
+		item {
+			Row(modifier = Modifier.fillMaxWidth()) {
+				Text(
+					modifier = modifier.padding(20.dp),
+					text = "Nok sollys:", fontSize = 16.sp, fontWeight = FontWeight.Bold
+				)
+
+				Image(
+					modifier = modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 5.dp, end = 20.dp),
+					painter = painterResource(sunlightImageResource),
+					contentDescription = if (sunlightCheck) {
+						"godkjente sollysforhold"
+					} else {
+						"Ikke godkjente sollysforhold"
+					}
+				)
+			}
+		}
+
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(10.dp), thickness = 2.dp
+			)
+		}
+
+		item {
+			Row(modifier = Modifier.fillMaxWidth()) {
+				Text(
+					modifier = modifier.padding(20.dp),
+					text = "Regn mindre enn 0.1mm:", fontSize = 16.sp, fontWeight = FontWeight.Bold
+				)
+
+				Image(
+					modifier = modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 5.dp, end = 20.dp),
+					painter = painterResource(rainImageResource),
+					contentDescription = if (rainCheck) {
+						"godkjente regnforhold"
+					} else {
+						"Ikke godkjente regnforhold"
+					}
+				)
+			}
+		}
+
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(10.dp), thickness = 2.dp
+			)
+		}
+
+		item {
+			Row(modifier = Modifier.fillMaxWidth()) {
+				Text(
+					modifier = modifier.padding(20.dp),
+					text = "Snøfritt vær:", fontSize = 16.sp, fontWeight = FontWeight.Bold
+				)
+
+				Image(
+					modifier = modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 5.dp, end = 20.dp),
+					painter = painterResource(snowImageResource),
+					contentDescription = if (snowCheck) {
+						"godkjente snøforhold"
+					} else {
+						"Ikke godkjente snøforhold"
+					}
+				)
+			}
 		}
 
 
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp), thickness = 2.dp)
-
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Text(modifier = modifier.padding(20.dp),
-				text = "Nok sollys:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-			Image(modifier = modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.End)
-				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(sunlightImageResource),
-				contentDescription = if(sunlightCheck) {
-					"godkjente sollysforhold"
-				} else {
-					"Ikke godkjente sollysforhold"
-				})
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(10.dp), thickness = 2.dp
+			)
 		}
 
+		item {
+			Row(modifier = Modifier.fillMaxWidth()) {
+				Text(
+					modifier = modifier.padding(20.dp),
+					text = "Vindhastighet lavere enn 10m/s:",
+					fontSize = 16.sp,
+					fontWeight = FontWeight.Bold
+				)
 
-
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp), thickness = 2.dp)
-
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Text(modifier = modifier.padding(20.dp),
-				text = "Regn mindre enn 0.1mm:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-			Image(modifier = modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.End)
-				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(rainImageResource),
-				contentDescription = if(rainCheck) {
-					"godkjente regnforhold"
-				} else {
-					"Ikke godkjente regnforhold"
-				})
+				Image(
+					modifier = modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.End)
+						.padding(top = 5.dp, end = 20.dp),
+					painter = painterResource(windImageResource),
+					contentDescription = if (windCheck) {
+						"godkjente vindforhold"
+					} else {
+						"Ikke godkjente vindforhold"
+					}
+				)
+			}
 		}
 
-
-
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp), thickness = 2.dp)
-
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Text(modifier = modifier.padding(20.dp),
-				text = "Snøfritt vær:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-			Image(modifier = modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.End)
-				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(snowImageResource),
-				contentDescription = if(snowCheck) {
-					"godkjente snøforhold"
-				} else {
-					"Ikke godkjente snøforhold"
-				})
+		item {
+			Divider(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(10.dp), thickness = 10.dp
+			)
 		}
-
-
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp), thickness = 2.dp)
-
-		Row(modifier = Modifier.fillMaxWidth()) {
-			Text(modifier = modifier.padding(20.dp),
-				text = "Vindhastighet lavere enn 10m/s:", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-
-			Image(modifier = modifier
-				.fillMaxWidth()
-				.wrapContentWidth(Alignment.End)
-				.padding(top = 5.dp, end = 20.dp),
-				painter = painterResource(windImageResource),
-				contentDescription = if(windCheck) {
-					"godkjente vindforhold"
-				} else {
-					"Ikke godkjente vindforhold"
-				})
-		}
-
-
-		Divider(modifier = Modifier
-			.fillMaxWidth()
-			.padding(10.dp), thickness = 10.dp)
 
 		if (flightApproval) {
-			Text(
-				modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentWidth(Alignment.CenterHorizontally),
-				text = "Godkjent",
-				fontSize = 30.sp,
-				fontWeight = FontWeight.Bold,
-				color = Color(45, 134, 45)
-			)
+			item {
+				Text(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.CenterHorizontally),
+					text = "Godkjent",
+					fontSize = 30.sp,
+					fontWeight = FontWeight.Bold,
+					color = Color(45, 134, 45)
+				)
+			}
 		}
 		else {
-			Text(
-				modifier = Modifier
-					.fillMaxWidth()
-					.wrapContentWidth(Alignment.CenterHorizontally),
-				text = "Ikke godkjent",
-				fontSize = 30.sp,
-				fontWeight = FontWeight.Bold,
-				color = Color(204, 0, 0)
-			)
+			item {
+				Text(
+					modifier = Modifier
+						.fillMaxWidth()
+						.wrapContentWidth(Alignment.CenterHorizontally),
+					text = "Ikke godkjent",
+					fontSize = 30.sp,
+					fontWeight = FontWeight.Bold,
+					color = Color(204, 0, 0)
+				)
+			}
 		}
 	}
 }

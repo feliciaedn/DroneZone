@@ -1,5 +1,14 @@
 package com.example.prosjekt_team18
 
+/**
+ * Enhetstest for funksjonen notInAirportZone() i FeedbackCheckTest.
+ * Funksjonen bruker Location.distanceBetween() fra Androids "Location" bibliotek,
+ * og maa derfor testes i mappen androidTest som starter opp Android.
+ *
+ * Det er skrevet to tester for funksjonen: en hvor den skal returnere true, og en hvor den
+ * skal returnere false
+ */
+
 import com.example.prosjekt_team18.data.FeedbackCheck
 import com.google.android.gms.maps.model.LatLng
 import org.junit.Test

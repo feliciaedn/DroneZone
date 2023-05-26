@@ -1,6 +1,7 @@
 package com.example.prosjekt_team18.data.weather
 
-/* Denne filen inneholder dataklasser som brukes for aa deserialisere JSON data fra
+/**
+ * Denne filen inneholder dataklasser som brukes for aa deserialisere JSON data fra
  * Locationforecast API.
  */
 
