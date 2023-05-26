@@ -1,27 +1,21 @@
 package com.example.prosjekt_team18.ui.components
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Divider
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.R
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.example.prosjekt_team18.ui.viewmodels.Sheet
-import com.example.prosjekt_team18.ui.viewmodels.SunWeatherUiState
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -30,16 +24,10 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NavigationBar(modifier: Modifier = Modifier,
-                  containerColor: Color = NavigationBarDefaults.containerColor,
-                  tonalElevation: Dp = NavigationBarDefaults.Elevation,
-                  windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
-                  mapViewModel: MapViewModel,
-                  sunWeatherUiState: State<SunWeatherUiState>,
-                  context: Context,
-                  userLocation: LatLng,
-                  modalSheetState: ModalBottomSheetState,
-                  coroutineScope: CoroutineScope,
+fun NavigationBar(
+	mapViewModel: MapViewModel,
+	modalSheetState: ModalBottomSheetState,
+	coroutineScope: CoroutineScope,
 ) {
 
     var selectedItem by remember { mutableStateOf("") }
@@ -50,7 +38,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 
 
 			Row {
-
 					NavigationBarItem(
 						icon = {
 							Image(
@@ -59,7 +46,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 								contentDescription = items[0]
 							)
 						},
-						//label = { Text("Search") },
 						selected = selectedItem == items[0],
 						onClick = {
 							selectedItem = if (selectedItem != items[0]) {
@@ -78,7 +64,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 								contentDescription = items[1]
 							)
 						},
-						//label = { Text("Search") },
 						selected =
 						selectedItem == items[1],
 						onClick = {
@@ -97,7 +82,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 								contentDescription = items[2]
 							)
 						},
-						//label = { Text("Weather") },
 						selected = selectedItem == items[2],
 						onClick = {
 							mapViewModel.setShowCurrentLocationData(!mapViewModel.showMarker.value)
@@ -115,7 +99,6 @@ fun NavigationBar(modifier: Modifier = Modifier,
 								contentDescription = items[3]
 							)
 						},
-						//label = { Text("Rules") },
 						selected = selectedItem == items[3],
 						onClick = {
 							mapViewModel.showSheet(Sheet.Rules)

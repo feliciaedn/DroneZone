@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -25,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 
 /**
- * Konstruerer et søkefelt som lar brukeren søke opp lokasjoner,
+ * Konstruerer et søkefelt som lar brukeren søke opp lokasjoner
  */
 @Composable
 fun SearchBar(mapViewModel: MapViewModel) {
@@ -38,7 +37,7 @@ fun SearchBar(mapViewModel: MapViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
-//        Row(modifier = Modifier.fillMaxWidth()) {
+        /* SOEKEFELTET */
         OutlinedTextField(
             value = mapViewModel.text,
             onValueChange = {
@@ -88,12 +87,11 @@ fun SearchBar(mapViewModel: MapViewModel) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-//                .fillMaxHeight()
                 .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
 
         )
-//        }
 
+        /* AUTOFILL-RECOMMENDATIONS FOR SOEKET */
             AnimatedVisibility(
                 mapViewModel.locationAutofill.isNotEmpty(),
                 modifier = Modifier
@@ -113,7 +111,6 @@ fun SearchBar(mapViewModel: MapViewModel) {
                                 mapViewModel.locationAutofill.clear()
                                 mapViewModel.getCoordinates(it)
                                 focusManager.clearFocus()
-                                //println("showMarker får ny verdi: " + mapViewModel.showMarker.value)
                             }) {
                             Text(text = it.address)
                         }

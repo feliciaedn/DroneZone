@@ -69,9 +69,7 @@ class MapViewModel : ViewModel() {
 	val sunWeatherUiState: StateFlow<SunWeatherUiState> = _sunWeatherUiState.asStateFlow()
 
 	/* -------------------- */
-//	init {
-////		selectLocation(userLocation)
-//	}
+
 
 	/**
 	 * Funksjonen finner forslag til steder basert på en input-streng, og legger
@@ -107,10 +105,8 @@ class MapViewModel : ViewModel() {
 		placesClient.fetchPlace(request).addOnSuccessListener {
 			if (it != null) {
 				searchLatLong = it.place.latLng!!
-				println("inni getCoordinates: " + searchLatLong.latitude + ", " + searchLatLong.longitude)
 				showMarker.value = true
 				markerLocation = searchLatLong
-//				setShowCurrentLocationData(false)
 			}
 		}.addOnFailureListener {
 			it.printStackTrace()
@@ -139,7 +135,6 @@ class MapViewModel : ViewModel() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = sheet)
 		}
-//		println("SHOWING: " + _screenUiState.value.showSheet)
 	}
 
 	fun setShowCurrentLocationData(show: Boolean) {
@@ -152,8 +147,6 @@ class MapViewModel : ViewModel() {
 		_screenUiState.update { currentState ->
 			currentState.copy(showSheet = Sheet.None)
 		}
-//		println("SHOWING: " + _screenUiState.value.showSheet)
-
 	}
 
 	/**

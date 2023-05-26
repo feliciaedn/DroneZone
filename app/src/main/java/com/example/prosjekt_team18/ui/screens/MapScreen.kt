@@ -28,6 +28,7 @@ import com.example.prosjekt_team18.ui.components.PopupDialog
 import com.example.prosjekt_team18.ui.components.SearchBar
 import com.example.prosjekt_team18.ui.components.SegmentedControl
 import com.example.prosjekt_team18.ui.pages.FeedbackPage
+import com.example.prosjekt_team18.ui.pages.RulePage
 import com.example.prosjekt_team18.ui.pages.WeatherPage
 import com.example.prosjekt_team18.ui.viewmodels.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -132,9 +133,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 							description = "Sjekk at du er tilkoblet internet og prøv igjen."
 						)
 					}
-//					WeatherPage(sunWeatherUiState, context, screenUiState.value.selectedLocation!!)
-//					println("SHOWING WEATHER PAGE for location ${screenUiState.value.selectedLocation}")
-//					println("weathermodel: " + sunWeatherUiState.value.currentWeather)
+
 
 				} else if (screenUiState.value.showSheet == Sheet.Feedback) {
 					if (sunWeatherUiState.value.status == Status.Success) {
@@ -151,7 +150,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 									"flyvetillatelse. Sjekk at du er tilkoblet internet og prøv igjen."
 						)
 					}
-//					println("SHOWING FEEDBACK PAGE for location ${screenUiState.value.selectedLocation}")
 				}
 
 			}
@@ -310,17 +308,11 @@ fun MapScreen(mapViewModel: MapViewModel,
 		}
 
 		NavigationBar(
-			Modifier.padding(12.dp),
-			NavigationBarDefaults.containerColor,
-			12.dp,
-			NavigationBarDefaults.windowInsets,
-			mapViewModel, sunWeatherUiState,
-			context,
-			userLocation,
+			mapViewModel,
 			modalSheetState,
 			coroutineScope,
 		)
-		}
+	}
 }
 
 

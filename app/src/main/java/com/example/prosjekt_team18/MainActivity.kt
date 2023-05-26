@@ -54,12 +54,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
+			/* Setup for Google Maps og places API */
 			mapViewModel.fusedLocationClient =
 				LocationServices.getFusedLocationProviderClient(this)
+
 			Places.initialize(this.applicationContext, BuildConfig.GOOGLE_API_KEY)
 			mapViewModel.placesClient = Places.createClient(this)
 
-			//lokasjonsknappen er trykket ned
+			/* SPOERR BRUKER OM TILGANG TIL ENHETENS LOKASJON */
+
+			// buttonClicked er true hvis knappen som spoer om tilgang til lokasjon er trykket ned
 			var buttonClicked by remember {
 				mutableStateOf(isPermissionGranted())
 			}
@@ -81,6 +85,11 @@ class MainActivity : ComponentActivity() {
 					permissionGranted = permissionGranted_
 				}
 
+			/* Hvis det er foerste gangen bruker starter appen eller bruker ikke har gitt tilgang
+			* til lokasjon foer, vises en knapp for aa gi tilgang. Naar denne trykkes paa
+			* aapnes popup slik at brukeren kan gi appen tilgang til posisjon
+			*/
+
 			if (!permissionGranted && !startup) {
 				Button(modifier = Modifier
 					.fillMaxSize()
@@ -99,6 +108,8 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
+			// Hvis bruker allerede har gitt tilgang, og det ikke er foerste gangen de starter appen,
+			// starter hovedsiden med en gang
 			if (permissionGranted && !startup) {
 				// update your UI
 				Toast.makeText(
@@ -109,6 +120,7 @@ class MainActivity : ComponentActivity() {
 				startup = true
 			}
 
+			/* HENTER BRUKERENS POSISJON */
 			if (!(ActivityCompat.checkSelfPermission(
 					this,
 					ACCESS_FINE_LOCATION
@@ -137,7 +149,7 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 
-			//var cameraPositionState: CameraPositionState = CameraPositionState(position = CameraPosition.fromLatLngZoom(userLocation, 14f))
+			/* STILLER INN POSISJON FOR MAP OG VISER HOVEDSIDEN */
 			val cameraPositionState = rememberCameraPositionState {
 				position = CameraPosition.fromLatLngZoom(mapViewModel.userLocation, 15f)
 			}
