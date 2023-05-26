@@ -111,7 +111,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 
 			Column(
 				modifier =  modifier
-					//.fillMaxWidth()
 					.padding(top = 0.dp, bottom = 10.dp, start = 10.dp, end = 10.dp)
 
 			) {
@@ -167,7 +166,7 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
-                Column() {
+                Column {
 					MapScreen(mapViewModel,
 						cameraPositionState,
 						userLocation,
@@ -205,7 +204,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 
 	val positionUiState by mapViewModel.mapUiState.collectAsState()
 
-	var lagre2 = remember { mutableStateOf("Trykk for å sjekke værmelding") }
+	var infoWindowMessage = remember { mutableStateOf("Trykk for å sjekke værmelding") }
 
 	Column(modifier = Modifier.fillMaxSize()) {
 		Box(modifier = Modifier.weight(15f)) {
@@ -215,7 +214,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 				cameraPositionState = cameraPositionState,
 				onMapClick = {
 					if(mapViewModel.showMarker.value) {
-						lagre2.value = "Trykk for å sjekke værmelding"
+						infoWindowMessage.value = "Trykk for å sjekke værmelding"
 					}
 					mapViewModel.showMarker.value = !mapViewModel.showMarker.value
 					mapViewModel.markerLocation = it
@@ -228,7 +227,7 @@ fun MapScreen(mapViewModel: MapViewModel,
 					Marker(
 						state = markerState,
 						title = "Lokasjon",
-						snippet = lagre2.value,
+						snippet = infoWindowMessage.value,
 						icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
 						onInfoWindowClick = {
 							println("CLICKED INFO WINDOW")

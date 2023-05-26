@@ -11,7 +11,7 @@ import java.util.*
  * Klassen inneholder sjekk-funksjoner for å avgjøre om en bruker kan fly drone på en
  * gitt lokasjon, eller ikke.
  */
-class FeedbackCheck () {
+class FeedbackCheck {
 
 	/**
 	 * Funksjonen sjekker om en lokasjon har nok sollys til å fly drone.

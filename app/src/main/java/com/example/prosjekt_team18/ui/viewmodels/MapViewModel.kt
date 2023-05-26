@@ -35,11 +35,7 @@ import java.util.*
 /**
  * Klassen inneholder essensiell data og funksjoner for funksjonalitet i appen.
  */
-class MapViewModel(
-//    private val weatherDataSource: WeatherDataSource,
-//    private val sunDataSource: SunDataSource,
-//    private val feedbackCheck: FeedbackCheck,
-) : ViewModel() {
+class MapViewModel : ViewModel() {
 	private val weatherDataSource: WeatherDataSource = WeatherDataSource()
 	private val sunDataSource: SunDataSource = SunDataSource()
 	private val feedbackCheck: FeedbackCheck = FeedbackCheck()
@@ -53,8 +49,6 @@ class MapViewModel(
 
 	var userLocation by mutableStateOf(LatLng(0.0, 0.0))
 	var searchLatLong by mutableStateOf(LatLng(0.0, 0.0))
-
-	var locationAddress by mutableStateOf(null)
 
 	var hasLaunched: Boolean = false
 	var hasLocation: Boolean = false

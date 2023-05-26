@@ -23,10 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.prosjekt_team18.data.FeedbackCheck
 import com.example.prosjekt_team18.data.maps.LocationDetails
-import com.example.prosjekt_team18.data.sunrise.SunDataSource
-import com.example.prosjekt_team18.data.weather.WeatherDataSource
 import com.example.prosjekt_team18.ui.screens.MainScreen
 import com.example.prosjekt_team18.ui.viewmodels.MapViewModel
 import com.google.android.gms.location.LocationServices
@@ -114,7 +111,7 @@ class MainActivity : ComponentActivity() {
 
 			if (!(ActivityCompat.checkSelfPermission(
 					this,
-					Manifest.permission.ACCESS_FINE_LOCATION
+					ACCESS_FINE_LOCATION
 				) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
 					this,
 					Manifest.permission.ACCESS_COARSE_LOCATION
