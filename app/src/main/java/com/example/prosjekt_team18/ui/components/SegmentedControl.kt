@@ -23,7 +23,6 @@ import com.example.prosjekt_team18.R
 fun SegmentedControl(
     items: List<String>,
     defaultSelectedItemIndex: Int = 0,
-    useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
     cornerRadius : Int = 10,
     @ColorRes color : Int = R.color.dark_blue,
@@ -39,24 +38,12 @@ fun SegmentedControl(
             OutlinedButton(
                 modifier = when (index) {
                     0 -> {
-                        if (useFixedWidth) {
-                            Modifier
-                                .width(itemWidth)
-                                .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
-                        } else {
-                            Modifier
-                                .wrapContentSize()
-                                .offset(0.dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
-                        }
+                        Modifier
+                            .wrapContentSize()
+                            .offset(0.dp, 0.dp)
+                            .zIndex(if (selectedIndex.value == 0) 1f else 0f)
                     } else -> {
-                        if (useFixedWidth)
-                            Modifier
-                                .width(itemWidth)
-                                .offset((-1 * index).dp, 0.dp)
-                                .zIndex(if (selectedIndex.value == index) 1f else 0f)
-                        else Modifier
+                        Modifier
                             .wrapContentSize()
                             .offset((-1 * index).dp, 0.dp)
                             .zIndex(if (selectedIndex.value == index) 1f else 0f)
@@ -112,15 +99,6 @@ fun SegmentedControl(
                     }
                 },
             ) {
-//                Text(
-//                    text = item,
-//                    fontWeight = FontWeight.Normal,
-//                    color = if (selectedIndex.value == index) {
-//                        Color.White
-//                    } else {
-//                        colorResource(id = color).copy(alpha = 0.9f)
-//                    },
-//                )
                 if (index == 0) {
                     val imgId = if (selectedIndex.value == 0) {
                         R.drawable.my_location_24_white
@@ -129,7 +107,7 @@ fun SegmentedControl(
                     }
                     Image(
                         painter = painterResource(id = imgId),
-                        contentDescription = null,
+                        contentDescription = item,
                         modifier = Modifier.size(20.dp)
                     )
                 } else {
@@ -142,7 +120,7 @@ fun SegmentedControl(
                     }
                     Image(
                         painter = painterResource(id = imgId),
-                        contentDescription = null,
+                        contentDescription = item,
                         modifier = Modifier.size(20.dp)
                     )
                 }

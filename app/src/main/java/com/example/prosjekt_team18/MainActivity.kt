@@ -103,46 +103,16 @@ class MainActivity : ComponentActivity() {
 				startup = true
 			}
 
-			//fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-			//var default by remember { mutableStateOf(LatLng(59.9, 10.75)) } // oslo-koordinater
-			//var userLocation by remember { mutableStateOf(LatLng(0.0, 0.0)) }
-
-			if (ActivityCompat.checkSelfPermission(
+			if (!(ActivityCompat.checkSelfPermission(
 					this,
 					Manifest.permission.ACCESS_FINE_LOCATION
 				) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
 					this,
 					Manifest.permission.ACCESS_COARSE_LOCATION
-				) != PackageManager.PERMISSION_GRANTED
+				) != PackageManager.PERMISSION_GRANTED)
 			) {
-				// TODO: Consider calling
-				//    ActivityCompat#requestPermissions
-				// here to request the missing permissions, and then overriding
-				//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-				//                                          int[] grantResults)
-				// to handle the case where the user grants the permission. See the documentation
-				// for ActivityCompat#requestPermissions for more details.
-				println("går inn2")
-			} else {
-				println("går inn3")
-				/*else {
-					println("går inn3")
-					mapViewModel.fusedLocationClient.lastLocation.addOnSuccessListener { _location: Location? ->
-						if (_location != null) {
-							mapViewModel.userLocation = LatLng(_location.latitude, _location.longitude)
-							mapViewModel.mapUiState.value.currentLocation =
-								LocationDetails(_location.latitude, _location.longitude)
-							mapViewModel.mapUiState.value.properties =
-								MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
-							mapViewModel.hasLocation = true
-							println("inni if")
-							println(mapViewModel.userLocation.toString())
-						}
-					}*/
 				// Request current location
 				mapViewModel.fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener { _location: Location? ->
-					println("hentet brukers lokasjon")
 					if (_location == null) {
 						Toast.makeText(
 							this@MainActivity,
@@ -157,8 +127,6 @@ class MainActivity : ComponentActivity() {
 						mapViewModel.mapUiState.value.properties =
 							MapProperties(isMyLocationEnabled = true, mapType = MapType.TERRAIN)
 						mapViewModel.hasLocation = true
-						println("inni else2")
-						println(mapViewModel.userLocation.toString())
 					}
 				}
 			}
@@ -176,7 +144,6 @@ class MainActivity : ComponentActivity() {
 
 			LaunchedEffect(mapViewModel.hasLocation) {
 				if(!mapViewModel.hasLaunched && mapViewModel.userLocation != LatLng(0.0, 0.0)) {
-					println("inni launchedeffect..")
 					cameraPositionState.animate(CameraUpdateFactory.newLatLng(mapViewModel.userLocation))
 					mapViewModel.hasLaunched = true
 				}
@@ -197,18 +164,4 @@ class MainActivity : ComponentActivity() {
 			ACCESS_FINE_LOCATION
 		) == PackageManager.PERMISSION_GRANTED
 	}
-
-
-
-//	override fun onSaveInstanceState(savedInstanceState: Bundle) {
-//		super.onSaveInstanceState(savedInstanceState)
-//		// Save UI state changes to the savedInstanceState.
-//		// This bundle will be passed to onCreate if the process is
-//		// killed and restarted.
-//		savedInstanceState.putBoolean("MyBoolean", true)
-//		savedInstanceState.putDouble("myDouble", 1.9)
-//		savedInstanceState.putInt("MyInt", 1)
-//		savedInstanceState.putString("MyString", "Welcome back to Android")
-//		// etc.
-//	}
 }

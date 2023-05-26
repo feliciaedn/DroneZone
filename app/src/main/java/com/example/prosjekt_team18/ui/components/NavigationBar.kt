@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -41,7 +42,7 @@ fun NavigationBar(modifier: Modifier = Modifier,
     var selectedItem by remember { mutableStateOf("") }
     val items = listOf("Search", "Feedback", "Weather", "Rules")
 
-    BottomAppBar(modifier = Modifier.fillMaxWidth(), containerColor = Color(230, 230, 240)) {
+    BottomAppBar(modifier = Modifier.fillMaxWidth().shadow(elevation = 15.dp), containerColor = Color(230, 230, 240)) {
 		Column(modifier = Modifier.fillMaxSize()) {
 
 

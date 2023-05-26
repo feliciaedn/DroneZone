@@ -46,8 +46,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 	val sunWeatherUiState = mapViewModel.sunWeatherUiState.collectAsState()
 
 	mapViewModel.updateLocationData(userLocation)
-//	mapViewModel.selectLocation(userLocation)
-
 
 	val coroutineScope = rememberCoroutineScope()
 
@@ -92,9 +90,8 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
 					&& sunWeatherUiState.value.status == Status.Success) {
 //					showCurrentLocationData = !mapViewModel.showMarker.value
 					SegmentedControl(
-						items = listOf("Min lokasjon", "Markert"),
+						items = listOf("Data for min lokasjon", "Data for markert lokasjon"),
 						defaultSelectedItemIndex = if (mapViewModel.showMarker.value) 1 else 0,
-						useFixedWidth = false,
 						itemWidth = 50.dp,
 						cornerRadius = 100,
 						color =  R.color.dark_blue,
@@ -180,8 +177,6 @@ fun MainScreen(mapViewModel: MapViewModel, cameraPositionState: CameraPositionSt
         }
 
 	}
-
-
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -321,7 +316,8 @@ fun MapScreen(mapViewModel: MapViewModel,
 			modalSheetState,
 			coroutineScope,
 		)
-		}}
+		}
+}
 
 
 
